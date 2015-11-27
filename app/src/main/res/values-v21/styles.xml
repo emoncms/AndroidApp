@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:activatedBackgroundIndicator">@drawable/list_activated_background</item>
+
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:navigationBarColor">@color/colorNavigationBar</item>
+        <item name="android:statusBarColor">@color/colorStatusBar</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:colorButtonNormal">@color/colorButtonNormal</item>
+    </style>
+
+    <style name="ChartButton" parent="android:Widget.Material.Button">
+        <item name="android:minHeight">40dip</item>
+        <item name="android:minWidth">40dip</item>
+        <item name="android:maxHeight">40dip</item>
+        <item name="android:maxWidth">40dip</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+</resources>

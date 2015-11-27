@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="listViewSelected">#999999</color>
+    <color name="textColorBlue">#3399FF</color>
+    <color name="textColorDarkBlue">#002A54</color>
+    <color name="textColorLightBlue">#ADD6FF</color>
+    <color name="textColorErrorRed">#FF3333</color>
+    <color name="colorButtonNormal">#282828</color>
+
+    <color name="textColor">#3399FF</color>
+    <color name="textColorPrimary">#CCCCCC</color>
+    <color name="windowBackground">#303030</color>
+    <color name="colorPrimary">#454648</color>
+    <color name="colorPrimaryDark">#212121</color>
+    <color name="colorNavigationBar">#212121</color>
+    <color name="colorStatusBar">#212121</color>
+    <color name="primary_light">#CFD8DC</color>
+    <color name="colorAccent">#3399ff</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#B6B6B6</color>
+</resources>

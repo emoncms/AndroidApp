@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="EMONCMS CONNECTIVITY">
+
+        <EditTextPreference
+            android:key="emoncms_url"
+            android:title="emoncms URL"
+            android:summary="Full emoncms URL without http://. e.g. www.myawesomesite.com/emoncms"
+            android:defaultValue="emoncms.org"/>
+
+        <EditTextPreference
+            android:key="emoncms_apikey"
+            android:title="emoncms API KEY"
+            android:summary="Read API key from the emoncms My Account page." />
+
+
+        <CheckBoxPreference
+            android:key="emoncms_usessl"
+            android:title="Use SSL"
+            android:summary="Connect using https only if your site supports it. emoncms.org does not support https." />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="APP SETTINGS">
+
+        <CheckBoxPreference
+            android:key="display_fullscreen"
+            android:title="Full Screen"
+            android:summary="Hide status and navigation bars while emoncms is open" />
+
+        <CheckBoxPreference
+            android:key="keep_screen_on"
+            android:title="Keep Screen On"
+            android:summary="Stops the device screen powering off" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

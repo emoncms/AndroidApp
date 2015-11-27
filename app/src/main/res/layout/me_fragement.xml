@@ -1,0 +1,154 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:animateLayoutChanges="true"
+                tools:context=".MainActivity$PlaceholderFragment">
+
+    <TextView
+        android:id="@+id/txtDebug"
+        android:textSize="@dimen/main_header_text_size"
+        android:textColor="@color/textColorErrorRed"
+        android:text="@string/connection_error"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <TextView
+        android:id="@+id/tglCostLabel"
+        android:text="@string/cost_label"
+        android:layout_below="@id/txtDebug"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/tglCost"
+        android:layout_toRightOf="@id/tglCostLabel"
+        android:layout_below="@id/txtDebug"
+        android:layout_width="wrap_content"
+        android:textOff="kWh"
+        android:textOn="Cost"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:layout_height="wrap_content"/>
+
+    <ImageButton
+        android:id="@+id/myelectric_settings"
+        android:layout_below="@id/txtDebug"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/ic_settings"
+        android:layout_alignParentRight="true"
+        android:contentDescription="@string/settings_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/powerLabel"
+        android:text="@string/power_now_label"
+        android:textSize="@dimen/main_header_text_size"
+        android:textColor="@color/textColorPrimary"
+        android:textStyle="bold"
+        android:layout_below="@id/tglCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txtPower"
+        android:textSize="@dimen/main_stats_text_size"
+        android:textStyle="bold"
+        android:layout_below="@id/powerLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/useTodayLabel"
+        android:text="@string/use_today_label"
+        android:textSize="@dimen/main_header_text_size"
+        android:textColor="@color/textColorPrimary"
+        android:textStyle="bold"
+        android:layout_below="@id/tglCost"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txtUseToday"
+        android:textSize="@dimen/main_stats_text_size"
+        android:textStyle="bold"
+        android:layout_below="@id/useTodayLabel"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/txtPower">
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart1"
+            android:layout_weight="0.5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/chart2"
+            android:layout_weight="0.5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <Button
+        style="@style/ChartButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtPower"
+        android:text="@string/button_3h_label"
+        android:id="@+id/btnChart1_3H"/>
+
+    <Button
+        style="@style/ChartButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtPower"
+        android:text="@string/button_6h_label"
+        android:layout_toRightOf="@id/btnChart1_3H"
+        android:id="@+id/btnChart1_6H"/>
+
+    <Button
+        style="@style/ChartButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtPower"
+        android:layout_toRightOf="@id/btnChart1_6H"
+        android:text="@string/button_1d_label"
+        android:id="@+id/btnChart1_D"/>
+
+    <Button
+        style="@style/ChartButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtPower"
+        android:layout_toRightOf="@id/btnChart1_D"
+        android:text="@string/button_7d_label"
+        android:id="@+id/btnChart1_W"/>
+
+    <Button
+        style="@style/ChartButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtPower"
+        android:layout_toRightOf="@id/btnChart1_W"
+        android:text="@string/button_30d_label"
+        android:id="@+id/btnChart1_M"/>
+
+</RelativeLayout>
