@@ -3,11 +3,14 @@ package org.emoncms.myapps;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.SwitchCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +20,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -45,7 +49,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class MyElectricMainFragement extends Fragment
+public class MyElectricMainFragment extends Fragment
 {
     static final String TAG = "emoncms";
     static String emoncmsURL;
@@ -55,6 +59,7 @@ public class MyElectricMainFragement extends Fragment
     static float powerCost = 0;
     static float powerScale;
     static boolean keepScreenOn = false;
+    float dpWidth = 0;
 
     TextView txtPower;
     TextView txtUseToday;
@@ -165,6 +170,7 @@ public class MyElectricMainFragement extends Fragment
         @Override
         public void run()
         {
+            int daysToDisplay =  Math.round(dpWidth / 50)-1;
             Date now = new Date();
             int n = now.getTimezoneOffset();
             int offset = n / -60;
@@ -172,7 +178,7 @@ public class MyElectricMainFragement extends Fragment
             int interval = 3600 * 24;
             long timenow_s = timenow / 1000;
             long endTime = ((Double) Math.floor(timenow_s / interval)).longValue() * interval;
-            long startTime = endTime - interval * 6;
+            long startTime = endTime - interval * daysToDisplay;
             startTime -= (offset * 3600);
             endTime -= (offset * 3600);
             startTime *= 1000;
@@ -236,6 +242,7 @@ public class MyElectricMainFragement extends Fragment
                                 dataset.setColor(Color.parseColor("#3399FF"));
                                 dataset.setValueTextColor(Color.parseColor("#cccccc"));
                                 dataset.setValueTextSize(getResources().getDimension(R.dimen.chartValueTextSize));
+                                dataset.setValueTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                                 BarData barData = new BarData(labels, dataset);
                                 chart2.setData(barData);
 
@@ -475,6 +482,7 @@ public class MyElectricMainFragement extends Fragment
         yAxis.setDrawGridLines(false);
         yAxis.setDrawAxisLine(false);
         yAxis.setTextColor(Color.parseColor("#cccccc"));
+        yAxis.setTextSize(getResources().getDimension(R.dimen.chartDateTextSize));
 
         XAxis xAxis = chart1.getXAxis();
         xAxis.setDrawAxisLine(false);
@@ -484,6 +492,7 @@ public class MyElectricMainFragement extends Fragment
         xAxis.setTextColor(Color.parseColor("#cccccc"));
         xAxis.setValueFormatter(new TimeFromEpochXAxisValueFormatter());
         xAxis.setSpaceBetweenLabels(0);
+        xAxis.setTextSize(getResources().getDimension(R.dimen.chartDateTextSize));
 
         chart2 = (BarChart) view.findViewById(R.id.chart2);
         chart2.setDrawGridBackground(false);
@@ -499,8 +508,10 @@ public class MyElectricMainFragement extends Fragment
         xAxis = chart2.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
         xAxis.setTextColor(Color.parseColor("#cccccc"));
+        xAxis.setTextSize(getResources().getDimension(R.dimen.chartValueTextSize));
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
+        xAxis.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
 
         if (keepScreenOn)
             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -512,6 +523,16 @@ public class MyElectricMainFragement extends Fragment
     public void onResume()
     {
         super.onResume();
+
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+
+        //float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+        dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+
         mHandler.post(mGetFeedsRunner);
     }
 
@@ -558,7 +579,7 @@ public class MyElectricMainFragement extends Fragment
                     break;
                 case R.id.myelectric_settings:
                     getActivity().getFragmentManager().beginTransaction()
-                            .replace(R.id.container, new MyElectricSettingsFragement(), getResources().getString(R.string.tag_me_settings_fragment))
+                            .replace(R.id.container, new MyElectricSettingsFragment(), getResources().getString(R.string.tag_me_settings_fragment))
                             .commit();
                     break;
             }

@@ -35,7 +35,7 @@ public class MainActivity extends FragmentActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         fragmentManager.beginTransaction()
-                .replace(R.id.container, new MyElectricMainFragement(), getResources().getString(R.string.tag_me_fragment))
+                .replace(R.id.container, new MyElectricMainFragment(), getResources().getString(R.string.tag_me_fragment))
                 .commit();
     }
 
@@ -84,7 +84,7 @@ public class MainActivity extends FragmentActivity
         switch (position) {
             case 0:
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.container, new MyElectricMainFragement(), getResources().getString(R.string.tag_me_fragment))
+                        .replace(R.id.container, new MyElectricMainFragment(), getResources().getString(R.string.tag_me_fragment))
                         .commit();
                 break;
             case 1:
@@ -104,7 +104,7 @@ public class MainActivity extends FragmentActivity
             navFragment.setSelectedItem(0);
 
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new MyElectricMainFragement(), getResources().getString(R.string.tag_me_fragment))
+                    .replace(R.id.container, new MyElectricMainFragment(), getResources().getString(R.string.tag_me_fragment))
                     .commit();
         }
         else

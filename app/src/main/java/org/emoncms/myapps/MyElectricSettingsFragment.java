@@ -15,7 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MyElectricSettingsFragement extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener
+public class MyElectricSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     static final String TAG = "MESETTINGSFRAGMENT";
 
