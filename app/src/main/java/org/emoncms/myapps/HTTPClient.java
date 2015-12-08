@@ -2,8 +2,10 @@ package org.emoncms.myapps;
 
 import android.content.Context;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.Volley;
 
 public class HTTPClient
@@ -40,6 +42,7 @@ public class HTTPClient
     }
 
     public <T> void addToRequestQueue(Request<T> req) {
+        req.setRetryPolicy(new DefaultRetryPolicy(2500, 0, 1f));
         getRequestQueue().add(req);
     }
 }

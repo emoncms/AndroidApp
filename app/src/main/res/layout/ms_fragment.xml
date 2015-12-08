@@ -20,25 +20,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-
-    <TextView
-        android:id="@+id/tglCostLabel"
-        android:text="@string/cost_label"
-        android:layout_below="@id/txtDebug"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/tglCost"
-        android:layout_toRightOf="@id/tglCostLabel"
-        android:layout_below="@id/txtDebug"
-        android:layout_width="wrap_content"
-        android:textOff="kWh"
-        android:textOn="Cost"
-        android:paddingBottom="5dp"
-        android:paddingLeft="5dp"
-        android:layout_height="wrap_content"/>
-
     <ImageButton
         android:id="@+id/myelectric_settings"
         android:layout_below="@id/txtDebug"
@@ -55,34 +36,57 @@
         android:textSize="@dimen/main_header_text_size"
         android:textColor="@color/textColorPrimary"
         android:textStyle="bold"
-        android:layout_below="@id/tglCost"
+        android:layout_below="@id/myelectric_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/txtPower"
+        android:id="@+id/txtMSPower"
         android:textSize="@dimen/main_stats_text_size"
         android:textStyle="bold"
+        android:text="4000W"
         android:layout_below="@id/powerLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/useTodayLabel"
-        android:text="@string/use_today_label"
+        android:id="@+id/importingLabel"
+        android:text="@string/importing_label"
         android:textSize="@dimen/main_header_text_size"
         android:textColor="@color/textColorPrimary"
         android:textStyle="bold"
-        android:layout_below="@id/tglCost"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/myelectric_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txtMSImporting"
+        android:textSize="@dimen/main_stats_text_size"
+        android:textStyle="bold"
+        android:text="4000W"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/powerLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/solarPvLabel"
+        android:text="@string/solar_pv_label"
+        android:textSize="@dimen/main_header_text_size"
+        android:textColor="@color/textColorPrimary"
+        android:textStyle="bold"
+        android:layout_below="@id/myelectric_settings"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/txtUseToday"
+        android:id="@+id/txtMSUseToday"
         android:textSize="@dimen/main_stats_text_size"
         android:textStyle="bold"
-        android:layout_below="@id/useTodayLabel"
+        android:layout_below="@id/solarPvLabel"
+        android:text="10.9kWh"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

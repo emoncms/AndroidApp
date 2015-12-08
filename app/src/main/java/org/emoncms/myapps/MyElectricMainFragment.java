@@ -3,7 +3,6 @@ package org.emoncms.myapps;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -20,7 +19,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -35,7 +33,9 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.formatter.XAxisValueFormatter;
+import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.json.JSONArray;
@@ -43,6 +43,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -84,7 +85,7 @@ public class MyElectricMainFragment extends Fragment
     int kWhFeelId = 0;
 
     int dailyChartUpdateInterval = 60000;
-    long nextDailyCharUpdate = 0;
+    long nextDailyChartUpdate = 0;
 
     float powerNow = 0;
     float powerToday = 0;
@@ -97,7 +98,7 @@ public class MyElectricMainFragment extends Fragment
         public void run()
         {
             String url = String.format("%s%s/feed/list.json?apikey=%s", emoncmsProtocol, emoncmsURL, emoncmsAPIKEY);
-
+            Log.i("EMONCMS:URL", "mGetFeedsRunner:"+url);
             JsonArrayRequest jsArrayRequest = new JsonArrayRequest
                     (url, new Response.Listener<JSONArray>()
                     {
@@ -135,11 +136,9 @@ public class MyElectricMainFragment extends Fragment
                                 txtDebug.setVisibility(View.GONE);
                             }
 
-                            mHandler.post(mGetPowerHistoryRunner);
-
-                            if (Calendar.getInstance().getTimeInMillis() > nextDailyCharUpdate)
+                            if (Calendar.getInstance().getTimeInMillis() > nextDailyChartUpdate)
                             {
-                                nextDailyCharUpdate = Calendar.getInstance().getTimeInMillis() + dailyChartUpdateInterval;
+                                nextDailyChartUpdate = Calendar.getInstance().getTimeInMillis() + dailyChartUpdateInterval;
                                 mHandler.post(mDaysofWeekRunner);
                             }
                             else
@@ -188,7 +187,7 @@ public class MyElectricMainFragment extends Fragment
             final long chart2StartTime = startTime;
 
             String url = String.format("%s%s/feed/data.json?id=%d&start=%d&end=%d&interval=86400&skipmissing=1&limitinterval=1&apikey=%s", emoncmsProtocol, emoncmsURL, kWhFeelId, chart2StartTime, chart2EndTime, emoncmsAPIKEY);
-            Log.i("EMONCMS", url);
+            Log.i("EMONCMS:URL", "mDaysofWeekRunner:"+url);
             JsonArrayRequest jsArrayRequest = new JsonArrayRequest
                     (url, new Response.Listener<JSONArray>()
                     {
@@ -241,8 +240,8 @@ public class MyElectricMainFragment extends Fragment
                                 BarDataSet dataset = new BarDataSet(entries, "kWh");
                                 dataset.setColor(Color.parseColor("#3399FF"));
                                 dataset.setValueTextColor(Color.parseColor("#cccccc"));
-                                dataset.setValueTextSize(getResources().getDimension(R.dimen.chartValueTextSize));
-                                dataset.setValueTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                                dataset.setValueTextSize(getResources().getInteger(R.integer.chartValueTextSize));
+                                dataset.setValueFormatter(new Chart2ValueFormatter());
                                 BarData barData = new BarData(labels, dataset);
                                 chart2.setData(barData);
 
@@ -298,10 +297,10 @@ public class MyElectricMainFragment extends Fragment
 
             long startTime = cal.getTimeInMillis();
             int npoints = 1500;
-            final int graph_interval = Math.round(((endTime - startTime)/npoints)/1000);
+            final int graph_interval = Math.round(((endTime - startTime) / npoints) / 1000);
 
             String url = String.format("%s%s/feed/data.json?id=%d&start=%d&end=%d&interval=%d&skipmissing=1&limitinterval=1&apikey=%s", emoncmsProtocol, emoncmsURL, wattFeedId, startTime, endTime, graph_interval, emoncmsAPIKEY);
-            Log.i("EMONCMS", url);
+            Log.i("EMONCMS:URL", "mGetPowerHistoryRunner:"+url);
             JsonArrayRequest jsArrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>()
             {
                 @Override
@@ -317,7 +316,7 @@ public class MyElectricMainFragment extends Fragment
                         set = new LineDataSet(null, "watts");
                         set.setColor(Color.parseColor("#3399FF"));
                         set.setValueTextColor(Color.parseColor("#cccccc"));
-                        set.setValueTextSize(getResources().getDimension(R.dimen.chartValueTextSize));
+                        set.setValueTextSize(getResources().getInteger(R.integer.chartValueTextSize));
                         set.setDrawCircles(false);
                         set.setDrawFilled(true);
                         set.setFillColor(Color.parseColor("#0699fa"));
@@ -423,10 +422,10 @@ public class MyElectricMainFragment extends Fragment
 
         SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
         emoncmsURL = SP.getString("emoncms_url", "emoncms.org");
-        emoncmsAPIKEY = SP.getString("emoncms_apikey", "");
+        emoncmsAPIKEY = SP.getString("emoncms_apikey", null);
         emoncmsProtocol = SP.getBoolean("emoncms_usessl", false) ? "https://" : "http://";
-        wattFeedId = Integer.valueOf(SP.getString("myelectric_power_feed", "0"));
-        kWhFeelId = Integer.valueOf(SP.getString("myelectric_kwh_feed", "0"));
+        wattFeedId = Integer.valueOf(SP.getString("myelectric_power_feed", "-1"));
+        kWhFeelId = Integer.valueOf(SP.getString("myelectric_kwh_feed", "-1"));
         powerScale = Integer.valueOf(SP.getString("myelectric_escale", "0")) == 0 ? 1.0F : 0.001F;
         keepScreenOn = SP.getBoolean("keep_screen_on", false);
         powerCost = Float.parseFloat(SP.getString("myelectric_unit_cost", "0"));
@@ -437,7 +436,7 @@ public class MyElectricMainFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        return inflater.inflate(R.layout.me_fragement, container, false);
+        return inflater.inflate(R.layout.me_fragment, container, false);
     }
 
     @Override
@@ -482,7 +481,8 @@ public class MyElectricMainFragment extends Fragment
         yAxis.setDrawGridLines(false);
         yAxis.setDrawAxisLine(false);
         yAxis.setTextColor(Color.parseColor("#cccccc"));
-        yAxis.setTextSize(getResources().getDimension(R.dimen.chartDateTextSize));
+        yAxis.setTextSize(getResources().getInteger(R.integer.chartDateTextSize));
+        yAxis.setValueFormatter(new Chart1YAxisValueFormatter());
 
         XAxis xAxis = chart1.getXAxis();
         xAxis.setDrawAxisLine(false);
@@ -490,9 +490,9 @@ public class MyElectricMainFragment extends Fragment
         xAxis.setDrawLabels(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextColor(Color.parseColor("#cccccc"));
-        xAxis.setValueFormatter(new TimeFromEpochXAxisValueFormatter());
+        xAxis.setValueFormatter(new Chart1XAxisValueFormatter());
         xAxis.setSpaceBetweenLabels(0);
-        xAxis.setTextSize(getResources().getDimension(R.dimen.chartDateTextSize));
+        xAxis.setTextSize(getResources().getInteger(R.integer.chartDateTextSize));
 
         chart2 = (BarChart) view.findViewById(R.id.chart2);
         chart2.setDrawGridBackground(false);
@@ -508,10 +508,9 @@ public class MyElectricMainFragment extends Fragment
         xAxis = chart2.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
         xAxis.setTextColor(Color.parseColor("#cccccc"));
-        xAxis.setTextSize(getResources().getDimension(R.dimen.chartValueTextSize));
+        xAxis.setTextSize(getResources().getInteger(R.integer.chartValueTextSize));
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
-        xAxis.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
 
         if (keepScreenOn)
             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -529,11 +528,15 @@ public class MyElectricMainFragment extends Fragment
         display.getMetrics(outMetrics);
 
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-
-        //float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
         dpWidth = displayMetrics.widthPixels / displayMetrics.density;
 
-        mHandler.post(mGetFeedsRunner);
+        if (wattFeedId < 0 || kWhFeelId < 0)
+        {
+            txtDebug.setText(getResources().getString(R.string.me_not_confiured_text));
+            txtDebug.setVisibility(View.VISIBLE);
+        }
+        else
+            mHandler.post(mGetFeedsRunner);
     }
 
     @Override
@@ -590,16 +593,44 @@ public class MyElectricMainFragment extends Fragment
         }
     };
 
-    public class TimeFromEpochXAxisValueFormatter implements XAxisValueFormatter
+    public class Chart1XAxisValueFormatter implements XAxisValueFormatter
     {
         @Override
         public String getXValue(String original, int index, ViewPortHandler viewPortHandler)
         {
             DateFormat df = new SimpleDateFormat("HH:mm");
-            //DateFormat df = new SimpleDateFormat("HH:mm:ss");
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(Long.parseLong(original));
             return (df.format(cal.getTime()));
+        }
+    }
+
+    public class Chart1YAxisValueFormatter implements YAxisValueFormatter
+    {
+        private DecimalFormat mFormat;
+
+        public Chart1YAxisValueFormatter () {
+            mFormat = new DecimalFormat("###,###,##0"); // use one decimal
+        }
+
+        @Override
+        public String getFormattedValue(float value, YAxis yAxis) {
+            return mFormat.format(value);
+        }
+    }
+
+    public class Chart2ValueFormatter implements ValueFormatter
+    {
+
+        private DecimalFormat mFormat;
+
+        public Chart2ValueFormatter() {
+            mFormat = new DecimalFormat("###,###,##0.0"); // use one decimal
+        }
+
+        @Override
+        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+            return mFormat.format(value);
         }
     }
 }
