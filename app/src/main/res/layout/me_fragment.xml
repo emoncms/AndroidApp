@@ -53,7 +53,7 @@
         android:id="@+id/powerLabel"
         android:text="@string/power_now_label"
         android:textSize="@dimen/main_header_text_size"
-        android:textColor="@color/textColorPrimary"
+        android:textColor="@color/lightGrey"
         android:textStyle="bold"
         android:layout_below="@id/tglCost"
         android:layout_width="wrap_content"
@@ -65,6 +65,7 @@
         android:text="@string/txt_power_default"
         android:textStyle="bold"
         android:layout_below="@id/powerLabel"
+        android:textColor="@color/textColorBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -72,7 +73,7 @@
         android:id="@+id/useTodayLabel"
         android:text="@string/use_today_label"
         android:textSize="@dimen/main_header_text_size"
-        android:textColor="@color/textColorPrimary"
+        android:textColor="@color/lightGrey"
         android:textStyle="bold"
         android:layout_below="@id/tglCost"
         android:layout_alignParentRight="true"
@@ -86,6 +87,7 @@
         android:layout_below="@id/useTodayLabel"
         android:text="@string/use_today_default"
         android:layout_alignParentRight="true"
+        android:textColor="@color/textColorBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

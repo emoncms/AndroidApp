@@ -2,10 +2,10 @@ package org.emoncms.myapps;
 
 import android.app.Fragment;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.SwitchCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -225,7 +225,9 @@ public class MyElectricMainFragment extends Fragment
                             for (int i = 0; i < power.size() - 1; i++)
                             {
                                 labels.add(sdf.format(new Date(dates.get(i))).substring(0, 1));
-                                entries.add(new BarEntry(power.get(i + 1) - power.get(i), i));
+                                float graph_value = power.get(i + 1) - power.get(i);
+                                if (graph_value < 0) graph_value = 0;
+                                entries.add(new BarEntry(graph_value, i));
                             }
 
                             if (power.size() > 0)
@@ -238,8 +240,8 @@ public class MyElectricMainFragment extends Fragment
                             try
                             {
                                 BarDataSet dataset = new BarDataSet(entries, "kWh");
-                                dataset.setColor(Color.parseColor("#3399FF"));
-                                dataset.setValueTextColor(Color.parseColor("#cccccc"));
+                                dataset.setColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+                                dataset.setValueTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
                                 dataset.setValueTextSize(getResources().getInteger(R.integer.chartValueTextSize));
                                 dataset.setValueFormatter(new Chart2ValueFormatter());
                                 BarData barData = new BarData(labels, dataset);
@@ -314,12 +316,12 @@ public class MyElectricMainFragment extends Fragment
                     if (set == null)
                     {
                         set = new LineDataSet(null, "watts");
-                        set.setColor(Color.parseColor("#3399FF"));
-                        set.setValueTextColor(Color.parseColor("#cccccc"));
-                        set.setValueTextSize(getResources().getInteger(R.integer.chartValueTextSize));
+                        set.setColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+                        set.setValueTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
+                        set.setValueTextSize(ContextCompat.getColor(getActivity(), R.integer.chartValueTextSize));
                         set.setDrawCircles(false);
                         set.setDrawFilled(true);
-                        set.setFillColor(Color.parseColor("#0699fa"));
+                        set.setFillColor(ContextCompat.getColor(getActivity(), R.color.chartBlue));
                         set.setDrawValues(false);
                         set.setHighlightEnabled(false);
                         data.addDataSet(set);
@@ -480,7 +482,7 @@ public class MyElectricMainFragment extends Fragment
         yAxis.setDrawTopYLabelEntry(false);
         yAxis.setDrawGridLines(false);
         yAxis.setDrawAxisLine(false);
-        yAxis.setTextColor(Color.parseColor("#cccccc"));
+        yAxis.setTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
         yAxis.setTextSize(getResources().getInteger(R.integer.chartDateTextSize));
         yAxis.setValueFormatter(new Chart1YAxisValueFormatter());
 
@@ -489,7 +491,7 @@ public class MyElectricMainFragment extends Fragment
         xAxis.setDrawGridLines(false);
         xAxis.setDrawLabels(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextColor(Color.parseColor("#cccccc"));
+        xAxis.setTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
         xAxis.setValueFormatter(new Chart1XAxisValueFormatter());
         xAxis.setSpaceBetweenLabels(0);
         xAxis.setTextSize(getResources().getInteger(R.integer.chartDateTextSize));
@@ -507,7 +509,7 @@ public class MyElectricMainFragment extends Fragment
 
         xAxis = chart2.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
-        xAxis.setTextColor(Color.parseColor("#cccccc"));
+        xAxis.setTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
         xAxis.setTextSize(getResources().getInteger(R.integer.chartValueTextSize));
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);

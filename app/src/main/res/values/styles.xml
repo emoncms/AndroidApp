@@ -6,7 +6,6 @@
         <item name="android:background">@color/windowBackground</item>
 
         <item name="android:windowBackground">@color/windowBackground</item>
-        <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
     <style name="ChartButton" parent="android:Widget.Holo.Button">

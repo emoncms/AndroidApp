@@ -7,8 +7,8 @@
     <color name="textColorErrorRed">#FF3333</color>
     <color name="colorButtonNormal">#282828</color>
 
-    <color name="textColor">#3399FF</color>
-    <color name="textColorPrimary">#CCCCCC</color>
+    <color name="chartBlue">#0699fa</color>
+    <color name="lightGrey">#CCCCCC</color>
     <color name="windowBackground">#303030</color>
     <color name="colorPrimary">#454648</color>
     <color name="colorPrimaryDark">#212121</color>
