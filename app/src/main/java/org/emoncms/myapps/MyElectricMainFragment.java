@@ -6,18 +6,22 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -78,7 +82,6 @@ public class MyElectricMainFragment extends Fragment
     Button chart1_D;
     Button chart1_W;
     Button chart1_M;
-    ImageButton me_settings;
     SwitchCompat costSwitch;
 
     int wattFeedId = 0;
@@ -432,6 +435,8 @@ public class MyElectricMainFragment extends Fragment
         keepScreenOn = SP.getBoolean("keep_screen_on", false);
         powerCost = Float.parseFloat(SP.getString("myelectric_unit_cost", "0"));
         powerCostSymbol = SP.getString("myelectric_cost_symbol", "£");
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.me_title);
     }
 
     @Override
@@ -447,6 +452,7 @@ public class MyElectricMainFragment extends Fragment
         super.onActivityCreated(savesInstanceState);
 
         View view = getView();
+        setHasOptionsMenu(true);
 
         txtPower = (TextView) view.findViewById(R.id.txtPower);
         txtUseToday = (TextView) view.findViewById(R.id.txtUseToday);
@@ -456,16 +462,12 @@ public class MyElectricMainFragment extends Fragment
         chart1_D = (Button) view.findViewById(R.id.btnChart1_D);
         chart1_W = (Button) view.findViewById(R.id.btnChart1_W);
         chart1_M = (Button) view.findViewById(R.id.btnChart1_M);
-        me_settings = (ImageButton) view.findViewById(R.id.myelectric_settings);
-        costSwitch = (SwitchCompat) view.findViewById(R.id.tglCost);
 
         chart1_3h.setOnClickListener(buttonListener);
         chart1_6h.setOnClickListener(buttonListener);
         chart1_D.setOnClickListener(buttonListener);
         chart1_W.setOnClickListener(buttonListener);
         chart1_M.setOnClickListener(buttonListener);
-        me_settings.setOnClickListener(buttonListener);
-        costSwitch.setOnCheckedChangeListener(checkedChangedListener);
 
         chart1 = (LineChart) view.findViewById(R.id.chart1);
         chart1.setDrawGridBackground(false);
@@ -521,6 +523,29 @@ public class MyElectricMainFragment extends Fragment
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.me_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+        costSwitch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.cost_switch));
+        costSwitch.setOnCheckedChangeListener(checkedChangedListener);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            getActivity().getFragmentManager().beginTransaction()
+                    .replace(R.id.container, new MyElectricSettingsFragment(), getResources().getString(R.string.tag_me_settings_fragment))
+                    .commit();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onResume()
     {
         super.onResume();
@@ -534,7 +559,7 @@ public class MyElectricMainFragment extends Fragment
 
         if (wattFeedId < 0 || kWhFeelId < 0)
         {
-            txtDebug.setText(getResources().getString(R.string.me_not_confiured_text));
+            txtDebug.setText(getResources().getString(R.string.me_not_configured_text));
             txtDebug.setVisibility(View.VISIBLE);
         }
         else
@@ -581,11 +606,6 @@ public class MyElectricMainFragment extends Fragment
                 case R.id.btnChart1_M: // 4 Weeks
                     powerGraphLength = -720; // 30 * 24
                     resetPowerGraph = true;
-                    break;
-                case R.id.myelectric_settings:
-                    getActivity().getFragmentManager().beginTransaction()
-                            .replace(R.id.container, new MyElectricSettingsFragment(), getResources().getString(R.string.tag_me_settings_fragment))
-                            .commit();
                     break;
             }
 

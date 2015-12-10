@@ -20,23 +20,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <ImageButton
-        android:id="@+id/myelectric_settings"
-        android:layout_below="@id/txtDebug"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/ic_settings"
-        android:layout_alignParentRight="true"
-        android:contentDescription="@string/settings_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
     <TextView
         android:id="@+id/powerLabel"
         android:text="@string/power_now_label"
         android:textSize="@dimen/main_header_text_size"
         android:textColor="@color/lightGrey"
         android:textStyle="bold"
-        android:layout_below="@id/myelectric_settings"
+        android:layout_below="@id/txtDebug"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -57,7 +47,7 @@
         android:textColor="@color/lightGrey"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/myelectric_settings"
+        android:layout_below="@id/txtDebug"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -78,7 +68,7 @@
         android:textSize="@dimen/main_header_text_size"
         android:textColor="@color/lightGrey"
         android:textStyle="bold"
-        android:layout_below="@id/myelectric_settings"
+        android:layout_below="@id/txtDebug"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

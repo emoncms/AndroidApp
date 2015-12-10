@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -39,6 +40,7 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
         powerFeedPreference = (ListPreference) this.findPreference("myelectric_power_feed");
         kWhFeedPreference = (ListPreference) this.findPreference("myelectric_kwh_feed");
         updateFeedList();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.me_settings_title);
     }
 
     @Override

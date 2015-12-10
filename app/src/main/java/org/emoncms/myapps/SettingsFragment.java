@@ -2,6 +2,7 @@ package org.emoncms.myapps;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.support.v7.app.AppCompatActivity;
 
 public class SettingsFragment extends PreferenceFragment
 {
@@ -13,5 +14,6 @@ public class SettingsFragment extends PreferenceFragment
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.main_preferences);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.settings_title);
     }
 }
