@@ -2,6 +2,7 @@ package org.emoncms.myapps;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
 public class SettingsFragment extends PreferenceFragment
@@ -14,6 +15,14 @@ public class SettingsFragment extends PreferenceFragment
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.main_preferences);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.settings_title);
     }
+
+    @Override
+    public void onActivityCreated(Bundle savesInstanceState) {
+        super.onActivityCreated(savesInstanceState);
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) actionBar.setTitle(R.string.settings_title);
+    }
+
 }

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.DisplayMetrics;
@@ -435,8 +436,6 @@ public class MyElectricMainFragment extends Fragment
         keepScreenOn = SP.getBoolean("keep_screen_on", false);
         powerCost = Float.parseFloat(SP.getString("myelectric_unit_cost", "0"));
         powerCostSymbol = SP.getString("myelectric_cost_symbol", "£");
-
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.me_title);
     }
 
     @Override
@@ -453,6 +452,9 @@ public class MyElectricMainFragment extends Fragment
 
         View view = getView();
         setHasOptionsMenu(true);
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) actionBar.setTitle(R.string.me_title);
 
         txtPower = (TextView) view.findViewById(R.id.txtPower);
         txtUseToday = (TextView) view.findViewById(R.id.txtUseToday);

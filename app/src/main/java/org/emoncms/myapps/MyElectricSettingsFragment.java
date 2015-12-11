@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.volley.Response;
@@ -29,7 +30,8 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
     SharedPreferences sp;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         // Load the preferences from an XML resource
@@ -40,7 +42,14 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
         powerFeedPreference = (ListPreference) this.findPreference("myelectric_power_feed");
         kWhFeedPreference = (ListPreference) this.findPreference("myelectric_kwh_feed");
         updateFeedList();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.me_settings_title);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savesInstanceState) {
+        super.onActivityCreated(savesInstanceState);
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) actionBar.setTitle(R.string.me_settings_title);
     }
 
     @Override
