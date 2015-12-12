@@ -30,12 +30,22 @@
          android:layout_gravity="left" instead. -->
     <!-- The drawer is given a fixed width in dp and extends the full height of
          the container. -->
-    <fragment android:id="@+id/navigation_drawer"
+   <!-- <fragment android:id="@+id/navigation_drawer"
               android:tag="@string/tag_navigation_fragment"
               android:layout_width="@dimen/navigation_drawer_width"
               android:layout_height="match_parent"
               android:layout_gravity="start"
               android:name="org.emoncms.myapps.NavigationDrawerFragment"
-              tools:layout="@layout/fragment_navigation_drawer"/>
+              tools:layout="@layout/fragment_navigation_drawer"/> -->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerView"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:paddingTop="8dp"
+        android:background="#555555"
+        android:scrollbars="vertical" />
+
 
 </android.support.v4.widget.DrawerLayout>

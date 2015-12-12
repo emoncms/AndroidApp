@@ -6,16 +6,28 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
 
-
 public class MainActivity extends AppCompatActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks
 {
     boolean isFullScreen = false;
+    Toolbar mToolbar;
+    DrawerLayout mDrawer;
+
+    int TITLE_IDS[] = {R.string.me_title, R.string.settings_title};
+    int ICONS[] = {R.drawable.ic_my_electric_white_36dp, R.drawable.ic_settings_applications_white_36dp};
+
+    RecyclerView mRecyclerView;
+    RecyclerView.Adapter mAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,22 +40,66 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         FragmentManager fragmentManager = getFragmentManager();
-        NavigationDrawerFragment mNavigationDrawerFragment;
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                fragmentManager.findFragmentById(R.id.navigation_drawer);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar); // Attaching the layout to the toolbar object
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(mToolbar);
 
-        DrawerLayout Drawer = (DrawerLayout) findViewById(R.id.drawer_layout);        // Drawer object Assigned to the view
-        // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                Drawer);
+        mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
+        mRecyclerView.setHasFixedSize(true);
 
-        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,Drawer,toolbar,R.string.openDrawer,R.string.closeDrawer);
-        Drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
-        mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
+        mAdapter = new NavigationDrawerAdapter(this, TITLE_IDS, ICONS);
+        mRecyclerView.setAdapter(mAdapter);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        final GestureDetector mGestureDetector = new GestureDetector(MainActivity.this, new GestureDetector.SimpleOnGestureListener() {
+            @Override public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+        });
+
+        mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+                View child = recyclerView.findChildViewUnder(motionEvent.getX(),motionEvent.getY());
+
+                if(child!=null && mGestureDetector.onTouchEvent(motionEvent)){
+                    int position = recyclerView.getChildAdapterPosition(child);
+                    setSelectedNavigationItem(position);
+                    mDrawer.closeDrawers();
+
+                    switch (position) {
+                        case 0:
+                            getFragmentManager().beginTransaction()
+                                    .replace(R.id.container, new MyElectricMainFragment(), getResources().getString(R.string.tag_me_fragment))
+                                    .commit();
+                            break;
+                        case 1:
+                            getFragmentManager().beginTransaction()
+                                    .replace(R.id.container, new SettingsFragment(), getResources().getString(R.string.tag_settings_fragment))
+                                    .commit();
+                            break;
+                    }
+
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+            }
+        });
+
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawer,mToolbar,R.string.openDrawer,R.string.closeDrawer);
+        mDrawer.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
 
         fragmentManager.beginTransaction()
                 .replace(R.id.container, new MyElectricMainFragment(), getResources().getString(R.string.tag_me_fragment))
@@ -89,21 +145,32 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onNavigationDrawerItemSelected(int position)
-    {
-        switch (position) {
-            case 0:
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.container, new MyElectricMainFragment(), getResources().getString(R.string.tag_me_fragment))
-                        .commit();
-                break;
-            case 1:
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.container, new SettingsFragment(), getResources().getString(R.string.tag_settings_fragment))
-                        .commit();
-                break;
+    private View.OnSystemUiVisibilityChangeListener mOnSystemUiVisibilityChangeListener = new View.OnSystemUiVisibilityChangeListener() {
+        @Override
+        public void onSystemUiVisibilityChange(int visibility) {
+            ActionBar ab = getSupportActionBar();
+            if (ab == null)
+                return;
+
+            if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == View.VISIBLE)
+            {
+                //mToolbar.startAnimation(mSlideDown);
+                ab.show();
+            }
+            else
+            {
+                ab.hide();
+                //mToolbar.startAnimation(mSlideUp);
+            }
         }
+    };
+
+    private void setSelectedNavigationItem(int position) {
+        View selected_child = mRecyclerView.getChildAt(((NavigationDrawerAdapter) mAdapter).getSelectedItem());
+        if (selected_child != null) selected_child.setSelected(false);
+        ((NavigationDrawerAdapter) mAdapter).setSelectedItem(position);
+        selected_child = mRecyclerView.getChildAt(position);
+        selected_child.setSelected(true);
     }
 
     @Override
@@ -111,12 +178,11 @@ public class MainActivity extends AppCompatActivity
 
         if (getFragmentManager().findFragmentByTag(getResources().getString(R.string.tag_me_fragment)) == null)
         {
-            NavigationDrawerFragment navFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentByTag(getResources().getString(R.string.tag_navigation_fragment));
-            navFragment.setSelectedItem(0);
-
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, new MyElectricMainFragment(), getResources().getString(R.string.tag_me_fragment))
                     .commit();
+
+            setSelectedNavigationItem(0);
         }
         else
             super.onBackPressed();

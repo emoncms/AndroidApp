@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="listViewSelected">#999999</color>
+    <color name="navigation_item_selected">#777777</color>
     <color name="textColorBlue">#3399FF</color>
     <color name="textColorDarkBlue">#002A54</color>
     <color name="textColorLightBlue">#ADD6FF</color>

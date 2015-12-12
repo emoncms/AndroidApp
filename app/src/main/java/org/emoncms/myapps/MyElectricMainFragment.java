@@ -175,8 +175,10 @@ public class MyElectricMainFragment extends Fragment
         {
             int daysToDisplay =  Math.round(dpWidth / 50)-1;
             Date now = new Date();
-            int n = now.getTimezoneOffset();
-            int offset = n / -60;
+
+            int n = Calendar.getInstance().get(Calendar.ZONE_OFFSET)/60000;
+            int offset = n / 60;
+
             long timenow = now.getTime();
             int interval = 3600 * 24;
             long timenow_s = timenow / 1000;
