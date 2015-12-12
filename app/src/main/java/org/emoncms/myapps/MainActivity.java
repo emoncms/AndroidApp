@@ -17,6 +17,7 @@ import android.view.View;
 import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -111,12 +112,12 @@ public class MainActivity extends AppCompatActivity
 
     public void setFullScreen() {
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
             getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_IMMERSIVE |
+                    View.SYSTEM_UI_FLAG_FULLSCREEN |
                     View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                    View.SYSTEM_UI_FLAG_FULLSCREEN);
+                    View.SYSTEM_UI_FLAG_IMMERSIVE);
         }
         else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
         {
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity
             if (ab == null)
                 return;
 
-            if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == View.VISIBLE)
+            if ((visibility & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == View.VISIBLE)
             {
                 mToolbar.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_down));
                 ab.show();
