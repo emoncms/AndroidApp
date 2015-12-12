@@ -10,9 +10,15 @@
         android:orderInCategory="100"
         android:title=""/>
 
+    <item android:id="@+id/full_screen"
+          android:orderInCategory="200"
+          android:title="@string/fullscreen"
+          android:icon="@drawable/ic_settings_overscan_white_24dp"
+          app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="200"
+        android:orderInCategory="300"
         android:title="@string/action_settings"
         android:icon="@drawable/ic_settings_white_24dp"
         app:showAsAction="always" />

@@ -15,10 +15,11 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
+import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 
 public class MainActivity extends AppCompatActivity
 {
-    boolean isFullScreen = false;
     Toolbar mToolbar;
     DrawerLayout mDrawer;
 
@@ -34,8 +35,8 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        isFullScreen = SP.getBoolean("display_fullscreen", false);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        setKeepScreenOn(sp.getBoolean("keep_screen_on", false));
 
         setContentView(R.layout.activity_main);
 
@@ -104,45 +105,38 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.container, new MyElectricMainFragment(), getResources().getString(R.string.tag_me_fragment))
                 .commit();
+
+        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(mOnSystemUiVisibilityChangeListener);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (isFullScreen && hasFocus)
-            setFullScreen();
-    }
+    public void setFullScreen() {
 
-    void setFullScreen()
-    {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
         {
             getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+                    View.SYSTEM_UI_FLAG_IMMERSIVE |
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                    View.SYSTEM_UI_FLAG_FULLSCREEN);
         }
         else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
         {
-            int mUIFlag = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_LOW_PROFILE
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-
-            getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_FULLSCREEN |
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
         else
         {
-            int mUIFlag = View.SYSTEM_UI_FLAG_LOW_PROFILE
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-
-            getWindow().getDecorView().setSystemUiVisibility(mUIFlag);
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LOW_PROFILE |
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
+    }
+
+    public void setKeepScreenOn(boolean keep_screen_on) {
+        if (keep_screen_on)
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        else
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     private View.OnSystemUiVisibilityChangeListener mOnSystemUiVisibilityChangeListener = new View.OnSystemUiVisibilityChangeListener() {
@@ -154,13 +148,13 @@ public class MainActivity extends AppCompatActivity
 
             if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == View.VISIBLE)
             {
-                //mToolbar.startAnimation(mSlideDown);
+                mToolbar.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_down));
                 ab.show();
             }
             else
             {
+                mToolbar.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_up));
                 ab.hide();
-                //mToolbar.startAnimation(mSlideUp);
             }
         }
     };

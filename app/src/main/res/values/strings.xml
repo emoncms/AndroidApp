@@ -29,6 +29,7 @@
 
     <string name="openDrawer">open</string>
     <string name="closeDrawer">close</string>
+    <string name="fullscreen">Fullscreen</string>
 
     <string name="txt_power_default">0W</string>
     <string name="use_today_default">0.0kWh</string>

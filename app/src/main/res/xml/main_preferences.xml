@@ -26,11 +26,6 @@
         android:title="APP SETTINGS">
 
         <CheckBoxPreference
-            android:key="display_fullscreen"
-            android:title="Full Screen"
-            android:summary="Hide status and navigation bars while emoncms is open" />
-
-        <CheckBoxPreference
             android:key="keep_screen_on"
             android:title="Keep Screen On"
             android:summary="Stops the device screen powering off" />

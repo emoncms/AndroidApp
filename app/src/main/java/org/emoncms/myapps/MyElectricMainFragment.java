@@ -64,7 +64,6 @@ public class MyElectricMainFragment extends Fragment
     static String powerCostSymbol;
     static float powerCost = 0;
     static float powerScale;
-    static boolean keepScreenOn = false;
     float dpWidth = 0;
 
     TextView txtPower;
@@ -435,7 +434,6 @@ public class MyElectricMainFragment extends Fragment
         wattFeedId = Integer.valueOf(SP.getString("myelectric_power_feed", "-1"));
         kWhFeelId = Integer.valueOf(SP.getString("myelectric_kwh_feed", "-1"));
         powerScale = Integer.valueOf(SP.getString("myelectric_escale", "0")) == 0 ? 1.0F : 0.001F;
-        keepScreenOn = SP.getBoolean("keep_screen_on", false);
         powerCost = Float.parseFloat(SP.getString("myelectric_unit_cost", "0"));
         powerCostSymbol = SP.getString("myelectric_cost_symbol", "£");
     }
@@ -519,11 +517,6 @@ public class MyElectricMainFragment extends Fragment
         xAxis.setTextSize(getResources().getInteger(R.integer.chartValueTextSize));
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
-
-        if (keepScreenOn)
-            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        else
-            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
@@ -543,6 +536,10 @@ public class MyElectricMainFragment extends Fragment
             getActivity().getFragmentManager().beginTransaction()
                     .replace(R.id.container, new MyElectricSettingsFragment(), getResources().getString(R.string.tag_me_settings_fragment))
                     .commit();
+            return true;
+        }
+        else if (id == R.id.full_screen) {
+            ((MainActivity) getActivity()).setFullScreen();
             return true;
         }
 
