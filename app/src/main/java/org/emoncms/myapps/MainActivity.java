@@ -17,14 +17,13 @@ import android.view.View;
 import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
 {
     Toolbar mToolbar;
     DrawerLayout mDrawer;
 
-    int TITLE_IDS[] = {R.string.me_title, R.string.settings_title};
+    int TITLE_IDS[] = {R.string.me_title, R.string.settings};
     int ICONS[] = {R.drawable.ic_my_electric_white_36dp, R.drawable.ic_settings_applications_white_36dp};
 
     RecyclerView mRecyclerView;
@@ -35,6 +34,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        PreferenceManager.setDefaultValues(this, R.xml.main_preferences, false);
+        PreferenceManager.setDefaultValues(this, R.xml.me_preferences, false);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         setKeepScreenOn(sp.getBoolean("keep_screen_on", false));

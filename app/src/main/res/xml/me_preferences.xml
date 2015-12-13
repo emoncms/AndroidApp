@@ -7,11 +7,13 @@
         <ListPreference
             android:key="myelectric_power_feed"
             android:title="Power feed (Watts)"
+            android:defaultValue="-1"
             android:enabled="false"/>
 
         <ListPreference
             android:key="myelectric_kwh_feed"
             android:title="Bar graph feed (kWh)"
+            android:defaultValue="-1"
             android:enabled="false"/>
 
         <ListPreference

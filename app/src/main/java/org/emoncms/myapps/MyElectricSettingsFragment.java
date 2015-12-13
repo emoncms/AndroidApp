@@ -7,6 +7,7 @@ import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.volley.Response;
@@ -136,6 +137,13 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
                         {
                             powerFeedPreference.setEnabled(false);
                             kWhFeedPreference.setEnabled(false);
+
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle(R.string.error)
+                                    .setMessage(R.string.feed_download_error_message)
+                                    .setPositiveButton(android.R.string.ok, null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
                         }
                     });
             jsArrayRequest.setTag(TAG);

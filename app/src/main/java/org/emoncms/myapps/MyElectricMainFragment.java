@@ -20,7 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -52,8 +51,10 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Currency;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MyElectricMainFragment extends Fragment
 {
@@ -436,6 +437,7 @@ public class MyElectricMainFragment extends Fragment
         powerScale = Integer.valueOf(SP.getString("myelectric_escale", "0")) == 0 ? 1.0F : 0.001F;
         powerCost = Float.parseFloat(SP.getString("myelectric_unit_cost", "0"));
         powerCostSymbol = SP.getString("myelectric_cost_symbol", "£");
+        if (powerCostSymbol.equals("0")) powerCostSymbol = Currency.getInstance(Locale.getDefault()).getSymbol();
     }
 
     @Override
@@ -531,7 +533,6 @@ public class MyElectricMainFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             getActivity().getFragmentManager().beginTransaction()
                     .replace(R.id.container, new MyElectricSettingsFragment(), getResources().getString(R.string.tag_me_settings_fragment))

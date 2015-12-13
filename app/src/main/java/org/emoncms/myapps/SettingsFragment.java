@@ -38,7 +38,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         super.onActivityCreated(savesInstanceState);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) actionBar.setTitle(R.string.settings_title);
+        if (actionBar != null) actionBar.setTitle(R.string.settings);
     }
 
     @Override
