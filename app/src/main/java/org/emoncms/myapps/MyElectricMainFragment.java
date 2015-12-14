@@ -174,23 +174,15 @@ public class MyElectricMainFragment extends Fragment
         public void run()
         {
             int daysToDisplay =  Math.round(dpWidth / 50)-1;
+            int interval = 86400;
             Date now = new Date();
+            int timezone = (((Calendar.getInstance().get(Calendar.ZONE_OFFSET) + Calendar.getInstance().get(Calendar.DST_OFFSET)) / 60000)/-60)*3600;
+            long time_now = (long) (Math.floor(now.getTime() * 0.001));
+            long end = (long) (Math.floor((time_now+timezone)/interval)*interval)-timezone;
+            long start = end - interval * daysToDisplay;
 
-            int n = Calendar.getInstance().get(Calendar.ZONE_OFFSET)/60000;
-            int offset = n / 60;
-
-            long timenow = now.getTime();
-            int interval = 3600 * 24;
-            long timenow_s = timenow / 1000;
-            long endTime = ((Double) Math.floor(timenow_s / interval)).longValue() * interval;
-            long startTime = endTime - interval * daysToDisplay;
-            startTime -= (offset * 3600);
-            endTime -= (offset * 3600);
-            startTime *= 1000;
-            endTime *= 1000;
-
-            final long chart2EndTime = endTime;
-            final long chart2StartTime = startTime;
+            final long chart2EndTime = end * 1000;
+            final long chart2StartTime = start * 1000;
 
             String url = String.format("%s%s/feed/data.json?id=%d&start=%d&end=%d&interval=86400&skipmissing=1&limitinterval=1&apikey=%s", emoncmsProtocol, emoncmsURL, kWhFeelId, chart2StartTime, chart2EndTime, emoncmsAPIKEY);
             Log.i("EMONCMS:URL", "mDaysofWeekRunner:"+url);
