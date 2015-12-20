@@ -176,9 +176,9 @@ public class MyElectricMainFragment extends Fragment
         {
             int daysToDisplay =  Math.round(dpWidth / 50)-1;
             int interval = 86400;
-            long end = (long) Math.floor((Calendar.getInstance().getTimeInMillis()*0.001)/interval)*interval;
+            long end = (long) Math.floor(((Calendar.getInstance().getTimeInMillis()*0.001)+timezone)/interval)*interval;
             end -= timezone;
-            long start = end - interval * daysToDisplay;
+            long start = end - (interval * daysToDisplay);
 
             final long chart2EndTime = end * 1000;
             final long chart2StartTime = start * 1000;
