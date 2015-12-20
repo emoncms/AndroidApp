@@ -87,6 +87,7 @@ public class MyElectricMainFragment extends Fragment
 
     int wattFeedId = 0;
     int kWhFeelId = 0;
+    long timezone = 0;
 
     int dailyChartUpdateInterval = 60000;
     long nextDailyChartUpdate = 0;
@@ -175,10 +176,8 @@ public class MyElectricMainFragment extends Fragment
         {
             int daysToDisplay =  Math.round(dpWidth / 50)-1;
             int interval = 86400;
-            Date now = new Date();
-            int timezone = (((Calendar.getInstance().get(Calendar.ZONE_OFFSET) + Calendar.getInstance().get(Calendar.DST_OFFSET)) / 60000)/-60)*3600;
-            long time_now = (long) (Math.floor(now.getTime() * 0.001));
-            long end = (long) (Math.floor((time_now+timezone)/interval)*interval)-timezone;
+            long end = (long) Math.floor((Calendar.getInstance().getTimeInMillis()*0.001)/interval)*interval;
+            end -= timezone;
             long start = end - interval * daysToDisplay;
 
             final long chart2EndTime = end * 1000;
@@ -544,6 +543,7 @@ public class MyElectricMainFragment extends Fragment
     {
         super.onResume();
 
+        timezone = (long) Math.floor((Calendar.getInstance().get(Calendar.ZONE_OFFSET) + Calendar.getInstance().get(Calendar.DST_OFFSET))*0.001);
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
