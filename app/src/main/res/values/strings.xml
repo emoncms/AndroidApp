@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">emoncms</string>
 
-    <string name="tag_navigation_fragment">navigation_fragment</string>
     <string name="tag_settings_fragment">settings_fragment</string>
 
     <string name="tag_me_fragment">myelectric_main_fragment</string>

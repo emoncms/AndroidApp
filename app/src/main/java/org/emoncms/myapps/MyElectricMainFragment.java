@@ -2,6 +2,7 @@ package org.emoncms.myapps;
 
 import android.app.Fragment;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -223,7 +224,6 @@ public class MyElectricMainFragment extends Fragment
                             {
                                 labels.add(sdf.format(new Date(dates.get(i))).substring(0, 1));
                                 float graph_value = power.get(i + 1) - power.get(i);
-                                if (graph_value < 0) graph_value = 0;
                                 entries.add(new BarEntry(graph_value, i));
                             }
 
@@ -241,8 +241,6 @@ public class MyElectricMainFragment extends Fragment
                                 dataset.setValueTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
                                 dataset.setValueTextSize(getResources().getInteger(R.integer.chartValueTextSize));
                                 dataset.setValueFormatter(new Chart2ValueFormatter());
-                                BarData barData = new BarData(labels, dataset);
-                                chart2.setData(barData);
 
                                 if (yesterdaysPowerUsage > 0)
                                 {
@@ -251,6 +249,9 @@ public class MyElectricMainFragment extends Fragment
                                     Entry e = dataset.getEntryForXIndex(dataset.getEntryCount() - 1);
                                     e.setVal(powerToday);
                                 }
+
+                                BarData barData = new BarData(labels, dataset);
+                                chart2.setData(barData);
 
                                 chart2.notifyDataSetChanged();
                                 chart2.invalidate();
@@ -510,6 +511,12 @@ public class MyElectricMainFragment extends Fragment
         xAxis.setTextSize(getResources().getInteger(R.integer.chartValueTextSize));
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
+
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
+        {
+            chart1.setHardwareAccelerationEnabled(false);
+            chart2.setHardwareAccelerationEnabled(false);
+        }
     }
 
     @Override
@@ -525,13 +532,15 @@ public class MyElectricMainFragment extends Fragment
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            getActivity().getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new MyElectricSettingsFragment(), getResources().getString(R.string.tag_me_settings_fragment))
-                    .commit();
+            ((MainActivity) getActivity()).showFragment(MainActivity.MyAppViews.MyElectricSettingsView);
             return true;
         }
         else if (id == R.id.full_screen) {
-            ((MainActivity) getActivity()).setFullScreen();
+            boolean fullScreen = ((MainActivity) getActivity()).setFullScreen();
+            if (fullScreen)
+                item.setIcon(R.drawable.ic_fullscreen_exit_white_24dp);
+            else
+                item.setIcon(R.drawable.ic_fullscreen_white_24dp);
             return true;
         }
 

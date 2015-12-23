@@ -1,10 +1,12 @@
 package org.emoncms.myapps;
 
-import android.app.FragmentManager;
+import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -29,6 +31,14 @@ public class MainActivity extends AppCompatActivity
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
+    boolean fullScreenRequested;
+    Handler mFullscreenHandler = new Handler();
+
+    private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+
+    public enum MyAppViews {
+        MyElectricView, MyElectricSettingsView, SettingsView
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,8 +52,6 @@ public class MainActivity extends AppCompatActivity
         setKeepScreenOn(sp.getBoolean("keep_screen_on", false));
 
         setContentView(R.layout.activity_main);
-
-        FragmentManager fragmentManager = getFragmentManager();
 
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolbar);
@@ -75,17 +83,12 @@ public class MainActivity extends AppCompatActivity
 
                     switch (position) {
                         case 0:
-                            getFragmentManager().beginTransaction()
-                                    .replace(R.id.container, new MyElectricMainFragment(), getResources().getString(R.string.tag_me_fragment))
-                                    .commit();
+                            showFragment(MyAppViews.MyElectricView);
                             break;
                         case 1:
-                            getFragmentManager().beginTransaction()
-                                    .replace(R.id.container, new SettingsFragment(), getResources().getString(R.string.tag_settings_fragment))
-                                    .commit();
+                            showFragment(MyAppViews.SettingsView);
                             break;
                     }
-
                     return true;
                 }
                 return false;
@@ -105,35 +108,55 @@ public class MainActivity extends AppCompatActivity
         mDrawer.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, new MyElectricMainFragment(), getResources().getString(R.string.tag_me_fragment))
-                .commit();
+        showFragment(MyAppViews.MyElectricView);
 
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(mOnSystemUiVisibilityChangeListener);
+
+        boolean mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
+        sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
+
+        if (!mUserLearnedDrawer)
+            mDrawer.openDrawer(GravityCompat.START);
     }
 
-    public void setFullScreen() {
+    public boolean setFullScreen() {
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_FULLSCREEN |
-                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                    View.SYSTEM_UI_FLAG_IMMERSIVE);
-        }
-        else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-        {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_FULLSCREEN |
-                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        }
+        if (fullScreenRequested)
+            mFullscreenHandler.removeCallbacksAndMessages(null);
         else
-        {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LOW_PROFILE |
-                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        }
+            mFullscreenHandler.post(mSetFullScreenRunner);
+
+        fullScreenRequested = !fullScreenRequested;
+
+        return fullScreenRequested;
     }
+
+    private Runnable mSetFullScreenRunner = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            {
+                getWindow().getDecorView().setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_IMMERSIVE);
+            }
+            else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            {
+                getWindow().getDecorView().setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            }
+            else
+            {
+                getWindow().getDecorView().setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_LOW_PROFILE |
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            }
+        }
+    };
 
     public void setKeepScreenOn(boolean keep_screen_on) {
         if (keep_screen_on)
@@ -153,6 +176,8 @@ public class MainActivity extends AppCompatActivity
             {
                 mToolbar.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_down));
                 ab.show();
+                if (fullScreenRequested)
+                    mFullscreenHandler.postDelayed(mSetFullScreenRunner, 5000);
             }
             else
             {
@@ -175,13 +200,40 @@ public class MainActivity extends AppCompatActivity
 
         if (getFragmentManager().findFragmentByTag(getResources().getString(R.string.tag_me_fragment)) == null)
         {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new MyElectricMainFragment(), getResources().getString(R.string.tag_me_fragment))
-                    .commit();
+            showFragment(MyAppViews.MyElectricView);
 
             setSelectedNavigationItem(0);
         }
         else
             super.onBackPressed();
+    }
+
+    public void showFragment(MyAppViews appView) {
+        Fragment frag;
+        String tag;
+        switch (appView) {
+            case MyElectricSettingsView:
+                frag = new MyElectricSettingsFragment();
+                tag = getResources().getString(R.string.tag_me_settings_fragment);
+                break;
+            case SettingsView:
+                frag = new SettingsFragment();
+                tag = getResources().getString(R.string.tag_settings_fragment);
+                break;
+            default:
+                frag = new MyElectricMainFragment();
+                tag = getResources().getString(R.string.tag_me_fragment);
+                break;
+        }
+
+        if (fullScreenRequested)
+        {
+            mFullscreenHandler.removeCallbacksAndMessages(null);
+            fullScreenRequested = false;
+            getWindow().getDecorView().setSystemUiVisibility(0);
+        }
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, frag, tag)
+                .commit();
     }
 }
