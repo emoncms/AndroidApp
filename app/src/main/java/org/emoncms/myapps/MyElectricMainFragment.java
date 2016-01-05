@@ -230,8 +230,11 @@ public class MyElectricMainFragment extends Fragment
                             if (power.size() > 0)
                             {
                                 yesterdaysPowerUsage = power.get(power.size() - 1);
+                                powerToday = totalPowerUsage - yesterdaysPowerUsage;
+                                updateTextFields();
+
                                 labels.add(sdf.format(new Date(dates.get(dates.size() - 1))).substring(0, 1));
-                                entries.add(new BarEntry(0, entries.size()));
+                                entries.add(new BarEntry(powerToday, entries.size()));
                             }
 
                             try
@@ -241,14 +244,6 @@ public class MyElectricMainFragment extends Fragment
                                 dataset.setValueTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
                                 dataset.setValueTextSize(getResources().getInteger(R.integer.chartValueTextSize));
                                 dataset.setValueFormatter(new Chart2ValueFormatter());
-
-                                if (yesterdaysPowerUsage > 0)
-                                {
-                                    powerToday = totalPowerUsage - yesterdaysPowerUsage;
-                                    updateTextFields();
-                                    Entry e = dataset.getEntryForXIndex(dataset.getEntryCount() - 1);
-                                    e.setVal(powerToday);
-                                }
 
                                 BarData barData = new BarData(labels, dataset);
                                 chart2.setData(barData);
@@ -651,6 +646,7 @@ public class MyElectricMainFragment extends Fragment
 
         public Chart2ValueFormatter() {
             mFormat = new DecimalFormat("###,###,##0.0"); // use one decimal
+            mFormat.setNegativePrefix("");
         }
 
         @Override
