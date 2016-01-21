@@ -286,11 +286,47 @@ public class MyElectricMainFragment extends Fragment
         @Override
         public void run()
         {
+
+            final LineData data = chart1.getData();
+            final LineDataSet set;
+
+            final long lastEntry ;
+
+            if (data.getDataSetByIndex(0) == null)
+            {
+                set = new LineDataSet(null, "watts");
+                set.setColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+                set.setValueTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
+                set.setValueTextSize(ContextCompat.getColor(getActivity(), R.integer.chartValueTextSize));
+                set.setDrawCircles(false);
+                set.setDrawFilled(true);
+                set.setFillColor(ContextCompat.getColor(getActivity(), R.color.chartBlue));
+                set.setDrawValues(false);
+                set.setHighlightEnabled(false);
+                data.addDataSet(set);
+            }
+            else
+                set = data.getDataSetByIndex(0);
+
+            if (resetPowerGraph)
+            {
+                data.getXVals().clear();
+                set.clear();
+            }
+
+            if (data.getXValCount() > 0)
+                lastEntry = Long.parseLong(data.getXVals().get(data.getXValCount()-1));
+            else
+                lastEntry = 0;
+
             Calendar cal = Calendar.getInstance();
             long endTime = cal.getTimeInMillis();
             cal.add(Calendar.HOUR, powerGraphLength);
-
             long startTime = cal.getTimeInMillis();
+
+            if (lastEntry > startTime)
+                startTime = lastEntry;
+
             int npoints = 1500;
             final int graph_interval = Math.round(((endTime - startTime) / npoints) / 1000);
 
@@ -301,35 +337,6 @@ public class MyElectricMainFragment extends Fragment
                 @Override
                 public void onResponse(JSONArray response)
                 {
-                    LineData data = chart1.getData();
-                    LineDataSet set = data.getDataSetByIndex(0);
-
-                    long lastEntry = 0;
-
-                    if (set == null)
-                    {
-                        set = new LineDataSet(null, "watts");
-                        set.setColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
-                        set.setValueTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
-                        set.setValueTextSize(ContextCompat.getColor(getActivity(), R.integer.chartValueTextSize));
-                        set.setDrawCircles(false);
-                        set.setDrawFilled(true);
-                        set.setFillColor(ContextCompat.getColor(getActivity(), R.color.chartBlue));
-                        set.setDrawValues(false);
-                        set.setHighlightEnabled(false);
-                        data.addDataSet(set);
-                    }
-
-                    if (resetPowerGraph)
-                    {
-                        data.getXVals().clear();
-                        set.clear();
-                    }
-
-                    if (data.getXValCount() > 0)
-                    {
-                        lastEntry = Long.parseLong(data.getXVals().get(data.getXValCount()-1));
-                    }
 
                     for (int i = 0; i < response.length(); i++)
                     {
