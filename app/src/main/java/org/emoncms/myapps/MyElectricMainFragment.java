@@ -312,6 +312,7 @@ public class MyElectricMainFragment extends Fragment
             {
                 data.getXVals().clear();
                 set.clear();
+                chart1.notifyDataSetChanged();
             }
 
             if (data.getXValCount() > 0)
@@ -376,7 +377,12 @@ public class MyElectricMainFragment extends Fragment
 
                     chart1.notifyDataSetChanged();
                     chart1.invalidate();
-                    resetPowerGraph = false;
+
+                    if (resetPowerGraph)
+                    {
+                        resetPowerGraph = false;
+                        chart1.fitScreen();
+                    }
 
                     if (blnDebugOnShow)
                     {
@@ -431,7 +437,15 @@ public class MyElectricMainFragment extends Fragment
         powerScale = Integer.valueOf(SP.getString("myelectric_escale", "0")) == 0 ? 1.0F : 0.001F;
         powerCost = Float.parseFloat(SP.getString("myelectric_unit_cost", "0"));
         powerCostSymbol = SP.getString("myelectric_cost_symbol", "£");
-        if (powerCostSymbol.equals("0")) powerCostSymbol = Currency.getInstance(Locale.getDefault()).getSymbol();
+        try
+        {
+            if (powerCostSymbol.equals("0"))
+                powerCostSymbol = Currency.getInstance(Locale.getDefault()).getSymbol();
+        }
+        catch (IllegalArgumentException  e)
+        {
+            powerCostSymbol = "£";
+        }
     }
 
     @Override
@@ -583,6 +597,7 @@ public class MyElectricMainFragment extends Fragment
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             blnShowCost = isChecked;
+            chart2.invalidate();
             updateTextFields();
         }
     };
@@ -613,7 +628,6 @@ public class MyElectricMainFragment extends Fragment
                     resetPowerGraph = true;
                     break;
             }
-
             HTTPClient.getInstance(getActivity()).cancellAll(TAG);
             mHandler.removeCallbacksAndMessages(null);
             mHandler.post(mGetPowerHistoryRunner);
@@ -658,6 +672,10 @@ public class MyElectricMainFragment extends Fragment
 
         @Override
         public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+
+            if (blnShowCost)
+                value = value * powerCost;
+
             return mFormat.format(value);
         }
     }
