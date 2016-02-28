@@ -18,7 +18,7 @@
         <CheckBoxPreference
             android:key="emoncms_usessl"
             android:title="Use SSL"
-            android:summary="Connect using https only if your site supports it. emoncms.org does not support https." />
+            android:summary="Connect using https, supported by emoncms.org" />
 
     </PreferenceCategory>
 
