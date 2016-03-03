@@ -127,7 +127,8 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
                                         powerEntryList.add(name);
                                         powerEntryValueList.add(id);
                                     }
-                                    else if (engineType == 5)
+
+                                    if (engineType == 5)
                                     {
                                         kwhFeedEntryList.add(name);
                                         kwhFeedEntryValueList.add(id);
