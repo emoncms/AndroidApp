@@ -59,7 +59,7 @@ import java.util.Locale;
 
 public class MyElectricMainFragment extends Fragment
 {
-    static final String TAG = "emoncms";
+    static final String TAG = "MyElectricMainFragment";
     static String emoncmsURL;
     static String emoncmsAPIKEY;
     static String emoncmsProtocol;

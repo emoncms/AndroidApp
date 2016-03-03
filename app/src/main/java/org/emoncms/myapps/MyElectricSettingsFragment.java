@@ -18,6 +18,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MyElectricSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     static final String TAG = "MESETTINGSFRAGMENT";
@@ -101,8 +104,13 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
                         @Override
                         public void onResponse(JSONArray response)
                         {
-                            CharSequence entries[] = new String[response.length()];
-                            CharSequence entryValues[] = new String[response.length()];
+
+                            List<String> powerEntryList = new ArrayList<String>();
+                            List<String> powerEntryValueList = new ArrayList<String>();
+
+                            List<String> kwhFeedEntryList = new ArrayList<String>();
+                            List<String> kwhFeedEntryValueList = new ArrayList<String>();
+
                             for (int i = 0; i < response.length(); i++)
                             {
                                 JSONObject row;
@@ -112,21 +120,40 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
 
                                     String id = row.getString("id");
                                     String name = row.getString("name");
-                                    entries[i] = name;
-                                    entryValues[i] = id;
+                                    int engineType = row.getInt("engine");
+
+                                    if (engineType >= 5 && engineType <= 6)
+                                    {
+                                        powerEntryList.add(name);
+                                        powerEntryValueList.add(id);
+                                    }
+                                    else if (engineType == 5)
+                                    {
+                                        kwhFeedEntryList.add(name);
+                                        kwhFeedEntryValueList.add(id);
+                                    }
                                 }
                                 catch (JSONException e)
                                 {
                                     e.printStackTrace();
                                 }
                             }
-                            if (entries.length > 0 && entryValues.length > 0)
+
+                            CharSequence powerEntries[] = powerEntryList.toArray(new CharSequence[powerEntryList.size()]);
+                            CharSequence powerEntryValues[] = powerEntryValueList.toArray(new CharSequence[powerEntryValueList.size()]);
+                            CharSequence kwhFeedEntries[] = kwhFeedEntryList.toArray(new CharSequence[kwhFeedEntryList.size()]);
+                            CharSequence kwhFeedEntryValues[] = kwhFeedEntryValueList.toArray(new CharSequence[kwhFeedEntryValueList.size()]);
+
+                            if (powerEntries.length > 0 && powerEntryValues.length > 0)
                             {
-                                powerFeedPreference.setEntries(entries);
-                                powerFeedPreference.setEntryValues(entryValues);
+                                powerFeedPreference.setEntries(powerEntries);
+                                powerFeedPreference.setEntryValues(powerEntryValues);
                                 powerFeedPreference.setEnabled(true);
-                                kWhFeedPreference.setEntries(entries);
-                                kWhFeedPreference.setEntryValues(entryValues);
+                            }
+                            if (kwhFeedEntries.length > 0 && kwhFeedEntryValues.length > 0)
+                            {
+                                kWhFeedPreference.setEntries(kwhFeedEntries);
+                                kWhFeedPreference.setEntryValues(kwhFeedEntryValues);
                                 kWhFeedPreference.setEnabled(true);
                             }
                         }

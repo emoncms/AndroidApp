@@ -25,6 +25,9 @@ public class MainActivity extends AppCompatActivity
     Toolbar mToolbar;
     DrawerLayout mDrawer;
 
+//    int TITLE_IDS[] = {R.string.me_title, R.string.ms_title, R.string.settings};
+//    int ICONS[] = {R.drawable.ic_my_electric_white_36dp, R.drawable.ic_my_electric_white_36dp, R.drawable.ic_settings_applications_white_36dp};
+
     int TITLE_IDS[] = {R.string.me_title, R.string.settings};
     int ICONS[] = {R.drawable.ic_my_electric_white_36dp, R.drawable.ic_settings_applications_white_36dp};
 
@@ -37,12 +40,17 @@ public class MainActivity extends AppCompatActivity
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
     public enum MyAppViews {
-        MyElectricView, MyElectricSettingsView, SettingsView
+        MyElectricView,
+        MyElectricSettingsView,
+        MySolarView,
+        MySolarSettingsView,
+        SettingsView
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        UpgradeManager.doUpgrade(this);
         super.onCreate(savedInstanceState);
 
         PreferenceManager.setDefaultValues(this, R.xml.main_preferences, false);
@@ -86,6 +94,9 @@ public class MainActivity extends AppCompatActivity
                             showFragment(MyAppViews.MyElectricView);
                             break;
                         case 1:
+//                            showFragment(MyAppViews.MySolarView);
+//                            break;
+//                        case 2:
                             showFragment(MyAppViews.SettingsView);
                             break;
                     }
@@ -219,6 +230,14 @@ public class MainActivity extends AppCompatActivity
             case SettingsView:
                 frag = new SettingsFragment();
                 tag = getResources().getString(R.string.tag_settings_fragment);
+                break;
+            case MySolarView:
+                frag = new MySolarMainFragement();
+                tag = getResources().getString(R.string.tag_ms_fragment);
+                break;
+            case MySolarSettingsView:
+                frag = new MySolarSettingsFragment();
+                tag = getResources().getString(R.string.tag_ms_settings_fragment);
                 break;
             default:
                 frag = new MyElectricMainFragment();

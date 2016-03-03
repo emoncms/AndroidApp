@@ -5,9 +5,14 @@
 
     <string name="tag_me_fragment">myelectric_main_fragment</string>
     <string name="tag_me_settings_fragment">myelectric_settings_fragment</string>
+    <string name="tag_ms_fragment">mysolar_main_fragment</string>
+    <string name="tag_ms_settings_fragment">mysolar_settings_fragment</string>
 
     <string name="me_title">My Electric</string>
     <string name="me_settings_title">My Electric Feeds</string>
+
+    <string name="ms_title">My Solar</string>
+    <string name="ms_settings_title">My Solar Feeds</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
