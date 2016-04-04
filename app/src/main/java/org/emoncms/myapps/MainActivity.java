@@ -35,9 +35,10 @@ public class MainActivity extends AppCompatActivity
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     boolean fullScreenRequested;
+    boolean appFirstRunComplete;
     Handler mFullscreenHandler = new Handler();
 
-    private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+    private static final String PREF_APP_FIRST_RUN_COMPLETE = "app_first_launch";
 
     public enum MyAppViews {
         MyElectricView,
@@ -50,13 +51,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        UpgradeManager.doUpgrade(this);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        appFirstRunComplete = sp.getBoolean(PREF_APP_FIRST_RUN_COMPLETE, false);
+
+        if (!appFirstRunComplete)
+            UpgradeManager.doUpgrade(this);
+
+        sp.edit().putBoolean(PREF_APP_FIRST_RUN_COMPLETE, true).apply();
+
         super.onCreate(savedInstanceState);
 
         PreferenceManager.setDefaultValues(this, R.xml.main_preferences, false);
         PreferenceManager.setDefaultValues(this, R.xml.me_preferences, false);
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         setKeepScreenOn(sp.getBoolean("keep_screen_on", false));
 
         setContentView(R.layout.activity_main);
@@ -115,7 +122,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawer,mToolbar,R.string.openDrawer,R.string.closeDrawer);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawer,mToolbar, R.string.openDrawer, R.string.closeDrawer);
         mDrawer.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
@@ -123,10 +130,7 @@ public class MainActivity extends AppCompatActivity
 
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(mOnSystemUiVisibilityChangeListener);
 
-        boolean mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
-        sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
-
-        if (!mUserLearnedDrawer)
+        if (!appFirstRunComplete)
             mDrawer.openDrawer(GravityCompat.START);
     }
 

@@ -122,14 +122,13 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
                                     String name = row.getString("name");
                                     int engineType = row.getInt("engine");
 
-                                    if (engineType >= 5 && engineType <= 6)
+
+                                    if (engineType == 2 ||
+                                        engineType == 5 ||
+                                        engineType == 6)
                                     {
                                         powerEntryList.add(name);
                                         powerEntryValueList.add(id);
-                                    }
-
-                                    if (engineType == 5)
-                                    {
                                         kwhFeedEntryList.add(name);
                                         kwhFeedEntryValueList.add(id);
                                     }
