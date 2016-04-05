@@ -35,10 +35,10 @@ public class MainActivity extends AppCompatActivity
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     boolean fullScreenRequested;
-    boolean appFirstRunComplete;
+    boolean isFirstRun;
     Handler mFullscreenHandler = new Handler();
 
-    private static final String PREF_APP_FIRST_RUN_COMPLETE = "app_first_launch";
+    private static final String PREF_APP_FIRST_RUN = "app_first_run";
 
     public enum MyAppViews {
         MyElectricView,
@@ -51,13 +51,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        UpgradeManager.doUpgrade(this);
+
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        appFirstRunComplete = sp.getBoolean(PREF_APP_FIRST_RUN_COMPLETE, false);
-
-        if (!appFirstRunComplete)
-            UpgradeManager.doUpgrade(this);
-
-        sp.edit().putBoolean(PREF_APP_FIRST_RUN_COMPLETE, true).apply();
+        isFirstRun = sp.getBoolean(PREF_APP_FIRST_RUN, true);
+        sp.edit().putBoolean(PREF_APP_FIRST_RUN, false).apply();
 
         super.onCreate(savedInstanceState);
 
@@ -130,7 +128,7 @@ public class MainActivity extends AppCompatActivity
 
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(mOnSystemUiVisibilityChangeListener);
 
-        if (!appFirstRunComplete)
+        if (isFirstRun)
             mDrawer.openDrawer(GravityCompat.START);
     }
 
