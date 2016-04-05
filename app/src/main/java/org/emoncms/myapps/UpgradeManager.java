@@ -31,7 +31,7 @@ public class UpgradeManager
                     builder.setTitle("You're now more secure");
                     builder.setMessage(
                             "emoncms.org has been upgraded to use SSL. " +
-                            "This means your communication with the wesite is now encrypted. " +
+                            "This means your communication with the website is now encrypted. " +
                             "Your settings have been automatically updated to use this new feature.");
                     builder.setPositiveButton(android.R.string.ok, null);
                     builder.create().show();
