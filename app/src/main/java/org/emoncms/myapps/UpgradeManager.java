@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
 
 public class UpgradeManager
 {
@@ -25,12 +24,12 @@ public class UpgradeManager
         if (previousVersionCode > 0 &&
                 previousVersionCode < currentVersionCode)
         {
-            if (previousVersionCode <= 123) // Version 1.1.10
+            if (previousVersionCode < 123) // Version 1.1.10
                 upgrade_0_to_123(mActivity, sp);
-
-            sp.edit().putInt("version_code", currentVersionCode).apply();
-            sp.edit().putString("version_name", currentVersionName).apply();
         }
+
+        sp.edit().putInt("version_code", currentVersionCode).apply();
+        sp.edit().putString("version_name", currentVersionName).apply();
     }
 
     public static void upgrade_0_to_123(Activity mActivity, SharedPreferences sp) {

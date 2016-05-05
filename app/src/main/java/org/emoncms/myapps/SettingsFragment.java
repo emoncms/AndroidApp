@@ -2,15 +2,13 @@ package org.emoncms.myapps;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.WindowManager;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-    static final String TAG = "SETTINGSFRAGMENT";
+//    static final String TAG = "SETTINGSFRAGMENT";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -105,11 +105,11 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
                         public void onResponse(JSONArray response)
                         {
 
-                            List<String> powerEntryList = new ArrayList<String>();
-                            List<String> powerEntryValueList = new ArrayList<String>();
+                            List<String> powerEntryList = new ArrayList<>();
+                            List<String> powerEntryValueList = new ArrayList<>();
 
-                            List<String> kwhFeedEntryList = new ArrayList<String>();
-                            List<String> kwhFeedEntryValueList = new ArrayList<String>();
+                            List<String> kwhFeedEntryList = new ArrayList<>();
+                            List<String> kwhFeedEntryValueList = new ArrayList<>();
 
                             for (int i = 0; i < response.length(); i++)
                             {

@@ -70,7 +70,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(mToolbar);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
-        mRecyclerView.setHasFixedSize(true);
+
+        if (mRecyclerView != null)
+            mRecyclerView.setHasFixedSize(true);
 
         mAdapter = new NavigationDrawerAdapter(this, TITLE_IDS, ICONS);
         mRecyclerView.setAdapter(mAdapter);
@@ -121,7 +123,8 @@ public class MainActivity extends AppCompatActivity
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawer,mToolbar, R.string.openDrawer, R.string.closeDrawer);
-        mDrawer.setDrawerListener(mDrawerToggle);
+        //mDrawer.setDrawerListener(mDrawerToggle);
+        mDrawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
         showFragment(MyAppViews.MyElectricView);
