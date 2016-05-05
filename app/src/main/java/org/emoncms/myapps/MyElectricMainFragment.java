@@ -2,7 +2,6 @@ package org.emoncms.myapps;
 
 import android.app.Fragment;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -177,15 +176,24 @@ public class MyElectricMainFragment extends Fragment
         {
             int daysToDisplay =  Math.round(dpWidth / 50)-1;
             int interval = 86400;
+
+            // New
+//            long end = (long) Math.floor(Calendar.getInstance().getTimeInMillis()*0.001);
+            // Old
             long end = (long) Math.floor(((Calendar.getInstance().getTimeInMillis()*0.001)+timezone)/interval)*interval;
+
             end -= timezone;
             long start = end - (interval * daysToDisplay);
 
             final long chart2EndTime = end * 1000;
             final long chart2StartTime = start * 1000;
 
-            String url = String.format("%s%s/feed/data.json?id=%d&start=%d&end=%d&interval=86400&skipmissing=1&limitinterval=1&apikey=%s", emoncmsProtocol, emoncmsURL, kWhFeelId, chart2StartTime, chart2EndTime, emoncmsAPIKEY);
+            // New
+//            String url = String.format(Locale.getDefault(), "%s%s/feed/data.json?apikey=%s&id=%d&start=%d&end=%d&mode=daily", emoncmsProtocol, emoncmsURL, emoncmsAPIKEY, kWhFeelId, chart2StartTime, chart2EndTime);
+            // Old
+            String url = String.format(Locale.getDefault(), "%s%s/feed/data.json?apikey=%s&id=%d&start=%d&end=%d&interval=86400&skipmissing=1&limitinterval=1", emoncmsProtocol, emoncmsURL, emoncmsAPIKEY, kWhFeelId, chart2StartTime, chart2EndTime);
             Log.i("EMONCMS:URL", "mDaysofWeekRunner:"+url);
+
             JsonArrayRequest jsArrayRequest = new JsonArrayRequest
                     (url, new Response.Listener<JSONArray>()
                     {
@@ -195,7 +203,7 @@ public class MyElectricMainFragment extends Fragment
                         {
                             ArrayList<BarEntry> entries = new ArrayList<>();
                             ArrayList<String> labels = new ArrayList<>();
-                            SimpleDateFormat sdf = new SimpleDateFormat("E");
+                            SimpleDateFormat sdf = new SimpleDateFormat("E", Locale.getDefault());
 
                             List<Long> dates = new ArrayList<>();
                             List<Float> power = new ArrayList<>();
@@ -290,7 +298,7 @@ public class MyElectricMainFragment extends Fragment
             final LineData data = chart1.getData();
             final LineDataSet set;
 
-            final long lastEntry ;
+            final long lastEntry;
 
             if (data.getDataSetByIndex(0) == null)
             {
@@ -306,7 +314,7 @@ public class MyElectricMainFragment extends Fragment
                 data.addDataSet(set);
             }
             else
-                set = data.getDataSetByIndex(0);
+                set = (LineDataSet) data.getDataSetByIndex(0);
 
             if (resetPowerGraph)
             {
@@ -331,7 +339,7 @@ public class MyElectricMainFragment extends Fragment
             int npoints = 1500;
             final int graph_interval = Math.round(((endTime - startTime) / npoints) / 1000);
 
-            String url = String.format("%s%s/feed/data.json?id=%d&start=%d&end=%d&interval=%d&skipmissing=1&limitinterval=1&apikey=%s", emoncmsProtocol, emoncmsURL, wattFeedId, startTime, endTime, graph_interval, emoncmsAPIKEY);
+            String url = String.format(Locale.getDefault(), "%s%s/feed/data.json?id=%d&start=%d&end=%d&interval=%d&skipmissing=1&limitinterval=1&apikey=%s", emoncmsProtocol, emoncmsURL, wattFeedId, startTime, endTime, graph_interval, emoncmsAPIKEY);
             Log.i("EMONCMS:URL", "mGetPowerHistoryRunner:"+url);
             JsonArrayRequest jsArrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>()
             {
@@ -413,13 +421,13 @@ public class MyElectricMainFragment extends Fragment
     {
         if (blnShowCost)
         {
-            txtPower.setText(String.format("%s%.2f/h", powerCostSymbol, (powerNow*0.001)*powerCost));
-            txtUseToday.setText(String.format("%s%.2f", powerCostSymbol, powerToday*powerCost));
+            txtPower.setText(String.format(Locale.getDefault(), "%s%.2f/h", powerCostSymbol, (powerNow*0.001)*powerCost));
+            txtUseToday.setText(String.format(Locale.getDefault(), "%s%.2f", powerCostSymbol, powerToday*powerCost));
         }
         else
         {
-            txtPower.setText(String.format("%.0fW", powerNow));
-            txtUseToday.setText(String.format("%.1fkWh", powerToday));
+            txtPower.setText(String.format(Locale.getDefault(), "%.0fW", powerNow));
+            txtUseToday.setText(String.format(Locale.getDefault(), "%.1fkWh", powerToday));
         }
     }
 
@@ -461,6 +469,9 @@ public class MyElectricMainFragment extends Fragment
         super.onActivityCreated(savesInstanceState);
 
         View view = getView();
+        if (view == null)
+            throw new NullPointerException("getView returned null");
+
         setHasOptionsMenu(true);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
@@ -514,6 +525,7 @@ public class MyElectricMainFragment extends Fragment
         chart2.setDrawGridBackground(false);
         chart2.getLegend().setEnabled(false);
         chart2.getAxisLeft().setEnabled(false);
+        chart2.getAxisLeft().setAxisMinValue(0);
         chart2.getAxisRight().setEnabled(false);
         chart2.setHardwareAccelerationEnabled(true);
         chart2.setDrawValueAboveBar(false);
@@ -527,12 +539,6 @@ public class MyElectricMainFragment extends Fragment
         xAxis.setTextSize(getResources().getInteger(R.integer.chartValueTextSize));
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
-
-        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
-        {
-            chart1.setHardwareAccelerationEnabled(false);
-            chart2.setHardwareAccelerationEnabled(false);
-        }
     }
 
     @Override
@@ -569,9 +575,9 @@ public class MyElectricMainFragment extends Fragment
         super.onResume();
 
         timezone = (long) Math.floor((Calendar.getInstance().get(Calendar.ZONE_OFFSET) + Calendar.getInstance().get(Calendar.DST_OFFSET))*0.001);
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        display.getMetrics(outMetrics);
+//        Display display = getActivity().getWindowManager().getDefaultDisplay();
+//        DisplayMetrics outMetrics = new DisplayMetrics();
+//        display.getMetrics(outMetrics);
 
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         dpWidth = displayMetrics.widthPixels / displayMetrics.density;
@@ -639,7 +645,7 @@ public class MyElectricMainFragment extends Fragment
         @Override
         public String getXValue(String original, int index, ViewPortHandler viewPortHandler)
         {
-            DateFormat df = new SimpleDateFormat("HH:mm");
+            DateFormat df = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(Long.parseLong(original));
             return (df.format(cal.getTime()));
