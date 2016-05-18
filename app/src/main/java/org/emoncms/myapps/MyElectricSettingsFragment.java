@@ -108,8 +108,14 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
                             List<String> powerEntryList = new ArrayList<>();
                             List<String> powerEntryValueList = new ArrayList<>();
 
+                            powerEntryList.add("AUTO");
+                            powerEntryValueList.add("-1");
+
                             List<String> kwhFeedEntryList = new ArrayList<>();
                             List<String> kwhFeedEntryValueList = new ArrayList<>();
+
+                            kwhFeedEntryList.add("AUTO");
+                            kwhFeedEntryValueList.add("-1");
 
                             for (int i = 0; i < response.length(); i++)
                             {
@@ -144,13 +150,13 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
                             CharSequence kwhFeedEntries[] = kwhFeedEntryList.toArray(new CharSequence[kwhFeedEntryList.size()]);
                             CharSequence kwhFeedEntryValues[] = kwhFeedEntryValueList.toArray(new CharSequence[kwhFeedEntryValueList.size()]);
 
-                            if (powerEntries.length > 0 && powerEntryValues.length > 0)
+                            if (powerEntries.length > 1 && powerEntryValues.length > 1)
                             {
                                 powerFeedPreference.setEntries(powerEntries);
                                 powerFeedPreference.setEntryValues(powerEntryValues);
                                 powerFeedPreference.setEnabled(true);
                             }
-                            if (kwhFeedEntries.length > 0 && kwhFeedEntryValues.length > 0)
+                            if (kwhFeedEntries.length > 1 && kwhFeedEntryValues.length > 1)
                             {
                                 kWhFeedPreference.setEntries(kwhFeedEntries);
                                 kWhFeedPreference.setEntryValues(kwhFeedEntryValues);

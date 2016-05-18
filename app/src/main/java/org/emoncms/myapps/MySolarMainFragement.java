@@ -65,7 +65,7 @@ public class MySolarMainFragement extends Fragment
 //    long nextDailyChartUpdate = 0;
 
     float powerNow = 0;
-    float powerToday = 0;
+    //float powerToday = 0;
 
     boolean blnShowCost = false;
 

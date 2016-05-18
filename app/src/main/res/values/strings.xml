@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">emoncms</string>
+    <string name="google_app_id">605929908164</string>
 
     <string name="tag_settings_fragment">settings_fragment</string>
 
@@ -29,8 +30,12 @@
     <string name="error">Error</string>
     <string name="settings">Settings</string>
 
-    <string name="me_not_configured_text">PLEASE CONFIGURE FEEDS</string>
+    <string name="server_not_configured">Please configure your emoncms server and API key from the settings menu.</string>
+    <string name="me_not_configured_text">Please select feeds to display using the cog icon in the toolbar.</string>
     <string name="feed_download_error_message">Unable to download feed list. Please check URL and API settings as well as connectivity to emoncms.</string>
+    <string name="invalid_number_of_responses">Invalid number of responses from API</string>
+    <string name="invalid_kwh_feedid">Invalid use_kwh feed ID, please select a kwh feed from the configuration menu</string>
+    <string name="invalid_watt_feedid">Invalid use feed ID, please select a watt feed from the configuration menu</string>
 
     <string name="txt_power_default">0W</string>
     <string name="use_today_default">0.0kWh</string>
@@ -42,4 +47,23 @@
     <string name="button_30d_label">M</string>
 
     <string name="connection_error">CONNECTION ERROR</string>
+
+    <string name="setting_url">emoncms_url</string>
+    <string name="setting_apikey">emoncms_apikey</string>
+    <string name="setting_usessl">emoncms_usessl</string>
+    <string name="setting_keepscreenon">keep_screen_on</string>
+
+    <string name="ok">OK</string>
+    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
+    <string name="no_camera_permission">The barcode scanner uses the camera and cannot run because it does not have permission.</string>
+    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+    <string name="title_activity_main">Barcode Reader Sample</string>
+    <string name="barcode_header">Click &quot;Read Barcode&quot; to read a barcode</string>
+    <string name="read_barcode">Read Barcode</string>
+    <string name="barcode_success">Barcode read successfully</string>
+    <string name="barcode_failure">No barcode captured</string>
+    <string name="barcode_error">"Error reading barcode: %1$s"</string>
+    <string name="qr_code_success">Settings saved from QR code successfully</string>
+    <string name="qr_code_fail">Invalid QR code</string>
+    <string name="barcode_scan_instructions">"Scan the barcode on the My account page of emoncms."</string>
 </resources>

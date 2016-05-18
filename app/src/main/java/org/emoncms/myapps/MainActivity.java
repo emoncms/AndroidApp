@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity
         SettingsView
     }
 
+    MyAppViews displayed_view;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity
         PreferenceManager.setDefaultValues(this, R.xml.main_preferences, false);
         PreferenceManager.setDefaultValues(this, R.xml.me_preferences, false);
 
-        setKeepScreenOn(sp.getBoolean("keep_screen_on", false));
+        setKeepScreenOn(sp.getBoolean(getString(R.string.setting_keepscreenon), false));
 
         setContentView(R.layout.activity_main);
 
@@ -123,16 +125,26 @@ public class MainActivity extends AppCompatActivity
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawer,mToolbar, R.string.openDrawer, R.string.closeDrawer);
-        //mDrawer.setDrawerListener(mDrawerToggle);
         mDrawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
         showFragment(MyAppViews.MyElectricView);
 
+        if (savedInstanceState != null)
+            displayed_view = MyAppViews.values()[savedInstanceState.getInt("displayed_fragment", 0)];
+
+        showFragment(displayed_view);
+
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(mOnSystemUiVisibilityChangeListener);
 
         if (isFirstRun)
             mDrawer.openDrawer(GravityCompat.START);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("displayed_fragment", displayed_view.ordinal());
+        super.onSaveInstanceState(outState);
     }
 
     public boolean setFullScreen() {
@@ -227,6 +239,8 @@ public class MainActivity extends AppCompatActivity
     public void showFragment(MyAppViews appView) {
         Fragment frag;
         String tag;
+        displayed_view = appView;
+
         switch (appView) {
             case MyElectricSettingsView:
                 frag = new MyElectricSettingsFragment();

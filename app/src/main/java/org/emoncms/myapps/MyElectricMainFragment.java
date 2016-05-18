@@ -2,9 +2,12 @@ package org.emoncms.myapps;
 
 import android.app.Fragment;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
@@ -12,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -59,6 +61,8 @@ import java.util.Locale;
 public class MyElectricMainFragment extends Fragment
 {
     static final String TAG = "MyElectricMainFragment";
+    static final String watt_default_feed_name = "use";
+    static final String kwh_default_feed_name = "use_kwh";
     static String emoncmsURL;
     static String emoncmsAPIKEY;
     static String emoncmsProtocol;
@@ -69,13 +73,11 @@ public class MyElectricMainFragment extends Fragment
 
     TextView txtPower;
     TextView txtUseToday;
-    TextView txtDebug;
     LineChart chart1;
     BarChart chart2;
-    boolean blnDebugOnShow = false;
     Handler mHandler = new Handler();
-    Float yesterdaysPowerUsage = 0F;
-    Float totalPowerUsage = 0F;
+    float yesterdaysPowerUsage;
+    float totalPowerUsage;
     int powerGraphLength = -6;
     boolean resetPowerGraph = false;
     Button chart1_3h;
@@ -97,58 +99,120 @@ public class MyElectricMainFragment extends Fragment
 
     boolean blnShowCost = false;
 
+    Snackbar snackbar;
+
     private Runnable mGetFeedsRunner = new Runnable()
     {
         @Override
         public void run()
         {
-            String url = String.format("%s%s/feed/list.json?apikey=%s", emoncmsProtocol, emoncmsURL, emoncmsAPIKEY);
+            String url = String.format(Locale.getDefault(), "%s%s/feed/list.json?apikey=%s", emoncmsProtocol, emoncmsURL, emoncmsAPIKEY);
             Log.i("EMONCMS:URL", "mGetFeedsRunner:"+url);
+
             JsonArrayRequest jsArrayRequest = new JsonArrayRequest
                     (url, new Response.Listener<JSONArray>()
                     {
-
                         @Override
                         public void onResponse(JSONArray response)
                         {
                             for (int i = 0; i < response.length(); i++)
                             {
                                 JSONObject row;
+
                                 try
                                 {
                                     row = response.getJSONObject(i);
-                                    int id = row.getInt("id");
-                                    if (id == wattFeedId)
-                                    {
-                                        powerNow = Float.parseFloat(row.getString("value"));
-                                        updateTextFields();
-                                    }
-                                    else if (id == kWhFeelId)
-                                    {
-                                        totalPowerUsage = ((Double) row.getDouble("value")).floatValue() * powerScale;
-                                    }
 
+                                    if (wattFeedId == -1 &&
+                                            watt_default_feed_name.equals(row.getString("name")))
+                                        wattFeedId = row.getInt("id");
+
+                                    if (kWhFeelId == -1 &&
+                                            kwh_default_feed_name.equals(row.getString("name")))
+                                        kWhFeelId = row.getInt("id");
+
+                                    if (wattFeedId >= 0 && kWhFeelId >= 0) {
+                                        mHandler.post(mGetPowerRunner);
+                                        return;
+                                    }
                                 }
                                 catch (JSONException e)
                                 {
                                     e.printStackTrace();
                                 }
                             }
+                            snackbar.setText(R.string.me_not_configured_text).show();
+                        }
+                    },new Response.ErrorListener()
+                    {
 
-                            if (blnDebugOnShow)
+                        @Override
+                        public void onErrorResponse(VolleyError error)
+                        {
+                            snackbar.setText(R.string.feed_download_error_message).show();
+                            mHandler.postDelayed(mGetFeedsRunner, 5000);
+                        }
+                    });
+            jsArrayRequest.setTag(TAG);
+            HTTPClient.getInstance(getActivity()).addToRequestQueue(jsArrayRequest);
+        }
+    };
+
+    private Runnable mGetPowerRunner = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            String url = String.format(Locale.getDefault(), "%s%s/feed/fetch.json?apikey=%s&ids=%d,%d", emoncmsProtocol, emoncmsURL, emoncmsAPIKEY, wattFeedId, kWhFeelId);
+            Log.i("EMONCMS:URL", "mGetPowerRunner:"+url);
+            JsonArrayRequest jsArrayRequest = new JsonArrayRequest
+                    (url, new Response.Listener<JSONArray>()
+                    {
+                        @Override
+                        public void onResponse(JSONArray response)
+                        {
+                            String watt_value = "";
+                            String kwh_value = "";
+
+                            if (response.length() == 2)
                             {
-                                blnDebugOnShow = false;
-                                txtDebug.setVisibility(View.GONE);
+                                try
+                                {
+                                    watt_value = response.getString(0);
+                                    kwh_value = response.getString(1);
+
+                                    if (!watt_value.equals("false"))
+                                        powerNow = Float.parseFloat(watt_value);
+
+                                    if (!kwh_value.equals("false"))
+                                        totalPowerUsage = Float.parseFloat(kwh_value) * powerScale;
+
+                                    updateTextFields();
+
+                                    if (snackbar.isShown())
+                                        snackbar.dismiss();
+                                }
+                                catch (JSONException e)
+                                {
+                                    snackbar.setText(e.getMessage()).show();
+                                }
+                            } else {
+                                snackbar.setText(R.string.invalid_number_of_responses).show();
                             }
 
-                            if (Calendar.getInstance().getTimeInMillis() > nextDailyChartUpdate)
-                            {
-                                nextDailyChartUpdate = Calendar.getInstance().getTimeInMillis() + dailyChartUpdateInterval;
-                                mHandler.post(mDaysofWeekRunner);
-                            }
+                            if (watt_value.equals("false"))
+                                snackbar.setText(R.string.invalid_watt_feedid).show();
+                            else if (kwh_value.equals("false"))
+                                snackbar.setText(R.string.invalid_kwh_feedid).show();
                             else
                             {
-                                mHandler.post(mGetPowerHistoryRunner);
+                                if (Calendar.getInstance().getTimeInMillis() > nextDailyChartUpdate)
+                                {
+                                    nextDailyChartUpdate = Calendar.getInstance().getTimeInMillis() + dailyChartUpdateInterval;
+                                    mHandler.post(mGetUsageByDayRunner);
+                                }
+                                else
+                                    mHandler.post(mGetPowerHistoryRunner);
                             }
                         }
                     }, new Response.ErrorListener()
@@ -157,9 +221,10 @@ public class MyElectricMainFragment extends Fragment
                         @Override
                         public void onErrorResponse(VolleyError error)
                         {
-                            blnDebugOnShow = true;
-                            txtDebug.setVisibility(View.VISIBLE);
-                            mHandler.postDelayed(mGetFeedsRunner, 5000);
+                            snackbar.setText(R.string.connection_error)
+                                .setDuration(Snackbar.LENGTH_INDEFINITE)
+                                .show();
+                            mHandler.postDelayed(mGetPowerRunner, 5000);
                         }
                     });
 
@@ -169,7 +234,7 @@ public class MyElectricMainFragment extends Fragment
     };
 
 
-    private Runnable mDaysofWeekRunner = new Runnable()
+    private Runnable mGetUsageByDayRunner = new Runnable()
     {
         @Override
         public void run()
@@ -264,11 +329,8 @@ public class MyElectricMainFragment extends Fragment
                                 e.printStackTrace();
                             }
 
-                            if (blnDebugOnShow)
-                            {
-                                blnDebugOnShow = false;
-                                txtDebug.setVisibility(View.GONE);
-                            }
+                            if (snackbar.isShown())
+                                snackbar.dismiss();
 
                             mHandler.post(mGetPowerHistoryRunner);
                         }
@@ -278,9 +340,10 @@ public class MyElectricMainFragment extends Fragment
                         @Override
                         public void onErrorResponse(VolleyError error)
                         {
-                            blnDebugOnShow = true;
-                            txtDebug.setVisibility(View.VISIBLE);
-                            mHandler.postDelayed(mDaysofWeekRunner, 5000);
+                            snackbar.setText(R.string.connection_error)
+                                    .setDuration(Snackbar.LENGTH_INDEFINITE)
+                                    .show();
+                            mHandler.postDelayed(mGetUsageByDayRunner, 5000);
                         }
                     });
 
@@ -337,7 +400,8 @@ public class MyElectricMainFragment extends Fragment
                 startTime = lastEntry;
 
             int npoints = 1500;
-            final int graph_interval = Math.round(((endTime - startTime) / npoints) / 1000);
+            int interval = Math.round(((endTime - startTime) / npoints) / 1000);
+            final int graph_interval = interval > 0 ? interval : 1;
 
             String url = String.format(Locale.getDefault(), "%s%s/feed/data.json?id=%d&start=%d&end=%d&interval=%d&skipmissing=1&limitinterval=1&apikey=%s", emoncmsProtocol, emoncmsURL, wattFeedId, startTime, endTime, graph_interval, emoncmsAPIKEY);
             Log.i("EMONCMS:URL", "mGetPowerHistoryRunner:"+url);
@@ -346,7 +410,6 @@ public class MyElectricMainFragment extends Fragment
                 @Override
                 public void onResponse(JSONArray response)
                 {
-
                     for (int i = 0; i < response.length(); i++)
                     {
                         JSONArray row;
@@ -392,13 +455,10 @@ public class MyElectricMainFragment extends Fragment
                         chart1.fitScreen();
                     }
 
-                    if (blnDebugOnShow)
-                    {
-                        blnDebugOnShow = false;
-                        txtDebug.setVisibility(View.GONE);
-                    }
+                    if (snackbar.isShown())
+                        snackbar.dismiss();
 
-                    mHandler.postDelayed(mGetFeedsRunner, 10000);
+                    mHandler.postDelayed(mGetPowerRunner, 10000);
                 }
             }, new Response.ErrorListener()
             {
@@ -406,9 +466,10 @@ public class MyElectricMainFragment extends Fragment
                 @Override
                 public void onErrorResponse(VolleyError error)
                 {
-                    blnDebugOnShow = true;
-                    txtDebug.setVisibility(View.VISIBLE);
-                    mHandler.postDelayed(mGetFeedsRunner, 5000);
+                    snackbar.setText(R.string.connection_error)
+                            .setDuration(Snackbar.LENGTH_INDEFINITE)
+                            .show();
+                    mHandler.postDelayed(mGetPowerHistoryRunner, 5000);
                 }
             });
 
@@ -436,15 +497,17 @@ public class MyElectricMainFragment extends Fragment
     {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
-        emoncmsURL = SP.getString("emoncms_url", "emoncms.org");
-        emoncmsAPIKEY = SP.getString("emoncms_apikey", null);
-        emoncmsProtocol = SP.getBoolean("emoncms_usessl", false) ? "https://" : "http://";
-        wattFeedId = Integer.valueOf(SP.getString("myelectric_power_feed", "-1"));
-        kWhFeelId = Integer.valueOf(SP.getString("myelectric_kwh_feed", "-1"));
-        powerScale = Integer.valueOf(SP.getString("myelectric_escale", "0")) == 0 ? 1.0F : 0.001F;
-        powerCost = Float.parseFloat(SP.getString("myelectric_unit_cost", "0"));
-        powerCostSymbol = SP.getString("myelectric_cost_symbol", "£");
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+        emoncmsURL = sp.getString(getString(R.string.setting_url), "emoncms.org");
+        emoncmsAPIKEY = sp.getString(getString(R.string.setting_apikey), null);
+        emoncmsProtocol = sp.getBoolean(getString(R.string.setting_usessl), false) ? "https://" : "http://";
+        wattFeedId = Integer.valueOf(sp.getString("myelectric_power_feed", "-1"));
+        kWhFeelId = Integer.valueOf(sp.getString("myelectric_kwh_feed", "-1"));
+
+        powerScale = Integer.valueOf(sp.getString("myelectric_escale", "0")) == 0 ? 1.0F : 0.001F;
+        powerCost = Float.parseFloat(sp.getString("myelectric_unit_cost", "0"));
+        powerCostSymbol = sp.getString("myelectric_cost_symbol", "£");
+
         try
         {
             if (powerCostSymbol.equals("0"))
@@ -469,8 +532,15 @@ public class MyElectricMainFragment extends Fragment
         super.onActivityCreated(savesInstanceState);
 
         View view = getView();
+
         if (view == null)
             throw new NullPointerException("getView returned null");
+
+        snackbar = Snackbar.make(view, R.string.connection_error, Snackbar.LENGTH_INDEFINITE);
+        View snackbar_view = snackbar.getView();
+        snackbar_view.setBackgroundColor(Color.GRAY);
+        TextView tv = (TextView) snackbar_view.findViewById(android.support.design.R.id.snackbar_text);
+        tv.setTypeface(null, Typeface.BOLD);
 
         setHasOptionsMenu(true);
 
@@ -479,7 +549,6 @@ public class MyElectricMainFragment extends Fragment
 
         txtPower = (TextView) view.findViewById(R.id.txtPower);
         txtUseToday = (TextView) view.findViewById(R.id.txtUseToday);
-        txtDebug = (TextView) view.findViewById(R.id.txtDebug);
         chart1_3h = (Button) view.findViewById(R.id.btnChart1_3H);
         chart1_6h = (Button) view.findViewById(R.id.btnChart1_6H);
         chart1_D = (Button) view.findViewById(R.id.btnChart1_D);
@@ -575,26 +644,26 @@ public class MyElectricMainFragment extends Fragment
         super.onResume();
 
         timezone = (long) Math.floor((Calendar.getInstance().get(Calendar.ZONE_OFFSET) + Calendar.getInstance().get(Calendar.DST_OFFSET))*0.001);
-//        Display display = getActivity().getWindowManager().getDefaultDisplay();
-//        DisplayMetrics outMetrics = new DisplayMetrics();
-//        display.getMetrics(outMetrics);
 
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         dpWidth = displayMetrics.widthPixels / displayMetrics.density;
 
-        if (wattFeedId < 0 || kWhFeelId < 0)
-        {
-            txtDebug.setText(getResources().getString(R.string.me_not_configured_text));
-            txtDebug.setVisibility(View.VISIBLE);
-        }
-        else
+        if (emoncmsAPIKEY == null || emoncmsAPIKEY.equals(""))
+            snackbar.setText(R.string.server_not_configured).show();
+        else if (wattFeedId == -1 || kWhFeelId == -1)
             mHandler.post(mGetFeedsRunner);
+        else if (wattFeedId >= 0 && kWhFeelId >= 0)
+        {
+            snackbar.dismiss();
+            mHandler.post(mGetPowerRunner);
+        }
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
+        snackbar.dismiss();
         HTTPClient.getInstance(getActivity()).cancellAll(TAG);
         mHandler.removeCallbacksAndMessages(null);
     }

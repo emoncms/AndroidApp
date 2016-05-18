@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
     <PreferenceCategory
         android:title="EMONCMS CONNECTIVITY">
+
+        <Preference
+            android:key="scanqrcode"
+            android:title="Scan QR Code"
+            android:summary="Allows filling in the connectivity fields automatically using the QR code on the emoncms account page"/>
 
         <EditTextPreference
             android:key="emoncms_url"
