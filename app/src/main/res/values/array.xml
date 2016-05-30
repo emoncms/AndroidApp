@@ -1,7 +1,7 @@
 <resources>
     <string-array name="escale_text">
-        <item>kWh elapsed</item>
-        <item>Watt hours elapsed</item>
+        <item>@string/kwh_elapsed</item>
+        <item>@string/wh_elapsed</item>
     </string-array>
 
     <string-array name="escale_values">
@@ -10,11 +10,11 @@
     </string-array>
 
     <string-array name="me_cost_text">
-        <item>System Locale</item>
-        <item>Dollars</item>
-        <item>Pounds</item>
-        <item>Euros</item>
-        <item>Yen</item>
+        <item>@string/system_locale</item>
+        <item>@string/dollars</item>
+        <item>@string/pounds</item>
+        <item>@string/euros</item>
+        <item>@string/yen</item>
     </string-array>
 
     <string-array name="me_cost_values">
@@ -23,5 +23,15 @@
         <item>£</item>
         <item>€</item>
         <item>¥</item>
+    </string-array>
+
+    <string-array name="day_of_week_initials">
+        <item>@string/sunday_initial</item>
+        <item>@string/monday_initial</item>
+        <item>@string/tuesday_initial</item>
+        <item>@string/wednesday_initial</item>
+        <item>@string/thursday_initial</item>
+        <item>@string/friday_initial</item>
+        <item>@string/saturday_initial</item>
     </string-array>
 </resources>

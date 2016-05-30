@@ -5,7 +5,7 @@
     <dimen name="navigation_drawer_width">240dp</dimen>
 
     <integer name="chartDateTextSize">12</integer>
-    <integer name="chartValueTextSize">16</integer>
+    <integer name="chartValueTextSize">14</integer>
 
     <dimen name="main_header_text_size">18sp</dimen>
     <dimen name="main_stats_text_size">40sp</dimen>

@@ -69,48 +69,49 @@
 
     </LinearLayout>
 
-    <Button
-        style="@style/ChartButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/buttonPanel"
         android:layout_below="@id/txtPower"
-        android:text="@string/button_3h_label"
-        android:id="@+id/btnChart1_3H"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btnChart1_3H"
+            style="@style/ChartButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_3h_label"/>
 
-    <Button
-        style="@style/ChartButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtPower"
-        android:text="@string/button_6h_label"
-        android:layout_toRightOf="@id/btnChart1_3H"
-        android:id="@+id/btnChart1_6H"/>
+        <Button
+            android:id="@+id/btnChart1_6H"
+            style="@style/ChartButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_6h_label"
+            android:layout_toRightOf="@id/btnChart1_3H"/>
 
-    <Button
-        style="@style/ChartButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtPower"
-        android:layout_toRightOf="@id/btnChart1_6H"
-        android:text="@string/button_1d_label"
-        android:id="@+id/btnChart1_D"/>
+        <Button
+            android:id="@+id/btnChart1_D"
+            style="@style/ChartButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/btnChart1_6H"
+            android:text="@string/button_1d_label"/>
 
-    <Button
-        style="@style/ChartButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtPower"
-        android:layout_toRightOf="@id/btnChart1_D"
-        android:text="@string/button_7d_label"
-        android:id="@+id/btnChart1_W"/>
+        <Button
+            android:id="@+id/btnChart1_W"
+            style="@style/ChartButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/btnChart1_D"
+            android:text="@string/button_7d_label"/>
 
-    <Button
-        style="@style/ChartButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtPower"
-        android:layout_toRightOf="@id/btnChart1_W"
-        android:text="@string/button_30d_label"
-        android:id="@+id/btnChart1_M"/>
+        <Button
+            android:id="@+id/btnChart1_M"
+            style="@style/ChartButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/btnChart1_W"
+            android:text="@string/button_30d_label"/>
+    </RelativeLayout>
 
 </RelativeLayout>

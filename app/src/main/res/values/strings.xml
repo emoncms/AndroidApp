@@ -3,12 +3,19 @@
     <string name="google_app_id">605929908164</string>
 
     <string name="tag_settings_fragment">settings_fragment</string>
-
     <string name="tag_me_fragment">myelectric_main_fragment</string>
     <string name="tag_me_settings_fragment">myelectric_settings_fragment</string>
     <string name="tag_ms_fragment">mysolar_main_fragment</string>
     <string name="tag_ms_settings_fragment">mysolar_settings_fragment</string>
 
+    <string name="setting_url">emoncms_url</string>
+    <string name="setting_apikey">emoncms_apikey</string>
+    <string name="setting_usessl">emoncms_usessl</string>
+    <string name="setting_keepscreenon">keep_screen_on</string>
+
+    //
+    //  TRANSLATABLE
+    //
     <string name="me_title">My Electric</string>
     <string name="me_settings_title">My Electric Feeds</string>
 
@@ -21,11 +28,10 @@
     <string name="cost_label">kWh / Cost</string>
     <string name="power_now_label">POWER NOW</string>
     <string name="use_today_label">USE TODAY</string>
-    <string name="importing_label">IMPORTING</string>
     <string name="solar_pv_label">SOLAR PV</string>
 
-    <string name="openDrawer">open</string>
-    <string name="closeDrawer">close</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
     <string name="fullscreen">Fullscreen</string>
     <string name="error">Error</string>
     <string name="settings">Settings</string>
@@ -48,11 +54,6 @@
 
     <string name="connection_error">CONNECTION ERROR</string>
 
-    <string name="setting_url">emoncms_url</string>
-    <string name="setting_apikey">emoncms_apikey</string>
-    <string name="setting_usessl">emoncms_usessl</string>
-    <string name="setting_keepscreenon">keep_screen_on</string>
-
     <string name="ok">OK</string>
     <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
     <string name="no_camera_permission">The barcode scanner uses the camera and cannot run because it does not have permission.</string>
@@ -66,4 +67,22 @@
     <string name="qr_code_success">Settings saved from QR code successfully</string>
     <string name="qr_code_fail">Invalid QR code</string>
     <string name="barcode_scan_instructions">"Scan the barcode on the My account page of emoncms."</string>
+
+    <string name="monday_initial">M</string>
+    <string name="tuesday_initial">T</string>
+    <string name="wednesday_initial">W</string>
+    <string name="thursday_initial">T</string>
+    <string name="friday_initial">F</string>
+    <string name="saturday_initial">S</string>
+    <string name="sunday_initial">S</string>
+
+    <string name="system_locale">System Locale</string>
+    <string name="dollars">Dollars</string>
+    <string name="pounds">Pounds</string>
+    <string name="euros">Euros</string>
+    <string name="yen">Yen</string>
+
+    <string name="kwh_elapsed">kWh elapsed</string>
+    <string name="wh_elapsed">Watt hours elapsed</string>
+
 </resources>

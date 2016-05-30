@@ -124,7 +124,8 @@ public class MainActivity extends AppCompatActivity
         });
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawer,mToolbar, R.string.openDrawer, R.string.closeDrawer);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawer,mToolbar, R.string.open, R.string.close);
+
         mDrawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
@@ -243,24 +244,34 @@ public class MainActivity extends AppCompatActivity
 
         switch (appView) {
             case MyElectricSettingsView:
-                frag = new MyElectricSettingsFragment();
                 tag = getResources().getString(R.string.tag_me_settings_fragment);
+                frag = getFragmentManager().findFragmentByTag(tag);
+                if (frag == null)
+                    frag = new MyElectricSettingsFragment();
                 break;
             case SettingsView:
-                frag = new SettingsFragment();
                 tag = getResources().getString(R.string.tag_settings_fragment);
+                frag = getFragmentManager().findFragmentByTag(tag);
+                if (frag == null)
+                    frag = new SettingsFragment();
                 break;
             case MySolarView:
-                frag = new MySolarMainFragement();
                 tag = getResources().getString(R.string.tag_ms_fragment);
+                frag = getFragmentManager().findFragmentByTag(tag);
+                if (frag == null)
+                    frag = new MySolarMainFragement();
                 break;
             case MySolarSettingsView:
-                frag = new MySolarSettingsFragment();
                 tag = getResources().getString(R.string.tag_ms_settings_fragment);
+                frag = getFragmentManager().findFragmentByTag(tag);
+                if (frag == null)
+                    frag = new MySolarSettingsFragment();
                 break;
             default:
-                frag = new MyElectricMainFragment();
                 tag = getResources().getString(R.string.tag_me_fragment);
+                frag = getFragmentManager().findFragmentByTag(tag);
+                if (frag == null)
+                    frag = new MyElectricMainFragment();
                 break;
         }
 
