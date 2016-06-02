@@ -1,17 +1,17 @@
 <resources>
-    <string name="app_name">emoncms</string>
-    <string name="google_app_id">605929908164</string>
+    <string name="app_name" translatable="false">emoncms</string>
+    <string name="google_app_id" translatable="false">605929908164</string>
 
-    <string name="tag_settings_fragment">settings_fragment</string>
-    <string name="tag_me_fragment">myelectric_main_fragment</string>
-    <string name="tag_me_settings_fragment">myelectric_settings_fragment</string>
-    <string name="tag_ms_fragment">mysolar_main_fragment</string>
-    <string name="tag_ms_settings_fragment">mysolar_settings_fragment</string>
+    <string name="tag_settings_fragment" translatable="false">settings_fragment</string>
+    <string name="tag_me_fragment" translatable="false">myelectric_main_fragment</string>
+    <string name="tag_me_settings_fragment" translatable="false">myelectric_settings_fragment</string>
+    <string name="tag_ms_fragment" translatable="false">mysolar_main_fragment</string>
+    <string name="tag_ms_settings_fragment" translatable="false">mysolar_settings_fragment</string>
 
-    <string name="setting_url">emoncms_url</string>
-    <string name="setting_apikey">emoncms_apikey</string>
-    <string name="setting_usessl">emoncms_usessl</string>
-    <string name="setting_keepscreenon">keep_screen_on</string>
+    <string name="setting_url" translatable="false">emoncms_url</string>
+    <string name="setting_apikey" translatable="false">emoncms_apikey</string>
+    <string name="setting_usessl" translatable="false">emoncms_usessl</string>
+    <string name="setting_keepscreenon" translatable="false">keep_screen_on</string>
 
     //
     //  TRANSLATABLE

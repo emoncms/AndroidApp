@@ -186,10 +186,10 @@ public class MyElectricMainFragment extends Fragment
                                     watt_value = response.getString(0);
                                     kwh_value = response.getString(1);
 
-                                    if (!watt_value.equals("false"))
+                                    if (Utils.isNumeric(watt_value))
                                         powerNow = Float.parseFloat(watt_value);
 
-                                    if (!kwh_value.equals("false"))
+                                    if (Utils.isNumeric(kwh_value))
                                         totalPowerUsage = Float.parseFloat(kwh_value) * powerScale;
 
                                     updateTextFields();
@@ -205,9 +205,9 @@ public class MyElectricMainFragment extends Fragment
                                 snackbar.setText(R.string.invalid_number_of_responses).show();
                             }
 
-                            if (watt_value.equals("false"))
+                            if (!Utils.isNumeric(watt_value))
                                 snackbar.setText(R.string.invalid_watt_feedid).show();
-                            else if (kwh_value.equals("false"))
+                            else if (!Utils.isNumeric(kwh_value))
                                 snackbar.setText(R.string.invalid_kwh_feedid).show();
                             else
                             {

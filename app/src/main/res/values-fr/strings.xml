@@ -1,0 +1,75 @@
+<resources>
+
+//
+//  TRANSLATABLE
+//
+<string name="me_title">Mon Electrique</string>
+<string name="me_settings_title">Mes Flux Electrique</string>
+
+<string name="ms_title">Mon Solaire</string>
+<string name="ms_settings_title">Mes Flux Solaires</string>
+
+<string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
+<string name="navigation_drawer_close">Fermer le tiroir de navigation</string>
+
+<string name="cost_label">kWh / Coût</string>
+<string name="power_now_label">PUISSANCE ACTUELLE</string>
+<string name="use_today_label">UTILISATION JOURNALIÈRE</string>
+<string name="solar_pv_label">PANNEAUX SOLAIRE</string>
+
+<string name="open">ouvrir</string>
+<string name="close">fermer</string>
+<string name="fullscreen">Plein écran</string>
+<string name="error">Erreur</string>
+<string name="settings">Paramètres</string>
+
+<string name="server_not_configured">Veuillez configurer votre serveur emoncms et la clé API via le menu paramètres.</string>
+<string name="me_not_configured_text">Veuillez configurer les flux via le menu \'engrenage\' dans la barre du haut .</string>
+<string name="feed_download_error_message">Impossible de charger la liste des flux. Vérifier l\'adresse et la clé API de votre serveur emoncms ainsi que la connectivitée.</string>
+<string name="invalid_number_of_responses">Nombre invalide de l\'API\'</string>
+<string name="invalid_kwh_feedid">ID du Flux utilisation_kwh invalide, veuillez choisir un flux kwh via les paramètres</string>
+<string name="invalid_watt_feedid">ID du Flux utilisation invalide, veuillez choisir un flux watt via les paramètres</string>
+
+<string name="txt_power_default">0W</string>
+<string name="use_today_default">0.0kWh</string>
+
+<string name="button_3h_label">3H</string>
+<string name="button_6h_label">6H</string>
+<string name="button_1d_label">J</string>
+<string name="button_7d_label">S</string>
+<string name="button_30d_label">M</string>
+
+<string name="connection_error">ERREUR DE CONNECTION</string>
+
+<string name="ok">OK</string>
+<string name="permission_camera_rationale">L\'accès à la caméra est nécessaire pour la détection\'</string>
+<string name="no_camera_permission">Le scanneur de code barre nécessite la caméra, autorisation refusé</string>
+<string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+<string name="title_activity_main">Exemple du lecteur de codes barre</string>
+<string name="barcode_header">Clicker &quot;Lire code barre&quot; pour scanner le code barre</string>
+<string name="read_barcode">Lire le code barre</string>
+<string name="barcode_success">Lecture du code barre réussi</string>
+<string name="barcode_failure">Code barre non lu</string>
+<string name="barcode_error">"erreur de la lecture du code barre: %1$s"</string>
+<string name="qr_code_success">Paramètres bien enregistrés suite à la lecture du code barre</string>
+<string name="qr_code_fail">Code QR invalide</string>
+<string name="barcode_scan_instructions">"Scanner le code barre su la page Mon Compte de emoncms."</string>
+
+<string name="monday_initial">L</string>
+<string name="tuesday_initial">M</string>
+<string name="wednesday_initial">M</string>
+<string name="thursday_initial">J</string>
+<string name="friday_initial">V</string>
+<string name="saturday_initial">S</string>
+<string name="sunday_initial">D</string>
+
+<string name="system_locale">Monnaie Système</string>
+<string name="dollars">Dollars</string>
+<string name="pounds">Livres</string>
+<string name="euros">Euros</string>
+<string name="yen">Yen</string>
+
+<string name="kwh_elapsed">kWh passé</string>
+<string name="wh_elapsed">Watt heure passé</string>
+
+</resources>

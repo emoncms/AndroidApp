@@ -4,7 +4,7 @@
         <item>@string/wh_elapsed</item>
     </string-array>
 
-    <string-array name="escale_values">
+    <string-array name="escale_values" translatable="false">
         <item>0</item>
         <item>1</item>
     </string-array>
@@ -17,7 +17,7 @@
         <item>@string/yen</item>
     </string-array>
 
-    <string-array name="me_cost_values">
+    <string-array name="me_cost_values" translatable="false">
         <item>0</item>
         <item>$</item>
         <item>£</item>
