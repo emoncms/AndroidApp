@@ -34,4 +34,16 @@
         <item>@string/friday_initial</item>
         <item>@string/saturday_initial</item>
     </string-array>
+
+    <string-array name="language_text">
+        <item>System Default</item>
+        <item>English</item>
+        <item>French</item>
+    </string-array>
+
+    <string-array name="language_values">
+        <item>@string/setting_language</item>
+        <item>en</item>
+        <item>fr</item>
+    </string-array>
 </resources>

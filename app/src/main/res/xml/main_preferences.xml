@@ -2,41 +2,48 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="EMONCMS CONNECTIVITY">
+        android:title="@string/settings_title_emoncms_connectivity">
 
         <Preference
             android:key="scanqrcode"
-            android:title="Scan QR Code"
-            android:summary="Allows filling in the connectivity fields automatically using the QR code on the emoncms account page"/>
+            android:title="@string/settings_title_scanqrcode"
+            android:summary="@string/settings_summary_scanqrcode"/>
 
         <EditTextPreference
             android:key="emoncms_url"
-            android:title="emoncms URL"
-            android:summary="Full emoncms URL without http://. e.g. www.myawesomesite.com/emoncms"
+            android:title="@string/settings_title_emoncms_url"
+            android:summary="@string/settings_summary_emoncms_url"
             android:defaultValue="emoncms.org"/>
 
         <EditTextPreference
             android:key="emoncms_apikey"
-            android:title="emoncms API KEY"
-            android:summary="Read API key from the emoncms My Account page." />
+            android:title="@string/settings_title_emoncms_apikey"
+            android:summary="@string/settings_summary_emoncms_apikey"/>
 
 
         <CheckBoxPreference
             android:key="emoncms_usessl"
-            android:title="Use SSL"
-            android:summary="Connect using https, supported by emoncms.org NOT emonPi"
+            android:title="@string/settings_title_emoncms_usessl"
+            android:summary="@string/settings_summary_emoncms_usessl"
             android:defaultValue="true"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="APP SETTINGS">
+        android:title="@string/settings_title_app_settings">
 
         <CheckBoxPreference
             android:key="keep_screen_on"
-            android:title="Keep Screen On"
-            android:summary="Stops the device screen powering off" />
+            android:title="@string/settings_title_keep_screen_on"
+            android:summary="@string/settings_summary_keep_screen_on" />
 
+        <ListPreference
+            android:key="language"
+            android:title="Language"
+            android:summary="Select Language"
+            android:entries="@array/language_text"
+            android:entryValues="@array/language_values" />
+            android:defaultValue="language"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

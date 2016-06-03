@@ -20,7 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
 {
     Toolbar mToolbar;
     DrawerLayout mDrawer;

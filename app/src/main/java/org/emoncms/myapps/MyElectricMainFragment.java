@@ -111,7 +111,7 @@ public class MyElectricMainFragment extends Fragment
         @Override
         public void run()
         {
-            String url = String.format(Locale.getDefault(), "%s/feed/list.json?apikey=%s", emoncms_url, emoncms_apikey);
+            String url = String.format(getActivity().getResources().getConfiguration().locale, "%s/feed/list.json?apikey=%s", emoncms_url, emoncms_apikey);
             Log.i("EMONCMS:URL", "mGetFeedsRunner:"+url);
 
             JsonArrayRequest jsArrayRequest = new JsonArrayRequest
@@ -168,7 +168,7 @@ public class MyElectricMainFragment extends Fragment
         @Override
         public void run()
         {
-            String url = String.format(Locale.getDefault(), "%s/feed/fetch.json?apikey=%s&ids=%d,%d", emoncms_url, emoncms_apikey, wattFeedId, kWhFeelId);
+            String url = String.format(getActivity().getResources().getConfiguration().locale, "%s/feed/fetch.json?apikey=%s&ids=%d,%d", emoncms_url, emoncms_apikey, wattFeedId, kWhFeelId);
             Log.i("EMONCMS:URL", "mGetPowerRunner:"+url);
             JsonArrayRequest jsArrayRequest = new JsonArrayRequest
                     (url, new Response.Listener<JSONArray>()
@@ -259,9 +259,9 @@ public class MyElectricMainFragment extends Fragment
             final long chart2StartTime = start * 1000;
 
             // New
-//            String url = String.format(Locale.getDefault(), "%s/feed/data.json?apikey=%s&id=%d&start=%d&end=%d&mode=daily", emoncmsURL, emoncmsAPIKEY, kWhFeelId, chart2StartTime, chart2EndTime);
+//            String url = String.format(getActivity().getResources().getConfiguration().locale, "%s/feed/data.json?apikey=%s&id=%d&start=%d&end=%d&mode=daily", emoncms_url, emoncms_apikey, kWhFeelId, chart2StartTime, chart2EndTime);
             // Old
-            String url = String.format(Locale.getDefault(), "%s/feed/data.json?apikey=%s&id=%d&start=%d&end=%d&interval=86400&skipmissing=1&limitinterval=1", emoncms_url, emoncms_apikey, kWhFeelId, chart2StartTime, chart2EndTime);
+            String url = String.format("%s/feed/data.json?apikey=%s&id=%d&start=%d&end=%d&interval=86400&skipmissing=1&limitinterval=1", emoncms_url, emoncms_apikey, kWhFeelId, chart2StartTime, chart2EndTime);
             Log.i("EMONCMS:URL", "mDaysofWeekRunner:"+url);
 
             JsonArrayRequest jsArrayRequest = new JsonArrayRequest
@@ -398,7 +398,7 @@ public class MyElectricMainFragment extends Fragment
             if (lastEntry > startTime)
                 startTime = lastEntry;
 
-            String url = String.format(Locale.getDefault(), "%s/feed/data.json?apikey=%s&id=%d&start=%d&end=%d&interval=%d&skipmissing=1&limitinterval=1", emoncms_url, emoncms_apikey, wattFeedId, startTime, endTime, interval);
+            String url = String.format(getActivity().getResources().getConfiguration().locale, "%s/feed/data.json?apikey=%s&id=%d&start=%d&end=%d&interval=%d&skipmissing=1&limitinterval=1", emoncms_url, emoncms_apikey, wattFeedId, startTime, endTime, interval);
             Log.i("EMONCMS:URL", "mGetPowerHistoryRunner:"+url);
             JsonArrayRequest jsArrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>()
             {
@@ -485,13 +485,13 @@ public class MyElectricMainFragment extends Fragment
     {
         if (blnShowCost)
         {
-            txtPower.setText(String.format(Locale.getDefault(), "%s%.2f/h", powerCostSymbol, (powerNow*0.001)*powerCost));
-            txtUseToday.setText(String.format(Locale.getDefault(), "%s%.2f", powerCostSymbol, powerToday*powerCost));
+            txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%s%.2f/h", powerCostSymbol, (powerNow*0.001)*powerCost));
+            txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%s%.2f", powerCostSymbol, powerToday*powerCost));
         }
         else
         {
-            txtPower.setText(String.format(Locale.getDefault(), "%.0fW", powerNow));
-            txtUseToday.setText(String.format(Locale.getDefault(), "%.1fkWh", powerToday));
+            txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.0fW", powerNow));
+            txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.1fkWh", powerToday));
         }
     }
 
@@ -519,7 +519,7 @@ public class MyElectricMainFragment extends Fragment
         try
         {
             if (powerCostSymbol.equals("0"))
-                powerCostSymbol = Currency.getInstance(Locale.getDefault()).getSymbol();
+                powerCostSymbol = Currency.getInstance(getActivity().getResources().getConfiguration().locale).getSymbol();
         }
         catch (IllegalArgumentException  e)
         {

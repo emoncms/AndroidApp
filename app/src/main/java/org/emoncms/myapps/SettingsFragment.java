@@ -71,6 +71,14 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     {
         if (key.equals(getString(R.string.setting_keepscreenon)))
             ((MainActivity) getActivity()).setKeepScreenOn(sharedPreferences.getBoolean(getString(R.string.setting_keepscreenon), false));
+        else if (key.equals(getString(R.string.setting_language)))
+        {
+            getActivity().finish();
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
     }
 
     @Override

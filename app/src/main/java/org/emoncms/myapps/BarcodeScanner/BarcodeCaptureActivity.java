@@ -30,6 +30,7 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
+import org.emoncms.myapps.BaseActivity;
 import org.emoncms.myapps.barcodescanner.camera.CameraSource;
 import org.emoncms.myapps.barcodescanner.camera.CameraSourcePreview;
 import org.emoncms.myapps.R;
@@ -41,7 +42,7 @@ import java.io.IOException;
  * rear facing camera. During detection overlay graphics are drawn to indicate the position,
  * size, and ID of each barcode.
  */
-public final class BarcodeCaptureActivity extends AppCompatActivity
+public final class BarcodeCaptureActivity extends BaseActivity
 {
     private static final String TAG = "Barcode-reader";
 

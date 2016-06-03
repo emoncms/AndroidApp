@@ -12,6 +12,7 @@
     <string name="setting_apikey" translatable="false">emoncms_apikey</string>
     <string name="setting_usessl" translatable="false">emoncms_usessl</string>
     <string name="setting_keepscreenon" translatable="false">keep_screen_on</string>
+    <string name="setting_language" translatable="false">language</string>
 
     //
     //  TRANSLATABLE
@@ -84,5 +85,26 @@
 
     <string name="kwh_elapsed">kWh elapsed</string>
     <string name="wh_elapsed">Watt hours elapsed</string>
+
+    <string name="settings_title_emoncms_connectivity">EMONCMS CONNECTIVITY</string>
+    <string name="settings_title_app_settings">APP SETTINGS</string>
+    <string name="settings_title_scanqrcode">Scan QR Code</string>
+    <string name="settings_summary_scanqrcode">Allows filling in the connectivity fields automatically using the QR code on the emoncms account page</string>
+    <string name="settings_title_emoncms_url">emoncms URL</string>
+    <string name="settings_summary_emoncms_url">Full emoncms URL without http://. e.g. www.myawesomesite.com/emoncms"</string>
+    <string name="settings_title_emoncms_apikey">emoncms API KEY</string>
+    <string name="settings_summary_emoncms_apikey">Read API key from the emoncms My Account page.</string>
+    <string name="settings_title_emoncms_usessl">Use SSL</string>
+    <string name="settings_summary_emoncms_usessl">Connect using https, supported by emoncms.org NOT emonPi"</string>
+    <string name="settings_title_keep_screen_on">Keep Screen On</string>
+    <string name="settings_summary_keep_screen_on">Stops the device screen powering off</string>
+
+    <string name="settings_title_myelectric_feeds">Feeds</string>
+    <string name="settings_title_myelectric_currency">Currency</string>
+    <string name="settings_title_myelectric_power_feed">Power feed (Watts)</string>
+    <string name="settings_title_myelectric_kwh_feed">"Bar graph feed (kWh)</string>
+    <string name="settings_title_myelectric_escale">Wh or kWh Feed</string>
+    <string name="settings_title_myelectric_unit_cost">Cost</string>
+    <string name="settings_title_myelectric_cost_symbol">Cost Unit</string>
 
 </resources>

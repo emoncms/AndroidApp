@@ -2,38 +2,39 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="FEEDS">
+        android:title="@string/settings_title_myelectric_feeds">
 
         <ListPreference
             android:key="myelectric_power_feed"
-            android:title="Power feed (Watts)"
+            android:title="@string/settings_title_myelectric_power_feed"
             android:defaultValue="-1"
             android:enabled="false"/>
 
         <ListPreference
             android:key="myelectric_kwh_feed"
-            android:title="Bar graph feed (kWh)"
+            android:title="@string/settings_title_myelectric_kwh_feed"
             android:defaultValue="-1"
             android:enabled="false"/>
 
         <ListPreference
             android:key="myelectric_escale"
-            android:title="Wh or kWh Feed"
+            android:title="@string/settings_title_myelectric_escale"
             android:defaultValue="0"
             android:entries="@array/escale_text"
             android:entryValues="@array/escale_values" />
     </PreferenceCategory>
+
     <PreferenceCategory
-        android:title="CURRENCY">
+        android:title="@string/settings_title_myelectric_currency">
         <EditTextPreference
             android:key="myelectric_unit_cost"
+            android:title="@string/settings_title_myelectric_unit_cost"
             android:inputType="numberDecimal"
-            android:title="Cost"
             android:defaultValue="0" />
 
         <ListPreference
             android:key="myelectric_cost_symbol"
-            android:title="Cost Unit"
+            android:title="@string/settings_title_myelectric_cost_symbol"
             android:defaultValue="0"
             android:entries="@array/me_cost_text"
             android:entryValues="@array/me_cost_values" />
