@@ -15,6 +15,6 @@ OpenEnergyMonitor is a project to develop open-source energy monitoring tools to
 use of energy, our energy systems and the challenge of sustainable energy.
 
 
-For support or to get involved with development please post on the forum thread: [http://openenergymonitor.org/emon/node/11260](http://openenergymonitor.org/emon/node/11260)
+For support or to get involved with development please post on the forum: [https://community.openenergymonitor.org/c/emoncms](https://community.openenergymonitor.org/c/emoncms)
 
-Blog Post: http://openenergymonitor.blogspot.com/2015/12/emoncms-android-app.html
+## [Launch Blog Post](https://blog.openenergymonitor.org/2015/12/emoncms-android-app/)
