@@ -30,3 +30,4 @@ proguard/
 *.log
 .idea
 .idea/
+app/app.iml

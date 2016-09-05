@@ -1,6 +1,7 @@
 package org.emoncms.myapps;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,7 +11,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
@@ -19,6 +19,11 @@ import android.view.View;
 import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+
+import org.emoncms.myapps.settings.AccountListFragment;
+import org.emoncms.myapps.settings.AccountSettingsFragment;
+import org.emoncms.myapps.settings.AppSettingsFragment;
+import org.emoncms.myapps.settings.SettingsActivity;
 
 public class MainActivity extends BaseActivity
 {
@@ -45,7 +50,8 @@ public class MainActivity extends BaseActivity
         MyElectricSettingsView,
         MySolarView,
         MySolarSettingsView,
-        SettingsView
+        SettingsView,
+        AccountSettingsView
     }
 
     MyAppViews displayed_view;
@@ -102,11 +108,9 @@ public class MainActivity extends BaseActivity
                         case 0:
                             showFragment(MyAppViews.MyElectricView);
                             break;
+
                         case 1:
-//                            showFragment(MyAppViews.MySolarView);
-//                            break;
-//                        case 2:
-                            showFragment(MyAppViews.SettingsView);
+                            openSettingsActivity();
                             break;
                     }
                     return true;
@@ -237,6 +241,26 @@ public class MainActivity extends BaseActivity
             super.onBackPressed();
     }
 
+    public void showAccountSettings(int accountID) {
+        String tag = "tag_account_settingss_fragment" + accountID;
+        Fragment frag = getFragmentManager().findFragmentByTag(tag);
+        if (frag == null) {
+            frag = new AccountSettingsFragment();
+            Bundle args = new Bundle();
+            args.putInt("account",accountID);
+            frag.setArguments(args);
+        }
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, frag, tag)
+                .commit();
+
+    }
+
+    private void openSettingsActivity() {
+        Intent intent = new Intent(this,SettingsActivity.class);
+        startActivity(intent);
+    }
+
     public void showFragment(MyAppViews appView) {
         Fragment frag;
         String tag;
@@ -249,11 +273,17 @@ public class MainActivity extends BaseActivity
                 if (frag == null)
                     frag = new MyElectricSettingsFragment();
                 break;
+            case AccountSettingsView:
+                tag = getResources().getString(R.string.tag_accounts_fragment);
+                frag = getFragmentManager().findFragmentByTag(tag);
+                if (frag == null)
+                    frag = new AccountListFragment();
+                break;
             case SettingsView:
                 tag = getResources().getString(R.string.tag_settings_fragment);
                 frag = getFragmentManager().findFragmentByTag(tag);
                 if (frag == null)
-                    frag = new SettingsFragment();
+                    frag = new AppSettingsFragment();
                 break;
             case MySolarView:
                 tag = getResources().getString(R.string.tag_ms_fragment);

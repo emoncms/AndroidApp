@@ -1,4 +1,4 @@
-package org.emoncms.myapps;
+package org.emoncms.myapps.settings;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,22 +16,29 @@ import android.widget.TextView;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import org.emoncms.myapps.R;
 import org.emoncms.myapps.barcodescanner.BarcodeCaptureActivity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener
+public class AccountSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static final int RC_BARCODE_CAPTURE = 9001;
 //    static final String TAG = "SETTINGSFRAGMENT";
+
+    private static final String ACCOUNT_PREFS_FILE = "emoncms_account";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        String account = getArguments().getString("account");
+
+        getPreferenceManager().setSharedPreferencesName(ACCOUNT_PREFS_FILE + account);
         // Load the preferences from an XML resource
-        addPreferencesFromResource(R.xml.main_preferences);
+        addPreferencesFromResource(R.xml.account_preferences);
     }
 
     @Override
@@ -69,16 +76,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
     {
-        if (key.equals(getString(R.string.setting_keepscreenon)))
-            ((MainActivity) getActivity()).setKeepScreenOn(sharedPreferences.getBoolean(getString(R.string.setting_keepscreenon), false));
-        else if (key.equals(getString(R.string.setting_language)))
-        {
-            getActivity().finish();
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
+
     }
 
     @Override
