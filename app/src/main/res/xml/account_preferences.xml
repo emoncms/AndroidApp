@@ -4,10 +4,17 @@
     <PreferenceCategory
         android:title="@string/settings_title_emoncms_connectivity">
 
+
         <Preference
             android:key="scanqrcode"
             android:title="@string/settings_title_scanqrcode"
             android:summary="@string/settings_summary_scanqrcode"/>
+
+        <org.emoncms.myapps.settings.EditTextPreferenceWithValue
+            android:key="emoncms_name"
+            android:title="@string/settings_title_emoncms_name"
+            android:summary="@string/settings_summary_emoncms_name"
+            android:defaultValue="New Account"/>
 
         <EditTextPreference
             android:key="emoncms_url"
@@ -26,6 +33,8 @@
             android:title="@string/settings_title_emoncms_usessl"
             android:summary="@string/settings_summary_emoncms_usessl"
             android:defaultValue="true"/>
+
+
 
     </PreferenceCategory>
 

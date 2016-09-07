@@ -4,7 +4,9 @@ package org.emoncms.myapps.settings;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.emoncms.myapps.EmonApplication;
 import org.emoncms.myapps.MainActivity;
 import org.emoncms.myapps.R;
 
@@ -32,18 +35,39 @@ public class AccountListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadCurrentAccounts();
+
+
+    }
+
+    private void loadCurrentAccounts() {
         accounts = new ArrayList<>();
-        accounts.add(new Account("1","Account 1", "url","apikey"));
-        accounts.add(new Account("2","Account 2", "url2","apikey2"));
+
+        /*
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+
+        String accountSettings = settings.getString("accounts","");
+        String[] accountIdList = accountSettings.split(",");
+        */
+
+        for (String accountId : EmonApplication.get().getAccounts()) {
+            accounts.add(loadAccount(accountId));
+        }
+
         accountAdaptor = new AccountAdaptor(getActivity(),accounts);
         setListAdapter(accountAdaptor);
+    }
 
-
+    private Account loadAccount(String accountId) {
+        SharedPreferences settings = getActivity().getSharedPreferences("emoncms_account_" + accountId, Context.MODE_PRIVATE);
+        String accountName = settings.getString("emoncms_name","Account " + accountId);
+        return new Account(accountId,accountName);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        loadCurrentAccounts();
     }
 
     private class AccountAdaptor extends ArrayAdapter<Account> {
@@ -59,8 +83,8 @@ public class AccountListFragment extends ListFragment {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.account_item, parent, false);
             }
 
-            TextView url=(TextView)convertView.findViewById(R.id.url);
-            url.setText(getItem(position).url);
+            TextView url=(TextView)convertView.findViewById(R.id.name);
+            url.setText(getItem(position).name);
 
             return(convertView);
         }
@@ -82,14 +106,11 @@ public class AccountListFragment extends ListFragment {
     class Account {
         String id;
         String name;
-        String url;
-        String apiKey;
 
-        public Account(String id, String name, String url, String apiKey) {
+
+        public Account(String id, String name) {
             this.id = id;
             this.name = name;
-            this.url = url;
-            this.apiKey = apiKey;
         }
     }
 

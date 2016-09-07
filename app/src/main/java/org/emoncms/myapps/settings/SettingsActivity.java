@@ -1,13 +1,22 @@
 package org.emoncms.myapps.settings;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import org.emoncms.myapps.BaseActivity;
+import org.emoncms.myapps.EmonApplication;
 import org.emoncms.myapps.R;
+
+import java.util.UUID;
 
 
 /**
@@ -21,6 +30,7 @@ public class SettingsActivity extends BaseActivity {
         setContentView(R.layout.activity_settings);
         setUpToolbar();
         setUpFragments();
+        setUpAddNewAccount();
     }
 
     private void setUpToolbar() {
@@ -52,6 +62,32 @@ public class SettingsActivity extends BaseActivity {
         getFragmentManager().beginTransaction()
                 .replace(R.id.prefs, frag, fragmentTag)
                 .commit();
+    }
+
+    private void setUpAddNewAccount() {
+        TextView addAccount = (TextView) findViewById(R.id.add_account);
+
+        addAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNewAccount();
+            }
+        });
+
+    }
+
+    private void addNewAccount() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String accountSettings = sharedPrefs.getString("accounts","");
+
+        String newAccountId = UUID.randomUUID().toString();
+        EmonApplication.get().addAccount(newAccountId);
+
+        Log.d("Settings","Opening New account " + newAccountId);
+
+        Intent intent = new Intent(this,AccountSettingsActivity.class);
+        intent.putExtra("account", newAccountId);
+        startActivity(intent);
     }
 
     @Override

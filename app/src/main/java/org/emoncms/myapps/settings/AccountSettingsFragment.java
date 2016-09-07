@@ -1,5 +1,6 @@
 package org.emoncms.myapps.settings;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -16,25 +17,27 @@ import android.widget.TextView;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import org.emoncms.myapps.EmonApplication;
 import org.emoncms.myapps.R;
 import org.emoncms.myapps.barcodescanner.BarcodeCaptureActivity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AccountSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener
-{
+public class AccountSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final int RC_BARCODE_CAPTURE = 9001;
 //    static final String TAG = "SETTINGSFRAGMENT";
 
-    private static final String ACCOUNT_PREFS_FILE = "emoncms_account";
+    private static final String ACCOUNT_PREFS_FILE = "emoncms_account_";
+
+    private String account;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
-        String account = getArguments().getString("account");
+        account = getArguments().getString("account");
 
         getPreferenceManager().setSharedPreferencesName(ACCOUNT_PREFS_FILE + account);
         // Load the preferences from an XML resource
@@ -65,37 +68,31 @@ public class AccountSettingsFragment extends PreferenceFragment implements Share
         super.onPause();
     }
 
-    @Override
+    /*@Override
     public void onActivityCreated(Bundle savesInstanceState) {
         super.onActivityCreated(savesInstanceState);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) actionBar.setTitle(R.string.settings);
+    }*/
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-
-        if (requestCode == RC_BARCODE_CAPTURE)
-        {
-            if (resultCode == CommonStatusCodes.SUCCESS)
-            {
-                if (data != null)
-                {
+        if (requestCode == RC_BARCODE_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
                     Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
 
                     Pattern pattern = Pattern.compile("^(http[s]?)://([^:/\\s]+.*)/app\\?[readkey=]+=([^&]+)#myelectric");
                     Matcher matcher = pattern.matcher(barcode.displayValue);
 
-                    if (matcher.matches() && matcher.groupCount() == 3)
-                    {
+                    if (matcher.matches() && matcher.groupCount() == 3) {
                         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
                         SharedPreferences.Editor se = sp.edit();
                         se.putString(getString(R.string.setting_url), matcher.group(2));
@@ -120,9 +117,7 @@ public class AccountSettingsFragment extends PreferenceFragment implements Share
                         sn.show();
                     }
                 }
-            }
-            else
-            {
+            } else {
                 super.onActivityResult(requestCode, resultCode, data);
             }
         }

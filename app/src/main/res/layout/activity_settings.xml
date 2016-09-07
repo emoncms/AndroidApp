@@ -7,19 +7,30 @@
         android:id="@+id/main_toolbar"
         layout="@layout/main_toolbar"/>
 
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Accounts"
-        android:layout_marginLeft="10dip"
-        android:paddingStart="8dip" />
+        android:layout_marginLeft="18dip"
+        style="@style/PrefHeader"
+        />
+
 
     <FrameLayout
         android:id="@+id/accounts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
+    <TextView
+        android:id="@+id/add_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Account"
+        android:layout_marginLeft="18dip"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"
+        />
 
     <FrameLayout
         android:id="@+id/prefs"

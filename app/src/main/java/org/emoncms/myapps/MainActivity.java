@@ -273,18 +273,6 @@ public class MainActivity extends BaseActivity
                 if (frag == null)
                     frag = new MyElectricSettingsFragment();
                 break;
-            case AccountSettingsView:
-                tag = getResources().getString(R.string.tag_accounts_fragment);
-                frag = getFragmentManager().findFragmentByTag(tag);
-                if (frag == null)
-                    frag = new AccountListFragment();
-                break;
-            case SettingsView:
-                tag = getResources().getString(R.string.tag_settings_fragment);
-                frag = getFragmentManager().findFragmentByTag(tag);
-                if (frag == null)
-                    frag = new AppSettingsFragment();
-                break;
             case MySolarView:
                 tag = getResources().getString(R.string.tag_ms_fragment);
                 frag = getFragmentManager().findFragmentByTag(tag);
