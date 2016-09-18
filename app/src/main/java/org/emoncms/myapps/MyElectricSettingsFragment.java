@@ -1,5 +1,6 @@
 package org.emoncms.myapps;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +22,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fragment for setting the feed settings for the account
+ */
 public class MyElectricSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener
 {
     static final String TAG = "MESETTINGSFRAGMENT";
@@ -40,8 +44,10 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.me_preferences);
+        String prefsFileName = EmonApplication.getAccountSettingsFile(EmonApplication.get().getCurrentAccount());
+        getPreferenceManager().setSharedPreferencesName(prefsFileName);
+        sp = getActivity().getSharedPreferences(EmonApplication.getAccountSettingsFile(EmonApplication.get().getCurrentAccount()), Context.MODE_PRIVATE);
 
-        sp = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
         loadValues();
         powerFeedPreference = (ListPreference) this.findPreference("myelectric_power_feed");
         kWhFeedPreference = (ListPreference) this.findPreference("myelectric_kwh_feed");

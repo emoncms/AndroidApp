@@ -2,49 +2,112 @@ package org.emoncms.myapps;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.ViewHolder> {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Handles the items in the navigation drawer.
+ */
+public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.ViewHolder> implements AccountListChangeListener {
 
     private Context mContext;
-    private int mNavTitles[];
-    private int mIcons[];
+
+    private List<MenuOption> menuOptionList;
+    private OnNavigationClick onNavigationClick;
     private int selectedItem = 0;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder { //} implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textView;
-        ImageView imageView;
+        private TextView textView;
+        private ImageView imageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            //itemView.setClickable(true);
-            //itemView.setOnClickListener(this);
             textView = (TextView) itemView.findViewById(R.id.rowText);
             imageView = (ImageView) itemView.findViewById(R.id.rowIcon);
         }
 
-        //@Override
-        //public void onClick(View v) {
-        //}
+        public void bind(final MenuOption option, final OnNavigationClick onNavigationClick) {
+            textView.setText(option.text);
+            imageView.setImageResource(option.icon);
+            itemView.setSelected(selectedItem == getLayoutPosition());
+
+
+            View.OnClickListener onClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //only change selection if we are switching accounts
+                    notifyItemChanged(selectedItem);
+                    if (!option.id.equals("settings")) {
+                        selectedItem = getLayoutPosition();
+                        notifyItemChanged(selectedItem);
+                    }
+                    onNavigationClick.onClick(option);
+                }
+            };
+
+            itemView.setOnClickListener(onClickListener);
+        }
     }
 
-    NavigationDrawerAdapter(Context context, int Titles[],int Icons[]) {
+    /**
+     * Context is required
+     * @param context
+     */
+    public NavigationDrawerAdapter(Context context, OnNavigationClick onNavigationClick) {
         mContext = context;
-        mNavTitles = Titles;
-        mIcons = Icons;
+        this.onNavigationClick = onNavigationClick;
+        menuOptionList = new ArrayList<>();
+
+        int index = 0;
+        for(Map.Entry<String,String> account : EmonApplication.get().getAccounts().entrySet()) {
+
+            if (account.getKey().equals(EmonApplication.get().getCurrentAccount())) {
+                selectedItem = index;
+            }
+            menuOptionList.add(new MenuOption(account.getKey(), R.drawable.ic_my_electric_white_36dp, account.getValue()));
+            index++;
+        }
+
+        menuOptionList.add(new MenuOption("settings", R.drawable.ic_settings_applications_white_36dp, "Settings"));
     }
 
-    public int getSelectedItem() {
-        return selectedItem;
+    @Override
+    public void onAddAccount(String id, String name) {
+        int newPosition = menuOptionList.size()-1;
+        menuOptionList.add(newPosition,new MenuOption(id, R.drawable.ic_my_electric_white_36dp, name));
+        notifyItemInserted(newPosition);
+    }
+    @Override
+    public void onDeleteAccount(String id) {
+        int position = getPosition(id);
+        menuOptionList.remove(position);
+        notifyItemRemoved(position);
+    }
+    @Override
+    public void onUpdateAccount(String id, String name) {
+        int position = getPosition(id);
+        menuOptionList.get(position).text = name;
+        notifyItemChanged(position);
     }
 
-    public void setSelectedItem(int selected) {
-        selectedItem = selected;
+    private int getPosition(String id) {
+        int position = -1;
+        for (int i = 0; i < menuOptionList.size(); i++) {
+            if (menuOptionList.get(i).id.equals(id)) {
+                position = i;
+                break;
+            }
+        }
+        return position;
     }
 
     @Override
@@ -55,14 +118,26 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
     @Override
     public void onBindViewHolder(NavigationDrawerAdapter.ViewHolder holder, int position) {
-        holder.textView.setText(mContext.getResources().getString(mNavTitles[position]));
-        holder.imageView.setImageResource(mIcons[position]);
-        if (selectedItem == position) holder.itemView.setSelected(true);
+        holder.bind(menuOptionList.get(position), onNavigationClick);
     }
 
     @Override
     public int getItemCount() {
-        return mNavTitles.length;
+        return menuOptionList.size();
+    }
+
+    public static class MenuOption {
+        String id;
+        int icon;
+        String text;
+
+        public MenuOption(String id, int icon, String text) {
+            this.id = id;
+            this.icon = icon;
+            this.text = text;
+        }
+
+
     }
 
 }

@@ -27,21 +27,14 @@ import org.emoncms.myapps.settings.SettingsActivity;
 
 public class MainActivity extends BaseActivity
 {
-    Toolbar mToolbar;
-    DrawerLayout mDrawer;
+    private Toolbar mToolbar;
+    private DrawerLayout mDrawer;
 
-//    int TITLE_IDS[] = {R.string.me_title, R.string.ms_title, R.string.settings};
-//    int ICONS[] = {R.drawable.ic_my_electric_white_36dp, R.drawable.ic_my_electric_white_36dp, R.drawable.ic_settings_applications_white_36dp};
+    private RecyclerView mRecyclerView;
 
-    int TITLE_IDS[] = {R.string.me_title, R.string.settings};
-    int ICONS[] = {R.drawable.ic_my_electric_white_36dp, R.drawable.ic_settings_applications_white_36dp};
-
-    RecyclerView mRecyclerView;
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
-    boolean fullScreenRequested;
-    boolean isFirstRun;
-    Handler mFullscreenHandler = new Handler();
+    private boolean fullScreenRequested;
+    private boolean isFirstRun;
+    private Handler mFullscreenHandler = new Handler();
 
     private static final String PREF_APP_FIRST_RUN = "app_first_run";
 
@@ -49,9 +42,7 @@ public class MainActivity extends BaseActivity
         MyElectricView,
         MyElectricSettingsView,
         MySolarView,
-        MySolarSettingsView,
-        SettingsView,
-        AccountSettingsView
+        MySolarSettingsView
     }
 
     MyAppViews displayed_view;
@@ -77,55 +68,53 @@ public class MainActivity extends BaseActivity
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolbar);
 
+        setUpNavigation();
+
+
+
+        displayed_view = MyAppViews.MyElectricView;
+
+        if (savedInstanceState != null) {
+            displayed_view = MyAppViews.values()[savedInstanceState.getInt("displayed_fragment", 0)];
+        }
+
+        showFragment(displayed_view);
+
+        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(mOnSystemUiVisibilityChangeListener);
+
+        if (isFirstRun) {
+            mDrawer.openDrawer(GravityCompat.START);
+        }
+    }
+
+    private void setUpNavigation() {
+
         mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
-
-        if (mRecyclerView != null)
+        if (mRecyclerView != null) {
             mRecyclerView.setHasFixedSize(true);
+        }
 
-        mAdapter = new NavigationDrawerAdapter(this, TITLE_IDS, ICONS);
-        mRecyclerView.setAdapter(mAdapter);
-
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        final GestureDetector mGestureDetector = new GestureDetector(MainActivity.this, new GestureDetector.SimpleOnGestureListener() {
-            @Override public boolean onSingleTapUp(MotionEvent e) {
-                return true;
-            }
-        });
-
-        mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+        OnNavigationClick onNavClickListener = new OnNavigationClick() {
             @Override
-            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-                View child = recyclerView.findChildViewUnder(motionEvent.getX(),motionEvent.getY());
-
-                if(child!=null && mGestureDetector.onTouchEvent(motionEvent)){
-                    int position = recyclerView.getChildAdapterPosition(child);
-                    setSelectedNavigationItem(position);
-                    mDrawer.closeDrawers();
-
-                    switch (position) {
-                        case 0:
-                            showFragment(MyAppViews.MyElectricView);
-                            break;
-
-                        case 1:
-                            openSettingsActivity();
-                            break;
-                    }
-                    return true;
+            public void onClick(NavigationDrawerAdapter.MenuOption option) {
+                mDrawer.closeDrawers();
+                if (option.id.equals("settings")) {
+                    openSettingsActivity();
+                } else {
+                    setCurrentAccount(option.id);
+                    showFragment(MyAppViews.MyElectricView);
                 }
-                return false;
             }
+        };
 
-            @Override
-            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-            }
+        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(this, onNavClickListener);
+        mRecyclerView.setAdapter(adapter);
 
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-            }
-        });
+        EmonApplication.get().addAccountChangeListener(adapter);
+
+        RecyclerView.LayoutManager navLayoutManager = new LinearLayoutManager(this);
+
+        mRecyclerView.setLayoutManager(navLayoutManager);
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawer,mToolbar, R.string.open, R.string.close);
@@ -133,23 +122,18 @@ public class MainActivity extends BaseActivity
         mDrawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-        showFragment(MyAppViews.MyElectricView);
-
-        if (savedInstanceState != null)
-            displayed_view = MyAppViews.values()[savedInstanceState.getInt("displayed_fragment", 0)];
-
-        showFragment(displayed_view);
-
-        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(mOnSystemUiVisibilityChangeListener);
-
-        if (isFirstRun)
-            mDrawer.openDrawer(GravityCompat.START);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt("displayed_fragment", displayed_view.ordinal());
         super.onSaveInstanceState(outState);
+    }
+
+    private void setCurrentAccount(String accountId) {
+        EmonApplication.get().setCurrentAccount(accountId);
+        showFragment(MyAppViews.MyElectricView);
+
     }
 
     public boolean setFullScreen() {
@@ -220,14 +204,6 @@ public class MainActivity extends BaseActivity
         }
     };
 
-    private void setSelectedNavigationItem(int position) {
-        View selected_child = mRecyclerView.getChildAt(((NavigationDrawerAdapter) mAdapter).getSelectedItem());
-        if (selected_child != null) selected_child.setSelected(false);
-        ((NavigationDrawerAdapter) mAdapter).setSelectedItem(position);
-        selected_child = mRecyclerView.getChildAt(position);
-        selected_child.setSelected(true);
-    }
-
     @Override
     public void onBackPressed() {
 
@@ -235,25 +211,10 @@ public class MainActivity extends BaseActivity
         {
             showFragment(MyAppViews.MyElectricView);
 
-            setSelectedNavigationItem(0);
+           // setSelectedNavigationItem(0);
         }
         else
             super.onBackPressed();
-    }
-
-    public void showAccountSettings(int accountID) {
-        String tag = "tag_account_settingss_fragment" + accountID;
-        Fragment frag = getFragmentManager().findFragmentByTag(tag);
-        if (frag == null) {
-            frag = new AccountSettingsFragment();
-            Bundle args = new Bundle();
-            args.putInt("account",accountID);
-            frag.setArguments(args);
-        }
-        getFragmentManager().beginTransaction()
-                .replace(R.id.container, frag, tag)
-                .commit();
-
     }
 
     private void openSettingsActivity() {
@@ -273,18 +234,7 @@ public class MainActivity extends BaseActivity
                 if (frag == null)
                     frag = new MyElectricSettingsFragment();
                 break;
-            case MySolarView:
-                tag = getResources().getString(R.string.tag_ms_fragment);
-                frag = getFragmentManager().findFragmentByTag(tag);
-                if (frag == null)
-                    frag = new MySolarMainFragement();
-                break;
-            case MySolarSettingsView:
-                tag = getResources().getString(R.string.tag_ms_settings_fragment);
-                frag = getFragmentManager().findFragmentByTag(tag);
-                if (frag == null)
-                    frag = new MySolarSettingsFragment();
-                break;
+
             default:
                 tag = getResources().getString(R.string.tag_me_fragment);
                 frag = getFragmentManager().findFragmentByTag(tag);

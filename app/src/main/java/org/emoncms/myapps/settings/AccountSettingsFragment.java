@@ -78,7 +78,9 @@ public class AccountSettingsFragment extends PreferenceFragment implements Share
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
+        if (key.equals("emoncms_name")) {
+            EmonApplication.get().updateAccount(account, sharedPreferences.getString(key,"Name Not Set"));
+        }
     }
 
     @Override

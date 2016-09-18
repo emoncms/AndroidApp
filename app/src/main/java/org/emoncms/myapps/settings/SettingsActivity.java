@@ -78,10 +78,9 @@ public class SettingsActivity extends BaseActivity {
 
     private void addNewAccount() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String accountSettings = sharedPrefs.getString("accounts","");
 
         String newAccountId = UUID.randomUUID().toString();
-        EmonApplication.get().addAccount(newAccountId);
+        EmonApplication.get().addAccount(newAccountId,"emoncms" + EmonApplication.get().getAccounts().size());
 
         Log.d("Settings","Opening New account " + newAccountId);
 
@@ -104,6 +103,5 @@ public class SettingsActivity extends BaseActivity {
         }
         return( super.onOptionsItemSelected(item));
     }
-
 
 }

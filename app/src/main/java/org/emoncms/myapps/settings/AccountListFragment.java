@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Fragment shows a list of the API keys which have been added.
+ * Fragment shows a list of the Accounts which have been added.
  * Clicking on account goes to prefs for that account.
  *
  */
@@ -43,25 +43,12 @@ public class AccountListFragment extends ListFragment {
     private void loadCurrentAccounts() {
         accounts = new ArrayList<>();
 
-        /*
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-
-        String accountSettings = settings.getString("accounts","");
-        String[] accountIdList = accountSettings.split(",");
-        */
-
-        for (String accountId : EmonApplication.get().getAccounts()) {
-            accounts.add(loadAccount(accountId));
+        for (String accountId : EmonApplication.get().getAccounts().keySet()) {
+            accounts.add(new Account(accountId,EmonApplication.get().getAccounts().get(accountId)));
         }
 
         accountAdaptor = new AccountAdaptor(getActivity(),accounts);
         setListAdapter(accountAdaptor);
-    }
-
-    private Account loadAccount(String accountId) {
-        SharedPreferences settings = getActivity().getSharedPreferences("emoncms_account_" + accountId, Context.MODE_PRIVATE);
-        String accountName = settings.getString("emoncms_name","Account " + accountId);
-        return new Account(accountId,accountName);
     }
 
     @Override

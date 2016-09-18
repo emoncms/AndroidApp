@@ -1,6 +1,7 @@
 package org.emoncms.myapps;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -45,6 +46,8 @@ import com.github.mikephil.charting.formatter.XAxisValueFormatter;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import org.emoncms.myapps.chart.Chart1XAxisValueFormatter;
+import org.emoncms.myapps.chart.Chart1YAxisValueFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,7 +69,7 @@ public class MyElectricMainFragment extends Fragment
     static final int dailyChartUpdateInterval = 60000;
 
     static String emoncms_url;
-    static String emoncms_apikey;
+    String emoncms_apikey;
     static String powerCostSymbol;
     static float powerCost = 0;
     static float powerScale;
@@ -499,8 +502,10 @@ public class MyElectricMainFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Log.d("FRAGMENT","I am created");
+        //SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+        SharedPreferences sp = getActivity().getSharedPreferences(EmonApplication.getAccountSettingsFile(EmonApplication.get().getCurrentAccount()),Context.MODE_PRIVATE);
         emoncms_url = sp.getBoolean(getString(R.string.setting_usessl), false) ? "https://" : "http://";
         emoncms_url += sp.getString(getString(R.string.setting_url), "emoncms.org");
         emoncms_apikey = sp.getString(getString(R.string.setting_apikey), null);
@@ -852,31 +857,9 @@ public class MyElectricMainFragment extends Fragment
         }
     };
 
-    public class Chart1XAxisValueFormatter implements XAxisValueFormatter
-    {
-        @Override
-        public String getXValue(String original, int index, ViewPortHandler viewPortHandler)
-        {
-            DateFormat df = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-            Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(Long.parseLong(original));
-            return (df.format(cal.getTime()));
-        }
-    }
 
-    public class Chart1YAxisValueFormatter implements YAxisValueFormatter
-    {
-        private DecimalFormat mFormat;
 
-        public Chart1YAxisValueFormatter () {
-            mFormat = new DecimalFormat("###,###,##0"); // use one decimal
-        }
 
-        @Override
-        public String getFormattedValue(float value, YAxis yAxis) {
-            return mFormat.format(value);
-        }
-    }
 
     public class Chart2ValueFormatter implements ValueFormatter
     {

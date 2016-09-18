@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "org.emoncms.myapps"
+        applicationId "org.emoncms.myapps.demo"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 127

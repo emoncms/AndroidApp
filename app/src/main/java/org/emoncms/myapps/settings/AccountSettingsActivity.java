@@ -103,5 +103,4 @@ public class AccountSettingsActivity extends BaseActivity {
         onBackPressed();
     }
 
-
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">emoncms</string>
+    <string name="app_name" translatable="false">emoncms demo</string>
     <string name="google_app_id" translatable="false">605929908164</string>
 
     <string name="tag_settings_fragment" translatable="false">settings_fragment</string>
