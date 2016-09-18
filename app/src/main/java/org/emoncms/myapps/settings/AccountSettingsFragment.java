@@ -95,14 +95,16 @@ public class AccountSettingsFragment extends PreferenceFragment implements Share
                     Matcher matcher = pattern.matcher(barcode.displayValue);
 
                     if (matcher.matches() && matcher.groupCount() == 3) {
-                        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+                        SharedPreferences sp = EmonApplication.get().getSharedPreferences(account);
+
+
                         SharedPreferences.Editor se = sp.edit();
                         se.putString(getString(R.string.setting_url), matcher.group(2));
                         se.putString(getString(R.string.setting_apikey), matcher.group(3));
                         se.putBoolean(getString(R.string.setting_usessl), matcher.group(1).equalsIgnoreCase("https"));
                         se.apply();
                         setPreferenceScreen(null);
-                        addPreferencesFromResource(R.xml.main_preferences);
+                        addPreferencesFromResource(R.xml.account_preferences);
 
                         Snackbar sn = Snackbar.make(getView(), R.string.qr_code_success,
                                 Snackbar.LENGTH_LONG);

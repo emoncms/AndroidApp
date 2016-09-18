@@ -46,7 +46,7 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
         addPreferencesFromResource(R.xml.me_preferences);
         String prefsFileName = EmonApplication.getAccountSettingsFile(EmonApplication.get().getCurrentAccount());
         getPreferenceManager().setSharedPreferencesName(prefsFileName);
-        sp = getActivity().getSharedPreferences(EmonApplication.getAccountSettingsFile(EmonApplication.get().getCurrentAccount()), Context.MODE_PRIVATE);
+        sp = EmonApplication.get().getSharedPreferences(EmonApplication.get().getCurrentAccount());
 
         loadValues();
         powerFeedPreference = (ListPreference) this.findPreference("myelectric_power_feed");

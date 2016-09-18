@@ -1,7 +1,6 @@
 package org.emoncms.myapps;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -46,8 +45,6 @@ import com.github.mikephil.charting.formatter.XAxisValueFormatter;
 import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import org.emoncms.myapps.chart.Chart1XAxisValueFormatter;
-import org.emoncms.myapps.chart.Chart1YAxisValueFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,24 +65,24 @@ public class MyElectricMainFragment extends Fragment
     static final String kwh_default_feed_name = "use_kwh";
     static final int dailyChartUpdateInterval = 60000;
 
-    static String emoncms_url;
-    String emoncms_apikey;
-    static String powerCostSymbol;
-    static float powerCost = 0;
-    static float powerScale;
-    float dpWidth = 0;
+    private String emoncms_url;
+    private String emoncms_apikey;
+    private String powerCostSymbol;
+    private float powerCost = 0;
+    private float powerScale;
+    private float dpWidth = 0;
 
-    TextView txtPower;
-    TextView txtUseToday;
-    LineChart chart1;
-    BarChart chart2;
-    Button chart1_3h;
-    Button chart1_6h;
-    Button chart1_D;
-    Button chart1_W;
-    Button chart1_M;
-    SwitchCompat costSwitch;
-    Handler mHandler = new Handler();
+    private TextView txtPower;
+    private TextView txtUseToday;
+    private LineChart chart1;
+    private BarChart chart2;
+    private Button chart1_3h;
+    private Button chart1_6h;
+    private Button chart1_D;
+    private Button chart1_W;
+    private Button chart1_M;
+    private SwitchCompat costSwitch;
+    private Handler mHandler = new Handler();
 
     int wattFeedId = 0;
     int kWhFeelId = 0;
@@ -502,10 +499,11 @@ public class MyElectricMainFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        Log.d("FRAGMENT","I am created");
-        //SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
 
-        SharedPreferences sp = getActivity().getSharedPreferences(EmonApplication.getAccountSettingsFile(EmonApplication.get().getCurrentAccount()),Context.MODE_PRIVATE);
+        //SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+        SharedPreferences sp = EmonApplication.get().getSharedPreferences(EmonApplication.get().getCurrentAccount());
+
+
         emoncms_url = sp.getBoolean(getString(R.string.setting_usessl), false) ? "https://" : "http://";
         emoncms_url += sp.getString(getString(R.string.setting_url), "emoncms.org");
         emoncms_apikey = sp.getString(getString(R.string.setting_apikey), null);
@@ -857,9 +855,31 @@ public class MyElectricMainFragment extends Fragment
         }
     };
 
+    public class Chart1XAxisValueFormatter implements XAxisValueFormatter
+    {
+        @Override
+        public String getXValue(String original, int index, ViewPortHandler viewPortHandler)
+        {
+            DateFormat df = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(Long.parseLong(original));
+            return (df.format(cal.getTime()));
+        }
+    }
 
+    public class Chart1YAxisValueFormatter implements YAxisValueFormatter
+    {
+        private DecimalFormat mFormat;
 
+        public Chart1YAxisValueFormatter () {
+            mFormat = new DecimalFormat("###,###,##0"); // use one decimal
+        }
 
+        @Override
+        public String getFormattedValue(float value, YAxis yAxis) {
+            return mFormat.format(value);
+        }
+    }
 
     public class Chart2ValueFormatter implements ValueFormatter
     {

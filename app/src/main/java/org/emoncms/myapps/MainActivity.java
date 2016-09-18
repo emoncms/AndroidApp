@@ -102,7 +102,6 @@ public class MainActivity extends BaseActivity
                     openSettingsActivity();
                 } else {
                     setCurrentAccount(option.id);
-                    showFragment(MyAppViews.MyElectricView);
                 }
             }
         };
@@ -236,7 +235,7 @@ public class MainActivity extends BaseActivity
                 break;
 
             default:
-                tag = getResources().getString(R.string.tag_me_fragment);
+                tag = getResources().getString(R.string.tag_me_fragment) + "_" + EmonApplication.get().getCurrentAccount();;
                 frag = getFragmentManager().findFragmentByTag(tag);
                 if (frag == null)
                     frag = new MyElectricMainFragment();
