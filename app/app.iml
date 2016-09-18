@@ -118,19 +118,19 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="design-23.4.0" level="project" />
-    <orderEntry type="library" exported="" name="appcompat-v7-23.4.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-base-9.0.0" level="project" />
-    <orderEntry type="library" exported="" name="firebase-common-9.0.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-tasks-9.0.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-basement-9.0.0" level="project" />
-    <orderEntry type="library" exported="" name="support-vector-drawable-23.4.0" level="project" />
-    <orderEntry type="library" exported="" name="recyclerview-v7-23.4.0" level="project" />
-    <orderEntry type="library" exported="" name="volley-1.0.0" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-23.4.0" level="project" />
-    <orderEntry type="library" exported="" name="animated-vector-drawable-23.4.0" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-23.4.0" level="project" />
-    <orderEntry type="library" exported="" name="MPAndroidChart-v2.2.5" level="project" />
     <orderEntry type="library" exported="" name="play-services-vision-9.0.0" level="project" />
+    <orderEntry type="library" exported="" name="design-23.4.0" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-23.4.0" level="project" />
+    <orderEntry type="library" exported="" name="MPAndroidChart-v2.2.5" level="project" />
+    <orderEntry type="library" exported="" name="play-services-basement-9.0.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-base-9.0.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-tasks-9.0.0" level="project" />
+    <orderEntry type="library" exported="" name="animated-vector-drawable-23.4.0" level="project" />
+    <orderEntry type="library" exported="" name="volley-1.0.0" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-23.4.0" level="project" />
+    <orderEntry type="library" exported="" name="recyclerview-v7-23.4.0" level="project" />
+    <orderEntry type="library" exported="" name="support-vector-drawable-23.4.0" level="project" />
+    <orderEntry type="library" exported="" name="firebase-common-9.0.0" level="project" />
+    <orderEntry type="library" exported="" name="appcompat-v7-23.4.0" level="project" />
   </component>
 </module>
