@@ -48,7 +48,7 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.setting_keepscreenon))) {
-            ((MainActivity) getActivity()).setKeepScreenOn(sharedPreferences.getBoolean(getString(R.string.setting_keepscreenon), false));
+            //((MainActivity) getActivity()).setKeepScreenOn(sharedPreferences.getBoolean(getString(R.string.setting_keepscreenon), false));
         } else if (key.equals(getString(R.string.setting_language))) {
             getActivity().finish();
             Intent intent = new Intent(getActivity(), MainActivity.class);

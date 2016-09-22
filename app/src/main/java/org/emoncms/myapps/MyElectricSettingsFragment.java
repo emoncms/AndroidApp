@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -41,16 +42,19 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        // Load the preferences from an XML resource
-        addPreferencesFromResource(R.xml.me_preferences);
         String prefsFileName = EmonApplication.getAccountSettingsFile(EmonApplication.get().getCurrentAccount());
         getPreferenceManager().setSharedPreferencesName(prefsFileName);
+        // Load the preferences from an XML resource
+        addPreferencesFromResource(R.xml.me_preferences);
+
         sp = EmonApplication.get().getSharedPreferences(EmonApplication.get().getCurrentAccount());
 
         loadValues();
+
         powerFeedPreference = (ListPreference) this.findPreference("myelectric_power_feed");
         kWhFeedPreference = (ListPreference) this.findPreference("myelectric_kwh_feed");
+
+
         updateFeedList();
     }
 
@@ -89,6 +93,8 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
         emoncmsProtocol = sp.getBoolean("emoncms_usessl", false) ? "https://" : "http://";
         emoncmsURL = sp.getString("emoncms_url", "");
         emoncmsAPIKEY = sp.getString("emoncms_apikey", "");
+
+        Log.d("PREF URL", emoncmsURL);
     }
 
     private void updateFeedList() {

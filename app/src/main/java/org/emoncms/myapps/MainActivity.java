@@ -87,6 +87,13 @@ public class MainActivity extends BaseActivity
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        setKeepScreenOn(sp.getBoolean(getString(R.string.setting_keepscreenon), false));
+    }
+
     private void setUpNavigation() {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);

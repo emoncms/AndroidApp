@@ -1,5 +1,5 @@
 <resources>
-    <string-array name="escale_text">
+    <string-array name="escale_text" translatable="false">
         <item>@string/kwh_elapsed</item>
         <item>@string/wh_elapsed</item>
     </string-array>
@@ -41,7 +41,7 @@
         <item>French</item>
     </string-array>
 
-    <string-array name="language_values">
+    <string-array name="language_values" translatable="false">
         <item>@string/setting_language</item>
         <item>en</item>
         <item>fr</item>

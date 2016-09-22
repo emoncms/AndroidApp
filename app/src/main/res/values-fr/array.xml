@@ -1,0 +1,10 @@
+<resources>
+
+    <string-array name="language_text">
+        <item>System Default</item>
+        <item>Anglais</item>
+        <item>Français</item>
+    </string-array>
+
+
+</resources>

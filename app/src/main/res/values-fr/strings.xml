@@ -88,4 +88,9 @@
     <string name="settings_title_myelectric_escale">Wh or kWh Feed FR</string>
     <string name="settings_title_myelectric_unit_cost">Cost FR</string>
     <string name="settings_title_myelectric_cost_symbol">Cost Unit FR</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="accounts">Accounts</string>
+    <string name="settings_summary_emoncms_name">Short name for the account for easy identification FR</string>
+    <string name="settings_title_delete_account">Delete Account FR</string>
+    <string name="settings_title_emoncms_name">Account Name FR</string>
 </resources>
