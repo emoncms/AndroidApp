@@ -39,7 +39,7 @@ public class AccountSettingsFragment extends PreferenceFragment implements Share
 
         account = getArguments().getString("account");
 
-        getPreferenceManager().setSharedPreferencesName(ACCOUNT_PREFS_FILE + account);
+        getPreferenceManager().setSharedPreferencesName(EmonApplication.getAccountSettingsFile(account));
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.account_preferences);
     }

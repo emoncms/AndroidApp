@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Extend Application so it can hold the list of active accounts
@@ -67,12 +68,21 @@ public class EmonApplication extends Application {
         listeners.add(listener);
     }
 
-    public void addAccount(String accountId, String accountName) {
+    public String addAccount() {
+
+        String accountId = UUID.randomUUID().toString();
+        String accountName = "emoncms" + (EmonApplication.get().getAccounts().size() + 1);
+
+        SharedPreferences sharedPrefs = getSharedPreferences(accountId);
+        sharedPrefs.edit().putString("emoncms_name", accountName).apply();
+
         accounts.put(accountId,accountName);
+
         for (AccountListChangeListener listener : listeners) {
             listener.onAddAccount(accountId,accountName);
         }
         writeAccountList();
+        return accountId;
     }
 
     public void updateAccount(String accountId, String accountName) {

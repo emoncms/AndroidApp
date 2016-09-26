@@ -226,7 +226,7 @@ public class MyElectricMainFragment extends Fragment
                         @Override
                         public void onErrorResponse(VolleyError error)
                         {
-                            snackbar.setText(R.string.connection_error)
+                            snackbar.setText(R.string.connection_error + error.getMessage())
                                 .setDuration(Snackbar.LENGTH_INDEFINITE)
                                 .show();
                             mHandler.postDelayed(mGetPowerRunner, 5000);
@@ -357,7 +357,7 @@ public class MyElectricMainFragment extends Fragment
                         @Override
                         public void onErrorResponse(VolleyError error)
                         {
-                            snackbar.setText(R.string.connection_error)
+                            snackbar.setText(R.string.connection_error + error.getMessage())
                                     .setDuration(Snackbar.LENGTH_INDEFINITE)
                                     .show();
                             mHandler.postDelayed(mGetUsageByDayRunner, 5000);
@@ -465,7 +465,7 @@ public class MyElectricMainFragment extends Fragment
                 @Override
                 public void onErrorResponse(VolleyError error)
                 {
-                    snackbar.setText(R.string.connection_error)
+                    snackbar.setText(R.string.connection_error +  error.getMessage())
                             .setDuration(Snackbar.LENGTH_INDEFINITE)
                             .show();
                     mHandler.postDelayed(mGetPowerHistoryRunner, 5000);
@@ -794,7 +794,7 @@ public class MyElectricMainFragment extends Fragment
     {
         super.onResume();
 
-        if (emoncms_apikey == null || emoncms_apikey.equals(""))
+        if (emoncms_apikey == null || emoncms_apikey.equals("") || emoncms_url == null || emoncms_url.equals(""))
             snackbar.setText(R.string.server_not_configured).show();
         else if (wattFeedId == -1 || kWhFeelId == -1)
             mHandler.post(mGetFeedsRunner);
