@@ -27,8 +27,8 @@ public class UpgradeManager
             if (previousVersionCode < 123) // Version 1.1.10
                 upgrade_0_to_123(mActivity, sp);
 
-            if (previousVersionCode < 127) // Version 1.1.10
-                upgrade_123_to_124(mActivity, sp);
+            if (previousVersionCode < 128) // Version 1.1.10
+                upgradeToMultiAccount(mActivity, sp);
         }
 
         sp.edit().putInt("version_code", currentVersionCode).apply();
@@ -53,7 +53,7 @@ public class UpgradeManager
         }
     }
 
-    public static void upgrade_123_to_124(Activity mActivity, SharedPreferences sp) {
+    public static void upgradeToMultiAccount(Activity mActivity, SharedPreferences sp) {
 
 
         String accountId = EmonApplication.get().addAccount();
@@ -91,8 +91,8 @@ public class UpgradeManager
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setTitle("Multiple Accounts Supported");
         builder.setMessage(
-                "This application has been upgraded to support multiple accounts. " +
-                        "Your existing settings have been migrated to the first account. ");
+                "Application has been upgraded to support multiple accounts. " +
+                        "Your settings have been migrated. ");
         builder.setPositiveButton(android.R.string.ok, null);
         builder.create().show();
 
