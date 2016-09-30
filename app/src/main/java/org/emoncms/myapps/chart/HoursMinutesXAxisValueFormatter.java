@@ -9,7 +9,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 
-public class Chart1XAxisValueFormatter implements XAxisValueFormatter
+public class HoursMinutesXAxisValueFormatter implements XAxisValueFormatter
 {
     @Override
     public String getXValue(String original, int index, ViewPortHandler viewPortHandler)

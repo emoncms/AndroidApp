@@ -210,18 +210,7 @@ public class MainActivity extends BaseActivity
         }
     };
 
-    @Override
-    public void onBackPressed() {
 
-        if (getFragmentManager().findFragmentByTag(getResources().getString(R.string.tag_me_fragment)) == null)
-        {
-            showFragment(MyAppViews.MyElectricView);
-
-           // setSelectedNavigationItem(0);
-        }
-        else
-            super.onBackPressed();
-    }
 
     private void openSettingsActivity() {
         Intent intent = new Intent(this,SettingsActivity.class);

@@ -9,13 +9,13 @@
             android:title="@string/settings_title_keep_screen_on"
             android:summary="@string/settings_summary_keep_screen_on" />
 
-        <ListPreference
+        <!--<ListPreference
             android:key="language"
             android:title="Language"
             android:summary="Select Language"
             android:entries="@array/language_text"
             android:entryValues="@array/language_values" />
-            android:defaultValue="language"/>
+            android:defaultValue="language"/>-->
     </PreferenceCategory>
 
 </PreferenceScreen>

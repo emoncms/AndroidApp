@@ -5,11 +5,11 @@ import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 
 import java.text.DecimalFormat;
 
-public class Chart1YAxisValueFormatter implements YAxisValueFormatter {
+public class IntegerYAxisValueFormatter implements YAxisValueFormatter {
 
     private DecimalFormat mFormat;
 
-    public Chart1YAxisValueFormatter() {
+    public IntegerYAxisValueFormatter() {
         mFormat = new DecimalFormat("###,###,##0"); // use one decimal
     }
 

@@ -16,7 +16,6 @@ import org.emoncms.myapps.R;
  * Preferences which apply to the whole application
  */
 public class AppSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
-    private static final int RC_BARCODE_CAPTURE = 9001;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

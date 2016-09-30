@@ -1,12 +1,10 @@
 package org.emoncms.myapps;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -26,8 +24,7 @@ import java.util.List;
 /**
  * Fragment for setting the feed settings for the account
  */
-public class MyElectricSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener
-{
+public class MyElectricSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     static final String TAG = "MESETTINGSFRAGMENT";
 
     private String emoncmsProtocol;
@@ -39,8 +36,7 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
     SharedPreferences sp;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String prefsFileName = EmonApplication.getAccountSettingsFile(EmonApplication.get().getCurrentAccount());
         getPreferenceManager().setSharedPreferencesName(prefsFileName);
@@ -82,8 +78,7 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals("emoncms_url") || key.equals("emoncms_apikey") || key.equals("emoncms_usessl"))
-        {
+        if (key.equals("emoncms_url") || key.equals("emoncms_apikey") || key.equals("emoncms_usessl")) {
             loadValues();
             updateFeedList();
         }
@@ -99,23 +94,19 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
 
     private void updateFeedList() {
         if (!emoncmsURL.equals("") && !emoncmsAPIKEY.equals(""))
-            mHandler.post(mRunnable);
+            mHandler.post(runnableFeedLoader);
     }
 
-    private Runnable mRunnable = new Runnable()
-    {
+    private Runnable runnableFeedLoader = new Runnable() {
 
         @Override
-        public void run()
-        {
+        public void run() {
             String url = String.format("%s%s/feed/list.json?apikey=%s", emoncmsProtocol, emoncmsURL, emoncmsAPIKEY);
 
             JsonArrayRequest jsArrayRequest = new JsonArrayRequest
-                    (url, new Response.Listener<JSONArray>()
-                    {
+                    (url, new Response.Listener<JSONArray>() {
                         @Override
-                        public void onResponse(JSONArray response)
-                        {
+                        public void onResponse(JSONArray response) {
 
                             List<String> powerEntryList = new ArrayList<>();
                             List<String> powerEntryValueList = new ArrayList<>();
@@ -129,11 +120,9 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
                             kwhFeedEntryList.add("AUTO");
                             kwhFeedEntryValueList.add("-1");
 
-                            for (int i = 0; i < response.length(); i++)
-                            {
+                            for (int i = 0; i < response.length(); i++) {
                                 JSONObject row;
-                                try
-                                {
+                                try {
                                     row = response.getJSONObject(i);
 
                                     String id = row.getString("id");
@@ -142,17 +131,14 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
 
 
                                     if (engineType == 2 ||
-                                        engineType == 5 ||
-                                        engineType == 6)
-                                    {
+                                            engineType == 5 ||
+                                            engineType == 6) {
                                         powerEntryList.add(name);
                                         powerEntryValueList.add(id);
                                         kwhFeedEntryList.add(name);
                                         kwhFeedEntryValueList.add(id);
                                     }
-                                }
-                                catch (JSONException e)
-                                {
+                                } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -162,24 +148,20 @@ public class MyElectricSettingsFragment extends PreferenceFragment implements Sh
                             CharSequence kwhFeedEntries[] = kwhFeedEntryList.toArray(new CharSequence[kwhFeedEntryList.size()]);
                             CharSequence kwhFeedEntryValues[] = kwhFeedEntryValueList.toArray(new CharSequence[kwhFeedEntryValueList.size()]);
 
-                            if (powerEntries.length > 1 && powerEntryValues.length > 1)
-                            {
+                            if (powerEntries.length > 1 && powerEntryValues.length > 1) {
                                 powerFeedPreference.setEntries(powerEntries);
                                 powerFeedPreference.setEntryValues(powerEntryValues);
                                 powerFeedPreference.setEnabled(true);
                             }
-                            if (kwhFeedEntries.length > 1 && kwhFeedEntryValues.length > 1)
-                            {
+                            if (kwhFeedEntries.length > 1 && kwhFeedEntryValues.length > 1) {
                                 kWhFeedPreference.setEntries(kwhFeedEntries);
                                 kWhFeedPreference.setEntryValues(kwhFeedEntryValues);
                                 kWhFeedPreference.setEnabled(true);
                             }
                         }
-                    }, new Response.ErrorListener()
-                    {
+                    }, new Response.ErrorListener() {
                         @Override
-                        public void onErrorResponse(VolleyError error)
-                        {
+                        public void onErrorResponse(VolleyError error) {
                             powerFeedPreference.setEnabled(false);
                             kWhFeedPreference.setEnabled(false);
 

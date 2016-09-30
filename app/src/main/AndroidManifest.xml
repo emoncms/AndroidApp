@@ -29,6 +29,7 @@
 
         <activity android:name=".settings.SettingsActivity"/>
         <activity android:name=".settings.AccountSettingsActivity"/>
+        <activity android:name=".MyElectricSettingsActivity"/>
         <activity android:name=".barcodescanner.BarcodeCaptureActivity"/>
 
             <!--android:screenOrientation="landscape"-->
