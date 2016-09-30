@@ -25,8 +25,6 @@ public class PowerChart {
         
         setFormatting();
         setupDataSet();
-
-        
         
     }
     
