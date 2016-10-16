@@ -8,8 +8,12 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.Entry;
 
 import org.emoncms.myapps.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class to handle the PowerChart display
@@ -18,29 +22,133 @@ public class PowerChart {
 
     private final Context context;
     private LineChart powerChart;
+    private ArrayList<String> chartLabels;
+    private List<Double> chartValues;
+
+    private int powerChartLength = -6;
+    private boolean requiresReset = false;
+
+    private LineData powerData;
 
     public PowerChart(LineChart powerChart,  Context context) {
         this.powerChart = powerChart;
         this.context = context;
+
+        chartLabels = new ArrayList<>();
+        chartValues = new ArrayList<>();
         
         setFormatting();
-        setupDataSet();
+        powerData = createDataSet();
         
     }
+
+    public ArrayList<String> getLabels() {
+        return chartLabels;
+    }
+
+    public List<Double> getValues() {
+        return chartValues;
+    }
+
+    public void clearData() {
+        chartLabels.clear();
+        chartValues.clear();
+    }
+
+    public void setChartLength(int length) {
+        powerChartLength = length;
+        requiresReset = true;
+    }
+
+    public int getChartLength() {
+        return powerChartLength;
+    }
+
+    public boolean requiresReset() {
+        return requiresReset;
+    }
+
+    public void restoreData(ArrayList<String> savedChartLabels, double[] savedChartValues) {
+        if (validNonNullSavedData(savedChartLabels, savedChartValues)) {
+
+            chartLabels = savedChartLabels;
+            for (int i = 0; i < chartLabels.size(); i++) {
+                chartValues.add(savedChartValues[i]);
+            }
+        }
+
+        refreshChart();
+    }
+
+    /**
+     * Updates the chart to use the current contents of Labels and Data
+     */
+    public void refreshChart() {
+
+        powerData.getXVals().clear();
+        LineDataSet dataSet = (LineDataSet) powerData.getDataSetByLabel("watts", true);
+        dataSet.clear();
+
+        for (int i = 0; i < chartLabels.size(); i++) {
+            powerData.addXValue(chartLabels.get(i));
+            powerData.addEntry(new Entry(chartValues.get(i).floatValue(), i), 0);
+        }
+
+        if (requiresReset) {
+            powerChart.fitScreen();
+        }
+        requiresReset = false;
+        notifyDataChanged();
+    }
+
+    /**
+     * Adds a point at the end of the data set
+     * @param label
+     * @param data
+     */
+    public void addData(String label, double data) {
+        chartLabels.add(label);
+        chartValues.add(data);
+    }
+
+    /**
+     * Removes a point at the beginning of the dataset
+     */
+    public void removeFirstPoint() {
+        chartLabels.remove(0);
+        chartValues.remove(0);
+    }
+
+    private void notifyDataChanged() {
+        powerData.notifyDataChanged();
+        powerChart.notifyDataSetChanged();
+        powerChart.invalidate();
+    }
+
+
+
+    private boolean validNonNullSavedData(List<String> savedChartLabels, double[] savedChartValues) {
+        return (savedChartLabels != null && savedChartValues != null
+                && savedChartLabels.size() > 0
+                && savedChartLabels.size() == savedChartValues.length);
+    }
+
+
     
-    private void setupDataSet() {
-        LineDataSet chart1_dataset = new LineDataSet(null, "watts");
-        chart1_dataset.setColor(ContextCompat.getColor(context, R.color.chartBlue));
-        chart1_dataset.setValueTextColor(ContextCompat.getColor(context, R.color.lightGrey));
-        chart1_dataset.setDrawCircles(false);
-        chart1_dataset.setDrawFilled(true);
-        chart1_dataset.setFillColor(ContextCompat.getColor(context, R.color.chartBlue));
-        chart1_dataset.setDrawValues(false);
-        chart1_dataset.setValueTextSize(ContextCompat.getColor(context, R.integer.chartValueTextSize));
-        chart1_dataset.setHighlightEnabled(false);
-        LineData chart1_linedata = new LineData();
-        chart1_linedata.addDataSet(chart1_dataset);
-        powerChart.setData(chart1_linedata);
+    private LineData createDataSet() {
+        LineDataSet powerDataset = new LineDataSet(null, "watts");
+        powerDataset.setColor(ContextCompat.getColor(context, R.color.chartBlue));
+        powerDataset.setValueTextColor(ContextCompat.getColor(context, R.color.lightGrey));
+        powerDataset.setDrawCircles(false);
+        powerDataset.setDrawFilled(true);
+        powerDataset.setFillColor(ContextCompat.getColor(context, R.color.chartBlue));
+        powerDataset.setDrawValues(false);
+        powerDataset.setValueTextSize(ContextCompat.getColor(context, R.integer.chartValueTextSize));
+        powerDataset.setHighlightEnabled(false);
+        LineData ld = new LineData();
+        ld.addDataSet(powerDataset);
+        powerChart.setData(ld);
+        return  ld;
     }
     
     private void setFormatting() {
@@ -71,4 +179,6 @@ public class PowerChart {
         xAxis.setSpaceBetweenLabels(0);
         xAxis.setTextSize(context.getResources().getInteger(R.integer.chartDateTextSize));
     }
+
+
 }
