@@ -39,11 +39,13 @@
         <item>@string/system_default</item>
         <item>@string/english</item>
         <item>@string/french</item>
+        <item>@string/german</item>
     </string-array>
 
     <string-array name="language_values" translatable="false">
         <item>@string/setting_language</item>
         <item>en</item>
         <item>fr</item>
+        <item>de</item>
     </string-array>
 </resources>
