@@ -14,6 +14,9 @@
     <string name="setting_keepscreenon" translatable="false">keep_screen_on</string>
     <string name="setting_language" translatable="false">language</string>
 
+    <string name="english" translatable="false">English</string>
+    <string name="french" translatable="false">Français</string>
+
     //
     //  TRANSLATABLE
     //
@@ -98,6 +101,8 @@
     <string name="settings_summary_emoncms_usessl">Connect using https, supported by emoncms.org NOT emonPi"</string>
     <string name="settings_title_keep_screen_on">Keep Screen On</string>
     <string name="settings_summary_keep_screen_on">Stops the device screen powering off</string>
+    <string name="settings_title_language">Language</string>
+    <string name="settings_summary_language">Select Language</string>
 
     <string name="settings_title_myelectric_feeds">Feeds</string>
     <string name="settings_title_myelectric_currency">Currency</string>
@@ -107,4 +112,5 @@
     <string name="settings_title_myelectric_unit_cost">Cost</string>
     <string name="settings_title_myelectric_cost_symbol">Cost Unit</string>
 
+    <string name="system_default">System Default</string>
 </resources>

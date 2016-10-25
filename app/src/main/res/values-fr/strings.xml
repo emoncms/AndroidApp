@@ -80,6 +80,8 @@
     <string name="settings_summary_emoncms_usessl">Connect using https, supported by emoncms.org NOT emonPi FR</string>
     <string name="settings_title_keep_screen_on">Keep Screen On FR</string>
     <string name="settings_summary_keep_screen_on">Stops the device screen powering off FR</string>
+    <string name="settings_title_language">Langue</string>
+    <string name="settings_summary_language">Choisir la Langue</string>
 
     <string name="settings_title_myelectric_feeds">Feeds FR</string>
     <string name="settings_title_myelectric_currency">Currency FR</string>
@@ -88,4 +90,6 @@
     <string name="settings_title_myelectric_escale">Wh or kWh Feed FR</string>
     <string name="settings_title_myelectric_unit_cost">Cost FR</string>
     <string name="settings_title_myelectric_cost_symbol">Cost Unit FR</string>
+
+    <string name="system_default">Défaillance du Système</string>
 </resources>

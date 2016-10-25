@@ -55,7 +55,11 @@ public class MainActivity extends BaseActivity
     {
         UpgradeManager.doUpgrade(this);
 
+        PreferenceManager.setDefaultValues(this, R.xml.main_preferences,false);
+        PreferenceManager.setDefaultValues(this, R.xml.me_preferences,false);
+
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
         isFirstRun = sp.getBoolean(PREF_APP_FIRST_RUN, true);
         sp.edit().putBoolean(PREF_APP_FIRST_RUN, false).apply();
 

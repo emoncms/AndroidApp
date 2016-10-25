@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -25,6 +26,7 @@ import android.view.View.OnLayoutChangeListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -32,6 +34,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -40,9 +43,8 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.formatter.XAxisValueFormatter;
-import com.github.mikephil.charting.formatter.YAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.json.JSONArray;
@@ -50,7 +52,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -74,8 +75,6 @@ public class MyElectricMainFragment extends Fragment
 
     TextView txtPower;
     TextView txtUseToday;
-    LineChart chart1;
-    BarChart chart2;
     Button chart1_3h;
     Button chart1_6h;
     Button chart1_D;
@@ -97,7 +96,7 @@ public class MyElectricMainFragment extends Fragment
     ArrayList<Double> chart1_values;
     ArrayList<String> chart2_labels;
     ArrayList<Double> chart2_values;
-    int [] chart2_colors;
+    int[] chart2_colors;
 
     double powerNow = 0;
     double powerToday = 0;
@@ -111,7 +110,7 @@ public class MyElectricMainFragment extends Fragment
         @Override
         public void run()
         {
-            String url = String.format(getActivity().getResources().getConfiguration().locale, "%s/feed/list.json?apikey=%s", emoncms_url, emoncms_apikey);
+            String url = String.format(Locale.US, "%s/feed/list.json?apikey=%s", emoncms_url, emoncms_apikey);
             Log.i("EMONCMS:URL", "mGetFeedsRunner:"+url);
 
             JsonArrayRequest jsArrayRequest = new JsonArrayRequest
@@ -168,7 +167,7 @@ public class MyElectricMainFragment extends Fragment
         @Override
         public void run()
         {
-            String url = String.format(getActivity().getResources().getConfiguration().locale, "%s/feed/fetch.json?apikey=%s&ids=%d,%d", emoncms_url, emoncms_apikey, wattFeedId, kWhFeelId);
+            String url = String.format(Locale.US, "%s/feed/fetch.json?apikey=%s&ids=%d,%d", emoncms_url, emoncms_apikey, wattFeedId, kWhFeelId);
             Log.i("EMONCMS:URL", "mGetPowerRunner:"+url);
             JsonArrayRequest jsArrayRequest = new JsonArrayRequest
                     (url, new Response.Listener<JSONArray>()
@@ -259,9 +258,9 @@ public class MyElectricMainFragment extends Fragment
             final long chart2StartTime = start * 1000;
 
             // New
-//            String url = String.format(getActivity().getResources().getConfiguration().locale, "%s/feed/data.json?apikey=%s&id=%d&start=%d&end=%d&mode=daily", emoncms_url, emoncms_apikey, kWhFeelId, chart2StartTime, chart2EndTime);
+//            String url = String.format(Locale.US, "%s/feed/data.json?apikey=%s&id=%d&start=%d&end=%d&mode=daily", emoncms_url, emoncms_apikey, kWhFeelId, chart2StartTime, chart2EndTime);
             // Old
-            String url = String.format("%s/feed/data.json?apikey=%s&id=%d&start=%d&end=%d&interval=86400&skipmissing=1&limitinterval=1", emoncms_url, emoncms_apikey, kWhFeelId, chart2StartTime, chart2EndTime);
+            String url = String.format(Locale.US, "%s/feed/data.json?apikey=%s&id=%d&start=%d&end=%d&interval=86400&skipmissing=1&limitinterval=1", emoncms_url, emoncms_apikey, kWhFeelId, chart2StartTime, chart2EndTime);
             Log.i("EMONCMS:URL", "mDaysofWeekRunner:"+url);
 
             JsonArrayRequest jsArrayRequest = new JsonArrayRequest
@@ -306,8 +305,8 @@ public class MyElectricMainFragment extends Fragment
                                 chart2_labels.add(dayOfWeekInitials[calendar.get(Calendar.DAY_OF_WEEK)-1]);
                                 chart2_values.add(power.get(i + 1) - power.get(i));
 
-                                if (calendar.get(Calendar.DAY_OF_WEEK) == 1 ||
-                                        calendar.get(Calendar.DAY_OF_WEEK) == 7)
+                                if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY ||
+                                        calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)
                                     chart2_colors[i] = ContextCompat.getColor(getActivity(), R.color.chartBlueDark);
                                 else
                                     chart2_colors[i] = ContextCompat.getColor(getActivity(), R.color.chartBlue);
@@ -323,28 +322,14 @@ public class MyElectricMainFragment extends Fragment
                                 chart2_labels.add(dayOfWeekInitials[calendar.get(Calendar.DAY_OF_WEEK)-1]);
                                 chart2_values.add(powerToday);
 
-                                if (calendar.get(Calendar.DAY_OF_WEEK) == 1 ||
-                                        calendar.get(Calendar.DAY_OF_WEEK) == 7)
+                                if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY ||
+                                        calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)
                                     chart2_colors[chart2_colors.length-1] = ContextCompat.getColor(getActivity(), R.color.chartBlueDark);
                                 else
                                     chart2_colors[chart2_colors.length-1] = ContextCompat.getColor(getActivity(), R.color.chartBlue);
                             }
 
-                            BarData bardata = chart2.getBarData();
-                            bardata.getXVals().clear();
-                            BarDataSet bdset = (BarDataSet) bardata.getDataSetByLabel("kWh", true);
-                            bdset.clear();
-                            bdset.setColors(chart2_colors);
-
-                            for (int i = 0; i < chart2_values.size(); i++)
-                            {
-                                bardata.addEntry(new BarEntry(chart2_values.get(i).floatValue(), i), 0);
-                                bardata.addXValue(chart2_labels.get(i));
-                            }
-
-                            bardata.notifyDataChanged();
-                            chart2.notifyDataSetChanged();
-                            chart2.invalidate();
+                            updateChart2Data();
 
                             if (snackbar.isShown())
                                 snackbar.dismiss();
@@ -398,16 +383,13 @@ public class MyElectricMainFragment extends Fragment
             if (lastEntry > startTime)
                 startTime = lastEntry;
 
-            String url = String.format(getActivity().getResources().getConfiguration().locale, "%s/feed/data.json?apikey=%s&id=%d&start=%d&end=%d&interval=%d&skipmissing=1&limitinterval=1", emoncms_url, emoncms_apikey, wattFeedId, startTime, endTime, interval);
+            String url = String.format(Locale.US, "%s/feed/data.json?apikey=%s&id=%d&start=%d&end=%d&interval=%d&skipmissing=1&limitinterval=1", emoncms_url, emoncms_apikey, wattFeedId, startTime, endTime, interval);
             Log.i("EMONCMS:URL", "mGetPowerHistoryRunner:"+url);
             JsonArrayRequest jsArrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>()
             {
                 @Override
                 public void onResponse(JSONArray response)
                 {
-                    LineData data = chart1.getData();
-                    LineDataSet dataset = (LineDataSet) data.getDataSetByLabel("watts", true);
-
                     for (int i = 0; i < response.length(); i++)
                     {
                         JSONArray row;
@@ -435,24 +417,10 @@ public class MyElectricMainFragment extends Fragment
                         }
                     }
 
-                    data.getXVals().clear();
-                    dataset.clear();
-
-                    for (int i = 0; i < chart1_values.size(); i++)
-                    {
-                        data.addXValue(chart1_labels.get(i));
-                        data.addEntry(new Entry(chart1_values.get(i).floatValue(), i), 0);
-                    }
-
                     if (resetPowerGraph)
-                    {
                         resetPowerGraph = false;
-                        chart1.fitScreen();
-                    }
 
-                    data.notifyDataChanged();
-                    chart1.notifyDataSetChanged();
-                    chart1.invalidate();
+                    updateChart1Data();
 
                     if (snackbar.isShown())
                         snackbar.dismiss();
@@ -485,13 +453,13 @@ public class MyElectricMainFragment extends Fragment
     {
         if (blnShowCost)
         {
-            txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%s%.2f/h", powerCostSymbol, (powerNow*0.001)*powerCost));
-            txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%s%.2f", powerCostSymbol, powerToday*powerCost));
+            txtPower.setText(String.format(Locale.US, "%s%.2f/h", powerCostSymbol, (powerNow*0.001)*powerCost));
+            txtUseToday.setText(String.format(Locale.US, "%s%.2f", powerCostSymbol, powerToday*powerCost));
         }
         else
         {
-            txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.0fW", powerNow));
-            txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.1fkWh", powerToday));
+            txtPower.setText(String.format(Locale.US, "%.0fW", powerNow));
+            txtUseToday.setText(String.format(Locale.US, "%.1fkWh", powerToday));
         }
     }
 
@@ -499,7 +467,6 @@ public class MyElectricMainFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
         emoncms_url = sp.getBoolean(getString(R.string.setting_usessl), false) ? "https://" : "http://";
         emoncms_url += sp.getString(getString(R.string.setting_url), "emoncms.org");
@@ -518,8 +485,15 @@ public class MyElectricMainFragment extends Fragment
 
         try
         {
-            if (powerCostSymbol.equals("0"))
-                powerCostSymbol = Currency.getInstance(getActivity().getResources().getConfiguration().locale).getSymbol();
+            if (powerCostSymbol.equals("0")) {
+                Locale locale;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                    locale = getActivity().getResources().getConfiguration().getLocales().get(0);
+                else
+                    locale = getActivity().getResources().getConfiguration().locale;
+
+                powerCostSymbol = Currency.getInstance(locale).getSymbol();
+            }
         }
         catch (IllegalArgumentException  e)
         {
@@ -586,74 +560,6 @@ public class MyElectricMainFragment extends Fragment
         chart1_W.setOnClickListener(buttonListener);
         chart1_M.setOnClickListener(buttonListener);
 
-        chart1 = (LineChart) view.findViewById(R.id.chart1);
-        chart1.setDrawGridBackground(false);
-        chart1.getLegend().setEnabled(false);
-        chart1.getAxisRight().setEnabled(false);
-        chart1.setDescription("");
-        chart1.setNoDataText("");
-        chart1.setHardwareAccelerationEnabled(true);
-
-        YAxis yAxis = chart1.getAxisLeft();
-        yAxis.setEnabled(true);
-        yAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
-        yAxis.setDrawTopYLabelEntry(false);
-        yAxis.setDrawGridLines(false);
-        yAxis.setDrawAxisLine(false);
-        yAxis.setTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
-        yAxis.setTextSize(getResources().getInteger(R.integer.chartDateTextSize));
-        yAxis.setValueFormatter(new Chart1YAxisValueFormatter());
-
-        XAxis xAxis = chart1.getXAxis();
-        xAxis.setDrawAxisLine(false);
-        xAxis.setDrawGridLines(false);
-        xAxis.setDrawLabels(true);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
-        xAxis.setValueFormatter(new Chart1XAxisValueFormatter());
-        xAxis.setSpaceBetweenLabels(0);
-        xAxis.setTextSize(getResources().getInteger(R.integer.chartDateTextSize));
-
-        LineDataSet chart1_dataset = new LineDataSet(null, "watts");
-        chart1_dataset.setColor(ContextCompat.getColor(getActivity(), R.color.chartBlue));
-        chart1_dataset.setValueTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
-        chart1_dataset.setDrawCircles(false);
-        chart1_dataset.setDrawFilled(true);
-        chart1_dataset.setFillColor(ContextCompat.getColor(getActivity(), R.color.chartBlue));
-        chart1_dataset.setDrawValues(false);
-        chart1_dataset.setValueTextSize(ContextCompat.getColor(getActivity(), R.integer.chartValueTextSize));
-        chart1_dataset.setHighlightEnabled(false);
-        LineData chart1_linedata = new LineData();
-        chart1_linedata.addDataSet(chart1_dataset);
-        chart1.setData(chart1_linedata);
-
-        chart2 = (BarChart) view.findViewById(R.id.chart2);
-        chart2.setDrawGridBackground(false);
-        chart2.getLegend().setEnabled(false);
-        chart2.getAxisLeft().setEnabled(false);
-        chart2.getAxisRight().setEnabled(false);
-        chart2.setHardwareAccelerationEnabled(true);
-        chart2.setDescription("");
-        chart2.setNoDataText("");
-        chart2.setTouchEnabled(false);
-        chart2.setExtraBottomOffset(2);
-
-        xAxis = chart2.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
-        xAxis.setTextSize(getResources().getInteger(R.integer.chartValueTextSize));
-        xAxis.setDrawGridLines(false);
-        xAxis.setDrawAxisLine(false);
-
-        ArrayList<BarEntry> entries = new ArrayList<>();
-        BarData chart2_bardata = new BarData();
-        BarDataSet chart2_dataset = new BarDataSet(entries, "kWh");
-        chart2_dataset.setColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
-        chart2_dataset.setValueTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
-        chart2_dataset.setValueTextSize(getResources().getInteger(R.integer.chartValueTextSize));
-        chart2_dataset.setValueFormatter(new Chart2ValueFormatter());
-        chart2_bardata.addDataSet(chart2_dataset);
-        chart2.setData(chart2_bardata);
 
         if (savedInstanceState != null)
         {
@@ -669,64 +575,45 @@ public class MyElectricMainFragment extends Fragment
 
             chart1_labels = savedInstanceState.getStringArrayList("chart1_labels");
             double saved_chart1_values[] = savedInstanceState.getDoubleArray("chart1_values");
-            double saved_chart2_values[] = savedInstanceState.getDoubleArray("chart2_values");
             chart2_labels = savedInstanceState.getStringArrayList("chart2_labels");
+            double saved_chart2_values[] = savedInstanceState.getDoubleArray("chart2_values");
 
             if (chart1_labels != null && saved_chart1_values != null
                     && chart1_labels.size() > 0 && saved_chart1_values.length > 0
-                    && chart1_labels.size() == saved_chart1_values.length)
-            {
+                    && chart1_labels.size() == saved_chart1_values.length) {
                 for (double saved_chart1_value : saved_chart1_values)
                     chart1_values.add(saved_chart1_value);
-
-                for (int i = 0; i < chart1_values.size(); i++)
-                {
-                    chart1_linedata.addXValue(chart1_labels.get(i));
-                    chart1_linedata.addEntry(new Entry(chart1_values.get(i).floatValue(), i), 0);
-                }
-
-                chart1_linedata.notifyDataChanged();
-                chart1.notifyDataSetChanged();
-                chart1.invalidate();
             }
 
             if (chart2_labels != null && saved_chart2_values != null
                     && chart2_labels.size() > 0 && saved_chart2_values.length > 0
-                    && chart2_labels.size() == saved_chart2_values.length)
-            {
+                    && chart2_labels.size() == saved_chart2_values.length) {
                 for (double saved_chart2_value : saved_chart2_values)
                     chart2_values.add(saved_chart2_value);
+            }
 
-                try
-                {
-                    int daysToDisplay = Math.round(dpWidth / 52);
-                    int a = 0;
+            if (chart1_values.size() > 0)
+                updateChart1Data();
 
-                    if (chart2_values.size() > daysToDisplay)
-                        a = chart2_values.size() - daysToDisplay;
+            if (chart2_values.size() > 0) {
+                int daysToDisplay = Math.round(dpWidth / 52);
 
-                    int colors[] = new int[daysToDisplay];
+                while (chart2_values.size() > daysToDisplay)
+                    chart2_values.remove(0);
 
-                    for (int i = a; i < chart2_values.size(); i++)
-                    {
-                        chart2_bardata.addEntry(new BarEntry(chart2_values.get(i).floatValue(), i - a), 0);
-                        chart2_bardata.addXValue(chart2_labels.get(i));
-                        colors[i-a] = chart2_colors[i];
-                    }
+                while (chart2_labels.size() > daysToDisplay)
+                    chart2_labels.remove(0);
 
-                    chart2_dataset.setColors(colors);
-                    chart2_bardata.notifyDataChanged();
-                    chart2.notifyDataSetChanged();
-                    chart2.invalidate();
+                if (chart2_colors.length > chart2_values.size()) {
+                    int[] new_chart2_colors = new int[chart2_values.size()];
+                    System.arraycopy(chart2_colors, chart2_colors.length-daysToDisplay, new_chart2_colors, 0, chart2_values.size());
+                    chart2_colors = new_chart2_colors.clone();
                 }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
+
+                updateChart2Data();
             }
         }
     }
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -811,11 +698,134 @@ public class MyElectricMainFragment extends Fragment
         mHandler.removeCallbacksAndMessages(null);
     }
 
+    private void updateChart1Data() {
+        LineChart chart1 = (LineChart) getActivity().findViewById(R.id.chart1);
+
+        if (chart1 == null)
+            return;
+
+        LineData chart1_linedata = chart1.getData();
+        LineDataSet chart1_dataset;
+
+        if (chart1_linedata == null) {
+            chart1.setDrawGridBackground(false);
+            chart1.getLegend().setEnabled(false);
+            chart1.getAxisRight().setEnabled(false);
+            chart1.getDescription().setEnabled(false);
+            chart1.setNoDataText("");
+            chart1.setHardwareAccelerationEnabled(true);
+
+            YAxis yAxis = chart1.getAxisLeft();
+            yAxis.setEnabled(true);
+            yAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+            yAxis.setDrawTopYLabelEntry(false);
+            yAxis.setDrawGridLines(false);
+            yAxis.setDrawAxisLine(false);
+            yAxis.setTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
+            yAxis.setTextSize(getResources().getInteger(R.integer.chartDateTextSize));
+
+            XAxis xAxis = chart1.getXAxis();
+            xAxis.setDrawAxisLine(false);
+            xAxis.setDrawGridLines(false);
+            xAxis.setDrawLabels(true);
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
+            xAxis.setValueFormatter(Chart1XAxisValueFormatter);
+            xAxis.setTextSize(getResources().getInteger(R.integer.chartDateTextSize));
+
+            chart1_dataset = new LineDataSet(null, "watts");
+            chart1_dataset.setColor(ContextCompat.getColor(getActivity(), R.color.chartBlue));
+            chart1_dataset.setValueTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
+            chart1_dataset.setDrawCircles(false);
+            chart1_dataset.setDrawFilled(true);
+            chart1_dataset.setFillColor(ContextCompat.getColor(getActivity(), R.color.chartBlue));
+            chart1_dataset.setDrawValues(false);
+            chart1_dataset.setValueTextSize(R.integer.chartValueTextSize);
+            chart1_dataset.setHighlightEnabled(false);
+            chart1_linedata = new LineData();
+            chart1_linedata.addDataSet(chart1_dataset);
+            chart1.setData(chart1_linedata);
+
+            RelativeLayout buttonPanel = (RelativeLayout) getActivity().findViewById(R.id.buttonPanel);
+            if (buttonPanel != null)
+                buttonPanel.setVisibility(View.VISIBLE);
+        }
+        else
+            chart1_dataset = (LineDataSet) chart1_linedata.getDataSetByLabel("watts", true);
+
+        chart1_dataset.clear();
+
+        for (int i = 0; i < chart1_values.size(); i++)
+            chart1_linedata.addEntry(new Entry(i, chart1_values.get(i).floatValue()), 0);
+
+        chart1.fitScreen();
+
+        chart1_dataset.notifyDataSetChanged();
+        chart1_linedata.notifyDataChanged();
+        chart1.notifyDataSetChanged();
+        chart1.invalidate();
+    }
+
+    private void updateChart2Data() {
+        BarChart chart2 = (BarChart) getActivity().findViewById(R.id.chart2);
+
+        if (chart2 == null)
+            return;
+
+        BarData chart2_bardata = chart2.getBarData();
+        BarDataSet chart2_dataset;
+
+        if (chart2_bardata == null) {
+            chart2.setDrawGridBackground(false);
+            chart2.getLegend().setEnabled(false);
+            chart2.getAxisLeft().setEnabled(false);
+            chart2.getAxisRight().setEnabled(false);
+            chart2.setHardwareAccelerationEnabled(true);
+            chart2.getDescription().setEnabled(false);
+            chart2.setNoDataText("");
+            chart2.setTouchEnabled(false);
+            chart2.setExtraBottomOffset(2);
+
+            XAxis xAxis = chart2.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
+            xAxis.setTextSize(getResources().getInteger(R.integer.chartValueTextSize));
+            xAxis.setDrawGridLines(false);
+            xAxis.setDrawAxisLine(false);
+            xAxis.setValueFormatter(Chart2XAxisValueFormatter);
+
+            ArrayList<BarEntry> entries = new ArrayList<>();
+            chart2_bardata = new BarData();
+            chart2_dataset = new BarDataSet(entries, "kWh");
+            chart2_dataset.setColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+            chart2_dataset.setValueTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
+            chart2_dataset.setValueTextSize(getResources().getInteger(R.integer.chartValueTextSize));
+            chart2_dataset.setValueFormatter(Chart2YValueFormatter);
+            chart2_bardata.addDataSet(chart2_dataset);
+            chart2.setData(chart2_bardata);
+        }
+        else
+            chart2_dataset = (BarDataSet) chart2_bardata.getDataSetByLabel("kWh", true);
+
+        chart2_dataset.clear();
+
+        for (int i = 0; i < chart2_values.size(); i++)
+            chart2_bardata.addEntry(new BarEntry(i, chart2_values.get(i).floatValue()), 0);
+
+        chart2_dataset.setColors(chart2_colors);
+        chart2.getXAxis().setLabelCount(chart2_values.size());
+
+        chart2_dataset.notifyDataSetChanged();
+        chart2_bardata.notifyDataChanged();
+        chart2.notifyDataSetChanged();
+        chart2.invalidate();
+    }
+
     private CompoundButton.OnCheckedChangeListener checkedChangedListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             blnShowCost = isChecked;
-            chart2.invalidate();
+            updateChart2Data();
             updateTextFields();
         }
     };
@@ -852,49 +862,46 @@ public class MyElectricMainFragment extends Fragment
         }
     };
 
-    public class Chart1XAxisValueFormatter implements XAxisValueFormatter
-    {
+    IAxisValueFormatter Chart1XAxisValueFormatter = new IAxisValueFormatter() {
         @Override
-        public String getXValue(String original, int index, ViewPortHandler viewPortHandler)
-        {
+        public String getFormattedValue(float value, AxisBase axis) {
+            if (value >= chart1_labels.size())
+                return "";
+
             DateFormat df = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
             Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(Long.parseLong(original));
+            cal.setTimeInMillis(Long.parseLong(chart1_labels.get((int) value)));
             return (df.format(cal.getTime()));
         }
-    }
 
-    public class Chart1YAxisValueFormatter implements YAxisValueFormatter
-    {
-        private DecimalFormat mFormat;
+        @Override
+        public int getDecimalDigits() {
+            return 0;
+        }
+    };
 
-        public Chart1YAxisValueFormatter () {
-            mFormat = new DecimalFormat("###,###,##0"); // use one decimal
+    IAxisValueFormatter Chart2XAxisValueFormatter = new IAxisValueFormatter() {
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
+            if (value >= chart2_labels.size())
+                return "";
+
+            return chart2_labels.get((int) value);
         }
 
         @Override
-        public String getFormattedValue(float value, YAxis yAxis) {
-            return mFormat.format(value);
+        public int getDecimalDigits() {
+            return 0;
         }
-    }
+    };
 
-    public class Chart2ValueFormatter implements ValueFormatter
-    {
 
-        private DecimalFormat mFormat;
-
-        public Chart2ValueFormatter() {
-            mFormat = new DecimalFormat("###,###,##0.0"); // use one decimal
-            mFormat.setNegativePrefix("");
-        }
-
+    IValueFormatter Chart2YValueFormatter = new IValueFormatter() {
         @Override
         public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-
             if (blnShowCost)
                 value = value * powerCost;
-
-            return mFormat.format(value);
+            return String.format(Locale.US, "%.1f", value);
         }
-    }
+    };
 }
