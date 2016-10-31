@@ -72,7 +72,8 @@
     <string name="settings_summary_scanqrcode">Erlaubt es die Verbindungs Felder durch den QR Code auf der emoncms Account Seite automatisch auszufüllen</string>
     <string name="kwh_elapsed">kWh verbaucht</string>
 
-    // These may not be correct as I used Google Translate
+    // These may not be correct as I used Google
+    <string name="chart_no_data_available">No data available</string>
     <string name="system_default">Systemfehler</string>
     <string name="me_not_configured_text">Wählen Sie die Feeds aus, die mit dem Cog-Symbol in der Symbolleiste angezeigt werden sollen.</string>
     <string name="invalid_kwh_feedid">Ungültige Verwendung kwh feed ID, wählen Sie bitte eine kwh-Feed aus dem Konfigurationsmenü.</string>
@@ -80,5 +81,6 @@
     <string name="low_storage_error">Gesichtserkennung Abhängigkeiten können nicht heruntergeladen werden aufgrund der geringen Gerätespeicher</string>
     <string name="settings_title_language">Sprache</string>
     <string name="settings_summary_language">Sprache auswählen</string>
+    <string name="no_camera_found">No camera found for barcode scanning.</string>
 
 </resources>

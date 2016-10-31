@@ -19,6 +19,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 
+import com.github.mikephil.charting.charts.BarChart;
+
 public class MainActivity extends BaseActivity
 {
     Toolbar mToolbar;

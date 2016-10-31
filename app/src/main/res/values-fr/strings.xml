@@ -68,6 +68,8 @@
     <string name="kwh_elapsed">kWh passé</string>
     <string name="wh_elapsed">Watt heure passé</string>
 
+    <string name="chart_no_data_available">No data available</string>
+
     <string name="settings_title_emoncms_connectivity">EMONCMS CONNECTIVITY FR</string>
     <string name="settings_title_app_settings">APP SETTINGS FR</string>
     <string name="settings_title_scanqrcode">Scan QR Code FR</string>
@@ -92,4 +94,5 @@
     <string name="settings_title_myelectric_cost_symbol">Cost Unit FR</string>
 
     <string name="system_default">Défaillance du Système</string>
+    <string name="no_camera_found">No camera found for barcode scanning.</string>
 </resources>

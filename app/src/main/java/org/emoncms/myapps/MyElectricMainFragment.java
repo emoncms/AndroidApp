@@ -560,6 +560,8 @@ public class MyElectricMainFragment extends Fragment
         chart1_W.setOnClickListener(buttonListener);
         chart1_M.setOnClickListener(buttonListener);
 
+        ((LineChart) view.findViewById(R.id.chart1)).setNoDataText(getString(R.string.chart_no_data_available));
+        ((BarChart) view.findViewById(R.id.chart2)).setNoDataText("");
 
         if (savedInstanceState != null)
         {
