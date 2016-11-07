@@ -1,14 +1,13 @@
 package org.emoncms.myapps;
 
-import android.app.Fragment;
-import android.content.Intent;
+
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.MenuItemCompat;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
@@ -17,7 +16,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLayoutChangeListener;
@@ -36,24 +34,23 @@ import org.emoncms.myapps.chart.PowerChart;
 import org.emoncms.myapps.chart.PowerChartDataLoader;
 import org.emoncms.myapps.chart.PowerNowDataLoader;
 import org.emoncms.myapps.chart.UseByDayDataLoader;
+import org.emoncms.myapps.myelectric.MyElectricSettings;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Currency;
 
 /**
  * Handles UI components for MyElectric
  */
 public class MyElectricMainFragment extends Fragment implements MyElectricDataManager {
 
-    static final String TAG = "MyElectricMainFragment";
+
     static final int dailyChartUpdateInterval = 60000;
 
-    private String emoncms_url;
-    private String emoncms_apikey;
-    private String powerCostSymbol;
-    private float powerCost = 0;
-    private float powerScale;
+    private String emonCmsUrl;
+    private String emonCmsApiKey;
+
+    private MyElectricSettings myElectricSettings;
 
     private PowerChart powerChart;
     private DailyBarChart dailyUsageBarChart;
@@ -65,8 +62,6 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
     private SwitchCompat costSwitch;
     private Handler mHandler = new Handler();
 
-    int wattFeedId = 0;
-    int kWhFeelId = 0;
     long timezone = 0;
 
     double yesterdaysPowerUsage;
@@ -85,11 +80,21 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
     private Runnable mGetPowerRunner;
     private UseByDayDataLoader mGetUsageByDayRunner;
 
+    public static MyElectricMainFragment newInstance(MyElectricSettings settings) {
+        MyElectricMainFragment yf = new MyElectricMainFragment();
+        Log.d("fragment","Making new instance " + settings);
+
+        Bundle args = new Bundle();
+        args.putParcelable("settings", settings);
+        yf.setArguments(args);
+        return yf;
+    }
+
 
     private void updateTextFields() {
         if (blnShowCost) {
-            txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%s%.2f/h", powerCostSymbol, (powerNow * 0.001) * powerCost));
-            txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%s%.2f", powerCostSymbol, powerToday * powerCost));
+            txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%s%.2f/h", myElectricSettings.getCostSymbol(), (powerNow * 0.001) * myElectricSettings.getUnitCost()));
+            txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%s%.2f", myElectricSettings.getCostSymbol(), powerToday * myElectricSettings.getUnitCost()));
         } else {
             txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.0fW", powerNow));
             txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.1fkWh", powerToday));
@@ -99,6 +104,10 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments().containsKey("settings")) {
+            myElectricSettings = getArguments().getParcelable("settings");
+
+        }
     }
 
     @Override
@@ -156,9 +165,6 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         powerChart = new PowerChart((LineChart) view.findViewById(R.id.chart1),getActivity());
         dailyUsageBarChart = new DailyBarChart((BarChart) view.findViewById(R.id.chart2),getActivity());
 
-
-
-
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         setDaysToDisplay(displayMetrics.widthPixels, displayMetrics.density);
 
@@ -168,24 +174,10 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
     private void loadConfig() {
 
         SharedPreferences sp = EmonApplication.get().getSharedPreferences(EmonApplication.get().getCurrentAccount());
+        emonCmsUrl = sp.getBoolean(getString(R.string.setting_usessl), false) ? "https://" : "http://";
+        emonCmsUrl += sp.getString(getString(R.string.setting_url), "emoncms.org");
+        emonCmsApiKey = sp.getString(getString(R.string.setting_apikey), null);
 
-        emoncms_url = sp.getBoolean(getString(R.string.setting_usessl), false) ? "https://" : "http://";
-        emoncms_url += sp.getString(getString(R.string.setting_url), "emoncms.org");
-        emoncms_apikey = sp.getString(getString(R.string.setting_apikey), null);
-
-        wattFeedId = Integer.valueOf(sp.getString("myelectric_power_feed", "-1"));
-        kWhFeelId = Integer.valueOf(sp.getString("myelectric_kwh_feed", "-1"));
-
-        powerScale = Integer.valueOf(sp.getString("myelectric_escale", "0")) == 0 ? 1.0F : 0.001F;
-        powerCost = Float.parseFloat(sp.getString("myelectric_unit_cost", "0"));
-        powerCostSymbol = sp.getString("myelectric_cost_symbol", "£");
-
-        try {
-            if (powerCostSymbol.equals("0"))
-                powerCostSymbol = Currency.getInstance(getActivity().getResources().getConfiguration().locale).getSymbol();
-        } catch (IllegalArgumentException e) {
-            powerCostSymbol = "£";
-        }
     }
 
     private void setDaysToDisplay(int width, float density) {
@@ -202,8 +194,8 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
             powerChart.setChartLength(savedInstanceState.getInt("power_graph_length", -6));
             powerNow = savedInstanceState.getDouble("power_now", 0);
             powerToday = savedInstanceState.getDouble("power_today", 0);
-            wattFeedId = savedInstanceState.getInt("watt_feed_id", -1);
-            kWhFeelId = savedInstanceState.getInt("kwh_feed_id", -1);
+            //wattFeedId = savedInstanceState.getInt("watt_feed_id", -1);
+            //kWhFeelId = savedInstanceState.getInt("kwh_feed_id", -1);
             int[] chart2_colors = savedInstanceState.getIntArray("chart2_colors");
 
             updateTextFields();
@@ -228,8 +220,10 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         outState.putInt("power_graph_length", powerChart.getChartLength());
         outState.putDouble("power_now", powerNow);
         outState.putDouble("power_today", powerToday);
-        outState.putInt("watt_feed_id", wattFeedId);
-        outState.putInt("kwh_feed_id", kWhFeelId);
+
+
+
+        outState.putParcelable("settings",myElectricSettings);
         outState.putIntArray("chart2_colors", dailyUsageBarChart.getBarColours());
 
         double[] values = new double[powerChart.getValues().size()];
@@ -255,31 +249,12 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.me_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
-        costSwitch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.cost_switch));
+        /*costSwitch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.cost_switch));
         costSwitch.setOnCheckedChangeListener(checkedChangedListener);
-        costSwitch.setChecked(blnShowCost);
+        costSwitch.setChecked(blnShowCost);*/
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-
-            Intent intent = new Intent(this.getActivity(), MyElectricSettingsActivity.class);
-            startActivity(intent);
-            return true;
-        } else if (id == R.id.full_screen) {
-            boolean fullScreen = ((MainActivity) getActivity()).setFullScreen();
-            if (fullScreen)
-                item.setIcon(R.drawable.ic_fullscreen_exit_white_24dp);
-            else
-                item.setIcon(R.drawable.ic_fullscreen_white_24dp);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onResume() {
@@ -287,16 +262,16 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
 
         loadConfig();
 
-        mGetPowerHistoryRunner = new PowerChartDataLoader(powerChart, this.getActivity(), this, wattFeedId);
+        mGetPowerHistoryRunner = new PowerChartDataLoader(powerChart, this.getActivity(), this, myElectricSettings.getPowerFeedId());
         mGetFeedsRunner = new FeedDataLoader(getActivity(), this);
-        mGetPowerRunner = new PowerNowDataLoader(getActivity(),this,wattFeedId,kWhFeelId);
-        mGetUsageByDayRunner = new UseByDayDataLoader(getActivity(),this,dailyUsageBarChart,kWhFeelId);
+        mGetPowerRunner = new PowerNowDataLoader(getActivity(),this,myElectricSettings.getPowerFeedId(),myElectricSettings.getUseFeedId());
+        mGetUsageByDayRunner = new UseByDayDataLoader(getActivity(),this,dailyUsageBarChart,myElectricSettings.getUseFeedId());
 
-        if (emoncms_apikey == null || emoncms_apikey.equals("") || emoncms_url == null || emoncms_url.equals("")) {
+        if (emonCmsApiKey == null || emonCmsApiKey.equals("") || emonCmsUrl == null || emonCmsUrl.equals("")) {
             snackbar.setText(R.string.server_not_configured).show();
-        } else if (wattFeedId == -1 || kWhFeelId == -1) {
+        } else if (myElectricSettings.getPowerFeedId() == -1 || myElectricSettings.getUseFeedId() == -1) {
             mHandler.post(mGetFeedsRunner);
-        } else if (wattFeedId >= 0 && kWhFeelId >= 0) {
+        } else if (myElectricSettings.getPowerFeedId() >= 0 && myElectricSettings.getUseFeedId() >= 0) {
             snackbar.dismiss();
             mHandler.post(mGetPowerRunner);
         }
@@ -307,7 +282,7 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         super.onPause();
 
         snackbar.dismiss();
-        HTTPClient.getInstance(getActivity()).cancellAll(TAG);
+        HTTPClient.getInstance(getActivity()).cancellAll(getPageTag());
         mHandler.removeCallbacksAndMessages(null);
     }
 
@@ -319,7 +294,6 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
             updateTextFields();
         }
     };
-
 
     private OnClickListener buttonListener = new OnClickListener() {
         public void onClick(View v) {
@@ -339,9 +313,9 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
                     break;
                 case R.id.btnChart1_M: // 4 Weeks
                     powerChart.setChartLength(-720); // 30 * 24
-                    break;
+                   break;
             }
-            HTTPClient.getInstance(getActivity()).cancellAll(TAG);
+            HTTPClient.getInstance(getActivity()).cancellAll(getPageTag());
             mHandler.removeCallbacksAndMessages(null);
             mHandler.post(mGetPowerHistoryRunner);
         }
@@ -392,18 +366,18 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
 
     @Override
     public String getEmonCmsUrl() {
-        return emoncms_url;
+        return emonCmsUrl;
     }
 
     @Override
     public String getEmoncmsApikey() {
-        return emoncms_apikey;
+        return emonCmsApiKey;
     }
 
     @Override
     public void setFeedIds(int flowId, int useId) {
-        this.wattFeedId = flowId;
-        this.kWhFeelId = useId;
+        myElectricSettings.setPowerFeedId(flowId);
+        myElectricSettings.setUseFeedId(useId);
     }
 
     @Override
@@ -428,4 +402,10 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         updateTextFields();
 
     }
+
+    @Override
+    public String getPageTag() {
+        return EmonApplication.get().getCurrentAccount() + myElectricSettings.getName();
+    }
+
 }

@@ -288,7 +288,7 @@ public class MySolarMainFragement extends Fragment
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            ((MainActivity) getActivity()).showFragment(MainActivity.MyAppViews.MySolarSettingsView);
+            //((MainActivity) getActivity()).showFragment(MainActivity.MyAppViews.MySolarSettingsView);
             return true;
         }
         else if (id == R.id.full_screen) {

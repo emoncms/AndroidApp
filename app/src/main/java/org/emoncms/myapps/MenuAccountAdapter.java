@@ -2,7 +2,6 @@ package org.emoncms.myapps;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Handles the items in the navigation drawer.
+ * Handles the Items in the Account List in the navigaton drawer
  */
-public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.ViewHolder> implements AccountListChangeListener {
+public class MenuAccountAdapter extends RecyclerView.Adapter<MenuAccountAdapter.ViewHolder> implements AccountListChangeListener {
 
     private Context mContext;
 
@@ -33,11 +32,12 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.rowText);
             imageView = (ImageView) itemView.findViewById(R.id.rowIcon);
+            imageView.setVisibility(View.GONE);
         }
 
         public void bind(final MenuOption option, final OnNavigationClick onNavigationClick) {
             textView.setText(option.text);
-            imageView.setImageResource(option.icon);
+            //imageView.setImageResource(option.icon);
             itemView.setSelected(selectedItem == getLayoutPosition());
 
 
@@ -50,7 +50,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
                         selectedItem = getLayoutPosition();
                         notifyItemChanged(selectedItem);
                     }
-                    onNavigationClick.onClick(option);
+                    onNavigationClick.onClick(option.id);
                 }
             };
 
@@ -62,7 +62,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
      * Context is required
      * @param context
      */
-    public NavigationDrawerAdapter(Context context, OnNavigationClick onNavigationClick) {
+    public MenuAccountAdapter(Context context, OnNavigationClick onNavigationClick) {
         mContext = context;
         this.onNavigationClick = onNavigationClick;
         menuOptionList = new ArrayList<>();
@@ -111,13 +111,13 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     }
 
     @Override
-    public NavigationDrawerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MenuAccountAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row,parent,false);
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(NavigationDrawerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(MenuAccountAdapter.ViewHolder holder, int position) {
         holder.bind(menuOptionList.get(position), onNavigationClick);
     }
 

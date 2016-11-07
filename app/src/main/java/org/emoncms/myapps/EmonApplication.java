@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import org.emoncms.myapps.myelectric.MyElectricSettings;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Extend Application so it can hold the list of active accounts
+ * Extend Application so it can hold the list of accounts, and handle adding/removing
  */
 public class EmonApplication extends Application {
 
@@ -25,8 +27,14 @@ public class EmonApplication extends Application {
     private Map<String,String> accounts;
     private String currentAccount;
 
+    private List<MyElectricSettings> pages;
+
     public static EmonApplication get() {
         return instance;
+    }
+
+    public static String getAccountSettingsFile(String account) {
+        return ACCOUNT_PREFS_FILE + account;
     }
 
     @Override
@@ -36,6 +44,7 @@ public class EmonApplication extends Application {
 
         accounts = new LinkedHashMap<>();
         currentAccount = settings.getString(PREF_CURRENT_ACCOUNT,"");
+
         String accountSettings = settings.getString(PREF_ACCOUNTS, "");
 
         String[] accountIdList = accountSettings.split(",");
@@ -46,6 +55,8 @@ public class EmonApplication extends Application {
                 accounts.put(account,name);
             }
         }
+
+        loadPages();
 
         instance = this;
 
@@ -114,9 +125,26 @@ public class EmonApplication extends Application {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.edit().putString(PREF_CURRENT_ACCOUNT, currentAccount).apply();
         this.currentAccount = currentAccount;
+
+        loadPages();
     }
 
-    public static String getAccountSettingsFile(String account) {
-        return ACCOUNT_PREFS_FILE + account;
+    public List<MyElectricSettings> getPages() {
+        return pages;
     }
+
+
+    private void loadPages() {
+        pages = new ArrayList<>();
+        //FIXME Do this properly
+        if (accounts.get(currentAccount) != null && accounts.get(currentAccount).equals("Home")) {
+            pages.add(new MyElectricSettings("Electric", 3, 4, 0.1508f, "£"));
+        } else {
+            pages.add(new MyElectricSettings("Electric", 136162, 136164, 0.1508f, "£"));
+            pages.add(new MyElectricSettings("Solar", 136158, 136159, 0.5f, "£"));
+            pages.add(new MyElectricSettings("Import", 136165, 136166, 0.1508f, "£"));
+        }
+    }
+
+
 }

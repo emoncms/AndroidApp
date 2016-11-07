@@ -21,7 +21,7 @@
         android:layout_gravity="center_vertical"
         android:paddingLeft="12dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold"
+        android:textStyle="normal"
         android:text="Medium Text"
         android:id="@+id/rowText" />
 

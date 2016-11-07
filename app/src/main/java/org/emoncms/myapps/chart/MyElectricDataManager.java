@@ -35,6 +35,12 @@ public interface MyElectricDataManager {
 
     String getEmoncmsApikey();
 
+    /**
+     * The tag to use for all threads relating to this page
+     * @return
+     */
+    String getPageTag();
+
 
 
 }

@@ -21,7 +21,7 @@ public class FeedDataLoader implements Runnable {
 
     private static final String watt_default_feed_name = "use";
     private static final String kwh_default_feed_name = "use_kwh";
-    private static final String TAG = "MyElectricMainFragment";
+
 
     private static final String FEED_URL = "%s/feed/list.json?apikey=%s";
     private Context context;
@@ -79,7 +79,7 @@ public class FeedDataLoader implements Runnable {
                         myElectricDataManager.loadFeeds(5000);
                     }
                 });
-        jsArrayRequest.setTag(TAG);
+        jsArrayRequest.setTag(myElectricDataManager.getPageTag());
         HTTPClient.getInstance(context).addToRequestQueue(jsArrayRequest);
     }
 }

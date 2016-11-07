@@ -19,7 +19,6 @@ import org.json.JSONException;
 public class PowerNowDataLoader implements Runnable {
 
     private static final String FEED_URL = "%s/feed/fetch.json?apikey=%s&ids=%d,%d";
-    private static final String TAG = "MyElectricMainFragment";
 
     private int wattFeedId;
     private int kWhFeedId;
@@ -88,7 +87,7 @@ public class PowerNowDataLoader implements Runnable {
                     }
                 });
 
-        jsArrayRequest.setTag(TAG);
+        jsArrayRequest.setTag(myElectricDataManager.getPageTag());
         HTTPClient.getInstance(context).addToRequestQueue(jsArrayRequest);
     }
 }

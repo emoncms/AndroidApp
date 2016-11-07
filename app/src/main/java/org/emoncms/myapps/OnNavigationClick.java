@@ -5,5 +5,5 @@ package org.emoncms.myapps;
  */
 public interface OnNavigationClick {
 
-    void onClick(NavigationDrawerAdapter.MenuOption option);
+    void onClick(String id);
 }

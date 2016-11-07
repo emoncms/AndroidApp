@@ -1,0 +1,31 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single" android:id="@+id/group1">
+        <item
+            android:id="@+id/nav_first_fragment"
+            android:icon="@drawable/ic_my_electric_white_36dp"
+            android:title="My Electric"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"/>
+        <item
+            android:id="@+id/nav_second_fragment"
+            android:icon="@drawable/ic_my_electric_white_36dp"
+            android:title="My Heating"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"/>
+        <item
+            android:id="@+id/nav_third_fragment"
+            android:icon="@drawable/ic_my_electric_white_36dp"
+            android:title="My Solar"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"/>
+    </group>
+    <group android:checkableBehavior="single" android:id="@+id/group2">
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_settings_applications_white_36dp"
+            android:title="Settings"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"/>
+    </group>
+</menu>

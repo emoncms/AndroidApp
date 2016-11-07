@@ -95,7 +95,7 @@ public class PowerChartDataLoader implements Runnable {
             }
         });
 
-        jsArrayRequest.setTag("");
+        jsArrayRequest.setTag(myElectricDataManager.getPageTag());
 
         if (endTime > lastEntry + (interval * 1000)) {
             HTTPClient.getInstance(context).addToRequestQueue(jsArrayRequest);

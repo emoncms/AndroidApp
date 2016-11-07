@@ -1,55 +1,83 @@
 package org.emoncms.myapps;
 
-import android.app.Fragment;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.View;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
-import org.emoncms.myapps.settings.AccountListFragment;
-import org.emoncms.myapps.settings.AccountSettingsFragment;
-import org.emoncms.myapps.settings.AppSettingsFragment;
 import org.emoncms.myapps.settings.SettingsActivity;
 
-public class MainActivity extends BaseActivity
-{
+/**
+ * Handles navigation, account changing and pager
+ */
+public class MainActivity extends BaseActivity {
     private Toolbar mToolbar;
     private DrawerLayout mDrawer;
 
-    private RecyclerView mRecyclerView;
+    private TextView accountSelector;
+    private RecyclerView navAccountView;
+    private RecyclerView navPageView;
+    private MyPagerAdapter pagerAdapter;
 
     private boolean fullScreenRequested;
     private boolean isFirstRun;
+    private boolean accountListVisible = false;
+
     private Handler mFullscreenHandler = new Handler();
 
     private static final String PREF_APP_FIRST_RUN = "app_first_run";
 
-    public enum MyAppViews {
-        MyElectricView,
-        MyElectricSettingsView,
-        MySolarView,
-        MySolarSettingsView
+    public static class MyPagerAdapter extends FragmentStatePagerAdapter {
+
+        public MyPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
+
+
+        @Override
+        public int getCount() {
+            return EmonApplication.get().getPages().size();
+        }
+
+        // Returns the fragment to display for that page
+        @Override
+        public Fragment getItem(int position) {
+            Log.d("pager","making page " + position);
+            return MyElectricMainFragment.newInstance(EmonApplication.get().getPages().get(position));
+        }
+
+        // Returns the page title for the top indicator
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return EmonApplication.get().getPages().get(position).getName();
+        }
     }
 
-    MyAppViews displayed_view;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         UpgradeManager.doUpgrade(this);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -71,20 +99,12 @@ public class MainActivity extends BaseActivity
         setUpNavigation();
 
 
-
-        displayed_view = MyAppViews.MyElectricView;
-
-        if (savedInstanceState != null) {
-            displayed_view = MyAppViews.values()[savedInstanceState.getInt("displayed_fragment", 0)];
-        }
-
-        showFragment(displayed_view);
-
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(mOnSystemUiVisibilityChangeListener);
 
         if (isFirstRun) {
             mDrawer.openDrawer(GravityCompat.START);
         }
+
     }
 
     @Override
@@ -94,52 +114,149 @@ public class MainActivity extends BaseActivity
         setKeepScreenOn(sp.getBoolean(getString(R.string.setting_keepscreenon), false));
     }
 
-    private void setUpNavigation() {
+    /**
+     * Switch drawer layout contents between accounts and apps
+     */
+    private void toggleNavigation() {
+        if (accountListVisible) {
+            navAccountView.setVisibility(View.GONE);
+            navPageView.setVisibility(View.VISIBLE);
+            accountSelector.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_drop_down_black_24dp, 0);
+            accountListVisible = false;
+        } else {
+            navAccountView.setVisibility(View.VISIBLE);
+            navPageView.setVisibility(View.GONE);
+            accountSelector.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_drop_up_black_24dp, 0);
+            accountListVisible = true;
+        }
+    }
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
-        if (mRecyclerView != null) {
-            mRecyclerView.setHasFixedSize(true);
+    private void setUpNavigation() {
+        accountSelector = (TextView) findViewById(R.id.selectAccount);
+
+        accountSelector.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleNavigation();
+            }
+        });
+
+        //account list
+        navAccountView = (RecyclerView) findViewById(R.id.accountMenu);
+        navAccountView.setVisibility(View.INVISIBLE);
+
+        if (navAccountView != null) {
+            navAccountView.setHasFixedSize(true);
         }
 
-        OnNavigationClick onNavClickListener = new OnNavigationClick() {
+        OnNavigationClick onAccountClickListener = new OnNavigationClick() {
             @Override
-            public void onClick(NavigationDrawerAdapter.MenuOption option) {
+            public void onClick(String id) {
                 mDrawer.closeDrawers();
-                if (option.id.equals("settings")) {
+                if (id.equals("settings")) {
                     openSettingsActivity();
                 } else {
-                    setCurrentAccount(option.id);
+                    toggleNavigation();
+                    setCurrentAccount(id);
                 }
             }
         };
 
-        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(this, onNavClickListener);
-        mRecyclerView.setAdapter(adapter);
-
-        EmonApplication.get().addAccountChangeListener(adapter);
-
+        MenuAccountAdapter accountAdapter = new MenuAccountAdapter(this, onAccountClickListener);
+        navAccountView.setAdapter(accountAdapter);
+        EmonApplication.get().addAccountChangeListener(accountAdapter);
         RecyclerView.LayoutManager navLayoutManager = new LinearLayoutManager(this);
+        navAccountView.setLayoutManager(navLayoutManager);
 
-        mRecyclerView.setLayoutManager(navLayoutManager);
+        //account list
+        navPageView = (RecyclerView) findViewById(R.id.appMenu);
+        navPageView.setVisibility(View.VISIBLE);
 
+        if (navPageView != null) {
+            navPageView.setHasFixedSize(true);
+        }
+
+        setUpPages();
+
+        RecyclerView.LayoutManager navAppLayoutManager = new LinearLayoutManager(this);
+        navPageView.setLayoutManager(navAppLayoutManager);
+
+
+        //drawer toggle
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawer,mToolbar, R.string.open, R.string.close);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.open, R.string.close);
 
         mDrawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
     }
 
+    private void setUpPages() {
+
+        OnNavigationClick onAppClickListener = new OnNavigationClick() {
+            @Override
+            public void onClick(String id) {
+                mDrawer.closeDrawers();
+                if (id.equals("settings")) {
+                    openPageSettings();
+                } else {
+                    toggleNavigation();
+                    setCurrentAccount(id);
+                }
+            }
+        };
+
+        MenuPageAdaptor appAdapter = new MenuPageAdaptor(this, onAppClickListener);
+        navPageView.setAdapter(appAdapter);
+
+        ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
+
+        if (pagerAdapter != null) {
+            //this will wipe the fragments already associated with the pager
+            vpPager.setAdapter(null);
+
+        }
+
+        pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        pagerAdapter.notifyDataSetChanged();
+        vpPager.setAdapter(pagerAdapter);
+
+
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("displayed_fragment", displayed_view.ordinal());
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            openPageSettings();
+            return true;
+        } else if (id == R.id.full_screen) {
+            boolean fullScreen = setFullScreen();
+            if (fullScreen)
+                item.setIcon(R.drawable.ic_fullscreen_exit_white_24dp);
+            else
+                item.setIcon(R.drawable.ic_fullscreen_white_24dp);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void openPageSettings() {
+        Intent intent = new Intent(this, MyElectricSettingsActivity.class);
+        startActivity(intent);
     }
 
     private void setCurrentAccount(String accountId) {
         EmonApplication.get().setCurrentAccount(accountId);
-        showFragment(MyAppViews.MyElectricView);
-
+        setUpPages();
+        //FIXME DO THIS
     }
 
     public boolean setFullScreen() {
@@ -154,29 +271,22 @@ public class MainActivity extends BaseActivity
         return fullScreenRequested;
     }
 
-    private Runnable mSetFullScreenRunner = new Runnable()
-    {
+    private Runnable mSetFullScreenRunner = new Runnable() {
         @Override
-        public void run()
-        {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            {
+        public void run() {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().getDecorView().setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_FULLSCREEN |
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                        View.SYSTEM_UI_FLAG_IMMERSIVE);
-            }
-            else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            {
+                                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                                View.SYSTEM_UI_FLAG_IMMERSIVE);
+            } else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 getWindow().getDecorView().setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_FULLSCREEN |
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-            }
-            else
-            {
+                                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            } else {
                 getWindow().getDecorView().setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_LOW_PROFILE |
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
             }
         }
     };
@@ -195,57 +305,22 @@ public class MainActivity extends BaseActivity
             if (ab == null)
                 return;
 
-            if ((visibility & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == View.VISIBLE)
-            {
+            if ((visibility & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == View.VISIBLE) {
                 mToolbar.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_down));
                 ab.show();
                 if (fullScreenRequested)
                     mFullscreenHandler.postDelayed(mSetFullScreenRunner, 5000);
-            }
-            else
-            {
+            } else {
                 mToolbar.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_up));
                 ab.hide();
             }
         }
     };
 
-
-
     private void openSettingsActivity() {
-        Intent intent = new Intent(this,SettingsActivity.class);
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
-    public void showFragment(MyAppViews appView) {
-        Fragment frag;
-        String tag;
-        displayed_view = appView;
 
-        switch (appView) {
-            case MyElectricSettingsView:
-                tag = getResources().getString(R.string.tag_me_settings_fragment);
-                frag = getFragmentManager().findFragmentByTag(tag);
-                if (frag == null)
-                    frag = new MyElectricSettingsFragment();
-                break;
-
-            default:
-                tag = getResources().getString(R.string.tag_me_fragment) + "_" + EmonApplication.get().getCurrentAccount();;
-                frag = getFragmentManager().findFragmentByTag(tag);
-                if (frag == null)
-                    frag = new MyElectricMainFragment();
-                break;
-        }
-
-        if (fullScreenRequested)
-        {
-            mFullscreenHandler.removeCallbacksAndMessages(null);
-            fullScreenRequested = false;
-            getWindow().getDecorView().setSystemUiVisibility(0);
-        }
-        getFragmentManager().beginTransaction()
-                .replace(R.id.container, frag, tag)
-                .commit();
-    }
 }

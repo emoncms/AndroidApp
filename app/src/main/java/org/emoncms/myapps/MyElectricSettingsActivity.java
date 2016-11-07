@@ -7,7 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 /**
- * Activity which just handles feed settings for the current account.
+ * Activity just handles feed settings an instance of my electric.
+ * Needs to know which instance it is dealing with!
  */
 public class MyElectricSettingsActivity extends BaseActivity {
 

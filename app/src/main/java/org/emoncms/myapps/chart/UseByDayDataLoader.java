@@ -24,7 +24,6 @@ import java.util.List;
 public class UseByDayDataLoader implements Runnable {
 
     private static final int INTERVAL = 86400;
-    private static final String TAG = "MyElectricMainFragment";
     private static final String FEED_URL = "%s/feed/data.json?apikey=%s&id=%d&start=%d&end=%d&interval=86400&skipmissing=1&limitinterval=1";
 
 
@@ -140,7 +139,7 @@ public class UseByDayDataLoader implements Runnable {
                     }
                 });
 
-        jsArrayRequest.setTag(TAG);
+        jsArrayRequest.setTag(myElectricDataManager.getPageTag());
         HTTPClient.getInstance(context).addToRequestQueue(jsArrayRequest);
     }
 }
