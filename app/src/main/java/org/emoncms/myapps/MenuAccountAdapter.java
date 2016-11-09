@@ -21,34 +21,45 @@ public class MenuAccountAdapter extends RecyclerView.Adapter<MenuAccountAdapter.
 
     private List<MenuOption> menuOptionList;
     private OnNavigationClick onNavigationClick;
-    private int selectedItem = 0;
+    private int currentItemRestoreIndex = 0;
+
+    private MenuOption currentItem;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView textView;
         private ImageView imageView;
+        private View divider;
 
         public ViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.rowText);
             imageView = (ImageView) itemView.findViewById(R.id.rowIcon);
             imageView.setVisibility(View.GONE);
+            divider = itemView.findViewById(R.id.rowDivider);
         }
 
         public void bind(final MenuOption option, final OnNavigationClick onNavigationClick) {
             textView.setText(option.text);
             //imageView.setImageResource(option.icon);
-            itemView.setSelected(selectedItem == getLayoutPosition());
+            itemView.setSelected(false);
 
+            if (option.id.equals("settings")) {
+                divider.setVisibility(View.VISIBLE);
+            }
 
             View.OnClickListener onClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //only change selection if we are switching accounts
-                    notifyItemChanged(selectedItem);
+
                     if (!option.id.equals("settings")) {
-                        selectedItem = getLayoutPosition();
-                        notifyItemChanged(selectedItem);
+
+                        menuOptionList.add(currentItemRestoreIndex,currentItem);
+                        currentItemRestoreIndex = menuOptionList.indexOf(option);
+                        menuOptionList.remove(option);
+                        currentItem = option;
+                        notifyDataSetChanged();
+
                     }
                     onNavigationClick.onClick(option.id);
                 }
@@ -67,14 +78,16 @@ public class MenuAccountAdapter extends RecyclerView.Adapter<MenuAccountAdapter.
         this.onNavigationClick = onNavigationClick;
         menuOptionList = new ArrayList<>();
 
-        int index = 0;
-        for(Map.Entry<String,String> account : EmonApplication.get().getAccounts().entrySet()) {
 
+        for(Map.Entry<String,String> account : EmonApplication.get().getAccounts().entrySet()) {
+            int index = 0;
             if (account.getKey().equals(EmonApplication.get().getCurrentAccount())) {
-                selectedItem = index;
+                currentItemRestoreIndex = index;
+                currentItem = new MenuOption(account.getKey(), R.drawable.ic_my_electric_white_36dp, account.getValue());
+            } else {
+                index++;
+                menuOptionList.add(new MenuOption(account.getKey(), R.drawable.ic_my_electric_white_36dp, account.getValue()));
             }
-            menuOptionList.add(new MenuOption(account.getKey(), R.drawable.ic_my_electric_white_36dp, account.getValue()));
-            index++;
         }
 
         menuOptionList.add(new MenuOption("settings", R.drawable.ic_settings_applications_white_36dp, "Settings"));
@@ -112,7 +125,7 @@ public class MenuAccountAdapter extends RecyclerView.Adapter<MenuAccountAdapter.
 
     @Override
     public MenuAccountAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.page_menu_item,parent,false);
         return new ViewHolder(v);
     }
 

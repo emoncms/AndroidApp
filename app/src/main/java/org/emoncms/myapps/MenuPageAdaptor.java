@@ -26,17 +26,22 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
 
         private TextView textView;
         private ImageView imageView;
+        private View divider;
 
         public ViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.rowText);
             imageView = (ImageView) itemView.findViewById(R.id.rowIcon);
+            divider = itemView.findViewById(R.id.rowDivider);
         }
 
         public void bind(final MenuOption option, final OnNavigationClick onNavigationClick) {
             textView.setText(option.text);
             imageView.setImageResource(option.icon);
             itemView.setSelected(selectedItem == getLayoutPosition());
+            if (option.id.equals("new")) {
+                divider.setVisibility(View.VISIBLE);
+            }
 
 
             View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -69,7 +74,7 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
 
 
         for(int i = 0; i < EmonApplication.get().getPages().size(); i++) {
-            menuOptionList.add(new MenuOption("page-" + i, R.drawable.ic_my_electric_white_36dp, EmonApplication.get().getPages().get(i).getName()));
+            menuOptionList.add(new MenuOption(""+i, R.drawable.ic_my_electric_white_36dp, EmonApplication.get().getPages().get(i).getName()));
             index++;
         }
         menuOptionList.add(new MenuOption("new", R.drawable.ic_my_electric_white_36dp, "Add Page"));
@@ -91,7 +96,7 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
 
     @Override
     public MenuPageAdaptor.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.page_menu_item,parent,false);
         return new ViewHolder(v);
     }
 

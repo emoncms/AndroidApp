@@ -4,10 +4,7 @@ package org.emoncms.myapps.settings;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +13,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.emoncms.myapps.EmonApplication;
-import org.emoncms.myapps.MainActivity;
 import org.emoncms.myapps.R;
 
 import java.util.ArrayList;
@@ -59,7 +55,7 @@ public class AccountListFragment extends ListFragment {
 
     private class AccountAdaptor extends ArrayAdapter<Account> {
         AccountAdaptor(Context context, List<Account> objects) {
-            super(context, R.layout.account_item, objects);
+            super(context, R.layout.account_menu_item, objects);
         }
 
         @Override
@@ -67,7 +63,7 @@ public class AccountListFragment extends ListFragment {
                             ViewGroup parent) {
 
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.account_item, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.account_menu_item, parent, false);
             }
 
             TextView url=(TextView)convertView.findViewById(R.id.name);

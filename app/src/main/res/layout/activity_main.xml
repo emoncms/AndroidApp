@@ -18,11 +18,27 @@
             android:id="@+id/main_toolbar"
             layout="@layout/main_toolbar"/>
 
+        <com.viewpagerindicator.CirclePageIndicator
+            android:id="@+id/indicator"
+            android:padding="3dip"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            app:radius="3dp"
+            app:fillColor="#CCCCCC"
+            app:pageColor="#FFFFFF"
+            app:strokeWidth="0dp"
+            />
+
         <android.support.v4.view.ViewPager
             android:id="@+id/vpPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
         </android.support.v4.view.ViewPager>
+
+
+
+
+
 
     </LinearLayout>
 
@@ -54,6 +70,11 @@
                 android:textStyle="normal"
                 android:textColor="@android:color/white"
                 android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#FFFFFF"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/appMenu"

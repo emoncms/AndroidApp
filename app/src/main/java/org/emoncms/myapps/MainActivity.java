@@ -9,9 +9,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -27,12 +25,14 @@ import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.viewpagerindicator.PageIndicator;
+
 import org.emoncms.myapps.settings.SettingsActivity;
 
 /**
  * Handles navigation, account changing and pager
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity  {
     private Toolbar mToolbar;
     private DrawerLayout mDrawer;
 
@@ -40,6 +40,7 @@ public class MainActivity extends BaseActivity {
     private RecyclerView navAccountView;
     private RecyclerView navPageView;
     private MyPagerAdapter pagerAdapter;
+    private ViewPager vpPager;
 
     private boolean fullScreenRequested;
     private boolean isFirstRun;
@@ -140,6 +141,7 @@ public class MainActivity extends BaseActivity {
                 toggleNavigation();
             }
         });
+        accountSelector.setText(EmonApplication.get().getAccounts().get(EmonApplication.get().getCurrentAccount()));
 
         //account list
         navAccountView = (RecyclerView) findViewById(R.id.accountMenu);
@@ -193,23 +195,22 @@ public class MainActivity extends BaseActivity {
 
     private void setUpPages() {
 
-        OnNavigationClick onAppClickListener = new OnNavigationClick() {
+        OnNavigationClick onPageClickListener = new OnNavigationClick() {
             @Override
             public void onClick(String id) {
                 mDrawer.closeDrawers();
-                if (id.equals("settings")) {
+                if (id.equals("new")) {
                     openPageSettings();
                 } else {
-                    toggleNavigation();
-                    setCurrentAccount(id);
+                    vpPager.setCurrentItem(Integer.valueOf(id),true);
                 }
             }
         };
 
-        MenuPageAdaptor appAdapter = new MenuPageAdaptor(this, onAppClickListener);
+        MenuPageAdaptor appAdapter = new MenuPageAdaptor(this, onPageClickListener);
         navPageView.setAdapter(appAdapter);
 
-        ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
+        vpPager = (ViewPager) findViewById(R.id.vpPager);
 
         if (pagerAdapter != null) {
             //this will wipe the fragments already associated with the pager
@@ -220,6 +221,9 @@ public class MainActivity extends BaseActivity {
         pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         pagerAdapter.notifyDataSetChanged();
         vpPager.setAdapter(pagerAdapter);
+
+        PageIndicator indicator = (PageIndicator) findViewById(R.id.indicator);
+        indicator.setViewPager(vpPager);
 
 
     }
@@ -250,13 +254,15 @@ public class MainActivity extends BaseActivity {
 
     private void openPageSettings() {
         Intent intent = new Intent(this, MyElectricSettingsActivity.class);
+        //FIXME send current page number
         startActivity(intent);
     }
 
     private void setCurrentAccount(String accountId) {
         EmonApplication.get().setCurrentAccount(accountId);
+        accountSelector.setText(EmonApplication.get().getAccounts().get(EmonApplication.get().getCurrentAccount()));
         setUpPages();
-        //FIXME DO THIS
+
     }
 
     public boolean setFullScreen() {

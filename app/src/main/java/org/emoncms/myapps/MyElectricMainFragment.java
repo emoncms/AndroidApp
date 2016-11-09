@@ -92,12 +92,14 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
 
 
     private void updateTextFields() {
-        if (blnShowCost) {
-            txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%s%.2f/h", myElectricSettings.getCostSymbol(), (powerNow * 0.001) * myElectricSettings.getUnitCost()));
-            txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%s%.2f", myElectricSettings.getCostSymbol(), powerToday * myElectricSettings.getUnitCost()));
-        } else {
-            txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.0fW", powerNow));
-            txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.1fkWh", powerToday));
+        if (getActivity() != null) {
+            if (blnShowCost) {
+                txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%s%.2f/h", myElectricSettings.getCostSymbol(), (powerNow * 0.001) * myElectricSettings.getUnitCost()));
+                txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%s%.2f", myElectricSettings.getCostSymbol(), powerToday * myElectricSettings.getUnitCost()));
+            } else {
+                txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.0fW", powerNow));
+                txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.1fkWh", powerToday));
+            }
         }
     }
 
