@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.viewpagerindicator.PageIndicator;
 
+import org.emoncms.myapps.myelectric.MyElectricSettings;
 import org.emoncms.myapps.settings.SettingsActivity;
 
 /**
@@ -159,6 +160,7 @@ public class MainActivity extends BaseActivity  {
                     openSettingsActivity();
                 } else {
                     toggleNavigation();
+                    Log.d("main","Acccount " + id);
                     setCurrentAccount(id);
                 }
             }
@@ -200,7 +202,7 @@ public class MainActivity extends BaseActivity  {
             public void onClick(String id) {
                 mDrawer.closeDrawers();
                 if (id.equals("new")) {
-                    openPageSettings();
+                    openNewPageSettings();
                 } else {
                     vpPager.setCurrentItem(Integer.valueOf(id),true);
                 }
@@ -254,7 +256,14 @@ public class MainActivity extends BaseActivity  {
 
     private void openPageSettings() {
         Intent intent = new Intent(this, MyElectricSettingsActivity.class);
-        //FIXME send current page number
+        int index = vpPager.getCurrentItem();
+        MyElectricSettings settings = EmonApplication.get().getPages().get(index);
+        intent.putExtra("settings", settings);
+        startActivity(intent);
+    }
+
+    private void openNewPageSettings() {
+        Intent intent = new Intent(this, MyElectricSettingsActivity.class);
         startActivity(intent);
     }
 

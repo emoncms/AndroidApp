@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import org.emoncms.myapps.db.EmonDatabaseHelper;
 import org.emoncms.myapps.myelectric.MyElectricSettings;
 
 import java.util.ArrayList;
@@ -136,14 +137,8 @@ public class EmonApplication extends Application {
 
     private void loadPages() {
         pages = new ArrayList<>();
-        //FIXME Do this properly
-        if (accounts.get(currentAccount) != null && accounts.get(currentAccount).equals("Home")) {
-            pages.add(new MyElectricSettings("Electric", 3, 4, 0.1508f, "£"));
-        } else {
-            pages.add(new MyElectricSettings("Electric", 136162, 136164, 0.1508f, "£"));
-            pages.add(new MyElectricSettings("Solar", 136158, 136159, 0.5f, "£"));
-            pages.add(new MyElectricSettings("Import", 136165, 136166, 0.1508f, "£"));
-        }
+        pages = EmonDatabaseHelper.getInstance(this).getPages(getCurrentAccount());
+
     }
 
 

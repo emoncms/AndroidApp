@@ -22,7 +22,7 @@
     //  TRANSLATABLE
     //
     <string name="me_title">My Electric</string>
-    <string name="me_settings_title">My Electric Feeds</string>
+    <string name="me_settings_title">Page Settings</string>
 
     <string name="ms_title">My Solar</string>
     <string name="ms_settings_title">My Solar Feeds</string>
@@ -111,10 +111,12 @@
 
     <string name="settings_title_myelectric_feeds">Feeds</string>
     <string name="settings_title_myelectric_currency">Currency</string>
+    <string name="settings_title_myelectric_page_name">Page Name</string>
     <string name="settings_title_myelectric_power_feed">Power feed (Watts)</string>
     <string name="settings_title_myelectric_kwh_feed">"Bar graph feed (kWh)</string>
     <string name="settings_title_myelectric_escale">Wh or kWh Feed</string>
     <string name="settings_title_myelectric_unit_cost">Cost</string>
     <string name="settings_title_myelectric_cost_symbol">Cost Unit</string>
+    <string name="settings_title_delete_page">Delete Page</string>
 
 </resources>

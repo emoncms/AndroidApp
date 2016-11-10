@@ -4,6 +4,12 @@
     <PreferenceCategory
         android:title="@string/settings_title_myelectric_feeds">
 
+        <EditTextPreference
+            android:key="page_name"
+            android:title="@string/settings_title_myelectric_page_name"
+            android:inputType="text"
+            android:defaultValue="" />
+
         <ListPreference
             android:key="myelectric_power_feed"
             android:title="@string/settings_title_myelectric_power_feed"

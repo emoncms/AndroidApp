@@ -146,7 +146,7 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         setHasOptionsMenu(true);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) actionBar.setTitle(R.string.me_title);
+        if (actionBar != null) actionBar.setTitle(myElectricSettings.getName());
 
         timezone = (long) Math.floor((Calendar.getInstance().get(Calendar.ZONE_OFFSET) + Calendar.getInstance().get(Calendar.DST_OFFSET)) * 0.001);
 

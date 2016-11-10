@@ -112,7 +112,9 @@ public class DailyBarChart {
         barData.getXVals().clear();
         BarDataSet dataSet = (BarDataSet) barData.getDataSetByLabel("kWh", true);
         dataSet.clear();
-        dataSet.setColors(chartBarColours);
+        if (chartBarColours != null) {
+            dataSet.setColors(chartBarColours);
+        }
 
         for (int i = start; i < chartLabels.size(); i++) {
             barData.addEntry(new BarEntry(chartValues.get(i).floatValue(), i), 0);

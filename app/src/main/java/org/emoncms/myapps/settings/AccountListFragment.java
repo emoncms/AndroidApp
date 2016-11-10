@@ -55,7 +55,7 @@ public class AccountListFragment extends ListFragment {
 
     private class AccountAdaptor extends ArrayAdapter<Account> {
         AccountAdaptor(Context context, List<Account> objects) {
-            super(context, R.layout.account_menu_item, objects);
+            super(context, R.layout.menu_item_account, objects);
         }
 
         @Override
@@ -63,7 +63,7 @@ public class AccountListFragment extends ListFragment {
                             ViewGroup parent) {
 
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.account_menu_item, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.menu_item_account, parent, false);
             }
 
             TextView url=(TextView)convertView.findViewById(R.id.name);

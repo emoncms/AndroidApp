@@ -96,7 +96,7 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
 
     @Override
     public MenuPageAdaptor.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.page_menu_item,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.menu_item_page,parent,false);
         return new ViewHolder(v);
     }
 
