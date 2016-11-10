@@ -93,11 +93,15 @@ public class MyElectricSettingsFragment extends Fragment {
         settings.setName(namePreference.getText().toString());
 
         if (settings.getId() == 0) {
-            Log.d("settings","INserting");
-            EmonDatabaseHelper.getInstance(getActivity()).addPage(EmonApplication.get().getCurrentAccount(), settings);
+            //FIXME probably move database access into EmonApplication
+            Log.d("settings","Inserting");
+            int id = EmonDatabaseHelper.getInstance(getActivity()).addPage(EmonApplication.get().getCurrentAccount(), settings);
+            settings.setId(id);
+            EmonApplication.get().addPage(settings);
         } else {
             Log.d("settings","Updating");
             EmonDatabaseHelper.getInstance(getActivity()).updatePage(settings.getId(), settings);
+            EmonApplication.get().updatePage(settings);
         }
     }
 

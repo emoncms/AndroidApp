@@ -24,8 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             app:radius="3dp"
-            app:fillColor="#CCCCCC"
-            app:pageColor="#FFFFFF"
+            app:pageColor="#CCCCCC"
+            app:fillColor="@color/chartBlue"
             app:strokeWidth="0dp"
             />
 

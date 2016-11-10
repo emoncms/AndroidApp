@@ -84,7 +84,9 @@ public class MyElectricSettingsActivity extends BaseActivity {
     }
 
     private void deletePage() {
+        //TODO move database access into EmonApplication
         EmonDatabaseHelper.getInstance(this).deletePage(settings.getId());
+        EmonApplication.get().removePage(settings);
     }
 
 

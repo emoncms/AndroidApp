@@ -15,12 +15,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -51,12 +53,24 @@ public class MainActivity extends BaseActivity  {
 
     private static final String PREF_APP_FIRST_RUN = "app_first_run";
 
-    public static class MyPagerAdapter extends FragmentStatePagerAdapter {
+    public static class MyPagerAdapter extends FragmentStatePagerAdapter implements PageChangeListener {
 
-        public MyPagerAdapter(FragmentManager fragmentManager) {
+        private AppCompatActivity activity;
+
+        public MyPagerAdapter(FragmentManager fragmentManager, AppCompatActivity activity) {
             super(fragmentManager);
+            this.activity = activity;
+            EmonApplication.get().addPageChangeListener(this);
+
+
         }
 
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            ActionBar actionBar =  activity.getSupportActionBar();
+            if (actionBar != null) actionBar.setTitle(EmonApplication.get().getPages().get(position).getName());
+            super.setPrimaryItem(container, position, object);
+        }
 
         @Override
         public int getCount() {
@@ -74,6 +88,21 @@ public class MainActivity extends BaseActivity  {
         @Override
         public CharSequence getPageTitle(int position) {
             return EmonApplication.get().getPages().get(position).getName();
+        }
+
+        @Override
+        public void onAddPage(MyElectricSettings settings) {
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onDeletePage(MyElectricSettings settings) {
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onUpdatePage(MyElectricSettings settings) {
+            notifyDataSetChanged();
         }
     }
 
@@ -217,10 +246,12 @@ public class MainActivity extends BaseActivity  {
         if (pagerAdapter != null) {
             //this will wipe the fragments already associated with the pager
             vpPager.setAdapter(null);
+            EmonApplication.get().removePageChangeListener(pagerAdapter);
 
         }
 
-        pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        pagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), this);
+
         pagerAdapter.notifyDataSetChanged();
         vpPager.setAdapter(pagerAdapter);
 

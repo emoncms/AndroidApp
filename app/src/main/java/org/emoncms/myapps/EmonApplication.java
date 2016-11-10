@@ -9,6 +9,7 @@ import org.emoncms.myapps.db.EmonDatabaseHelper;
 import org.emoncms.myapps.myelectric.MyElectricSettings;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,10 @@ public class EmonApplication extends Application {
     private static final String PREF_CURRENT_ACCOUNT = "app_current_account";
     private static EmonApplication instance;
 
-    private List<AccountListChangeListener> listeners;
+    private List<AccountListChangeListener> accountChangeListeners;
+    private List<PageChangeListener> pageChangeListeners;
+
+
     private Map<String,String> accounts;
     private String currentAccount;
 
@@ -61,7 +65,8 @@ public class EmonApplication extends Application {
 
         instance = this;
 
-        listeners = new ArrayList<>();
+        accountChangeListeners = new ArrayList<>();
+        pageChangeListeners = new ArrayList<>();
     }
 
     private String loadAccountName(String accountId) {
@@ -77,7 +82,15 @@ public class EmonApplication extends Application {
     }
 
     public void addAccountChangeListener(AccountListChangeListener listener) {
-        listeners.add(listener);
+        accountChangeListeners.add(listener);
+    }
+
+    public void addPageChangeListener(PageChangeListener listener) {
+        pageChangeListeners.add(listener);
+    }
+
+    public void removePageChangeListener(PageChangeListener listener) {
+        pageChangeListeners.remove(listener);
     }
 
     public String addAccount() {
@@ -90,23 +103,29 @@ public class EmonApplication extends Application {
 
         accounts.put(accountId,accountName);
 
-        for (AccountListChangeListener listener : listeners) {
+        for (AccountListChangeListener listener : accountChangeListeners) {
             listener.onAddAccount(accountId,accountName);
         }
+        EmonDatabaseHelper.getInstance(this).addPage(accountId,new MyElectricSettings(0,"new page",0,0,0,"£"));
         writeAccountList();
         return accountId;
     }
 
     public void updateAccount(String accountId, String accountName) {
         accounts.put(accountId,accountName);
-        for (AccountListChangeListener listener : listeners) {
+        for (AccountListChangeListener listener : accountChangeListeners) {
             listener.onUpdateAccount(accountId,accountName);
         }
     }
 
     public void removeAccount(String accountId) {
+
+        for (MyElectricSettings page : pages) {
+            EmonDatabaseHelper.getInstance(this).deletePage(page.getId());
+        }
+
         accounts.remove(accountId);
-        for (AccountListChangeListener listener : listeners) {
+        for (AccountListChangeListener listener : accountChangeListeners) {
             listener.onDeleteAccount(accountId);
         }
         writeAccountList();
@@ -134,11 +153,44 @@ public class EmonApplication extends Application {
         return pages;
     }
 
-
     private void loadPages() {
         pages = new ArrayList<>();
         pages = EmonDatabaseHelper.getInstance(this).getPages(getCurrentAccount());
 
+    }
+
+
+    public void addPage(MyElectricSettings page) {
+        pages.add(page);
+        for (PageChangeListener pageChangeListener: pageChangeListeners) {
+            pageChangeListener.onAddPage(page);
+        }
+    }
+
+    public void removePage(MyElectricSettings page) {
+
+        for (Iterator<MyElectricSettings> iterator = pages.iterator(); iterator.hasNext(); ) {
+            MyElectricSettings item = iterator.next();
+            if (item.getId()  == page.getId()) {
+                iterator.remove();
+            }
+        }
+
+        for (PageChangeListener pageChangeListener: pageChangeListeners) {
+            pageChangeListener.onDeletePage(page);
+        }
+    }
+
+    public void updatePage(MyElectricSettings page) {
+        for (int i = 0; i < pages.size(); i++) {
+            if (pages.get(i).getId() == page.getId()) {
+                pages.set(i,page);
+            }
+        }
+
+        for (PageChangeListener pageChangeListener: pageChangeListeners) {
+            pageChangeListener.onUpdatePage(page);
+        }
     }
 
 

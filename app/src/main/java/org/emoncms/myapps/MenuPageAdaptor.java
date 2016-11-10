@@ -8,19 +8,55 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.emoncms.myapps.myelectric.MyElectricSettings;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
- * Handles the items in the navigation drawer.
+ * Handles the list of "app" pages in the navigation drawer.
  */
-public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHolder>  {
+public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHolder> implements PageChangeListener  {
 
     private Context mContext;
 
     private List<MenuOption> menuOptionList;
     private OnNavigationClick onNavigationClick;
     private int selectedItem = 0;
+
+    @Override
+    public void onAddPage(MyElectricSettings settings) {
+        menuOptionList.add(menuOptionList.size()-1,new MenuOption(""+(menuOptionList.size()-1), R.drawable.ic_my_electric_white_36dp, settings.getName()));
+        notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onDeletePage(MyElectricSettings settings) {
+
+        for (Iterator<MenuOption> iterator = menuOptionList.iterator(); iterator.hasNext(); ) {
+            MenuOption item = iterator.next();
+            if (item.settings != null && item.settings.getId() == settings.getId()) {
+                iterator.remove();
+                notifyDataSetChanged();
+            }
+        }
+        //notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onUpdatePage(MyElectricSettings settings) {
+        for (Iterator<MenuOption> iterator = menuOptionList.iterator(); iterator.hasNext(); ) {
+            MenuOption item = iterator.next();
+            if (item.settings != null && item.settings.getId() == settings.getId()) {
+                item.settings = settings;
+                item.text = settings.getName();
+            }
+        }
+        notifyDataSetChanged();
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -74,10 +110,12 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
 
 
         for(int i = 0; i < EmonApplication.get().getPages().size(); i++) {
-            menuOptionList.add(new MenuOption(""+i, R.drawable.ic_my_electric_white_36dp, EmonApplication.get().getPages().get(i).getName()));
+            menuOptionList.add(new MenuOption(""+i, R.drawable.ic_my_electric_white_36dp, EmonApplication.get().getPages().get(i).getName(),EmonApplication.get().getPages().get(i)));
             index++;
         }
         menuOptionList.add(new MenuOption("new", R.drawable.ic_my_electric_white_36dp, "Add Page"));
+
+        EmonApplication.get().addPageChangeListener(this);
 
 
     }
@@ -114,6 +152,14 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
         String id;
         int icon;
         String text;
+        MyElectricSettings settings;
+
+        public MenuOption(String id, int icon, String text, MyElectricSettings settings) {
+            this.id = id;
+            this.icon = icon;
+            this.text = text;
+            this.settings = settings;
+        }
 
         public MenuOption(String id, int icon, String text) {
             this.id = id;
