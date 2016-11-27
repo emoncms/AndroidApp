@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import org.emoncms.myapps.db.EmonDatabaseHelper;
 import org.emoncms.myapps.myelectric.MyElectricSettings;
@@ -33,6 +34,8 @@ public class EmonApplication extends Application {
     private String currentAccount;
 
     private List<MyElectricSettings> pages;
+
+    int currentPageIndex;
 
     public static EmonApplication get() {
         return instance;
@@ -106,9 +109,22 @@ public class EmonApplication extends Application {
         for (AccountListChangeListener listener : accountChangeListeners) {
             listener.onAddAccount(accountId,accountName);
         }
-        EmonDatabaseHelper.getInstance(this).addPage(accountId,new MyElectricSettings(0,"new page",0,0,0,"£"));
+
         writeAccountList();
+
+        if (accounts.size() == 1) {
+            setCurrentAccount(accountId);
+        }
         return accountId;
+    }
+
+    public void addFirstPage() {
+        MyElectricSettings defaultPage = new MyElectricSettings(0,"My Electric",0,0,0,"£");
+        int id = EmonDatabaseHelper.getInstance(this).addPage(currentAccount,defaultPage);
+        defaultPage.setId(id);
+        if (currentAccount.equals(currentAccount)) {
+            this.addPage(defaultPage);
+        }
     }
 
     public void updateAccount(String accountId, String accountName) {
@@ -163,6 +179,7 @@ public class EmonApplication extends Application {
     public void addPage(MyElectricSettings page) {
         pages.add(page);
         for (PageChangeListener pageChangeListener: pageChangeListeners) {
+            Log.d("app","alling page change listener");
             pageChangeListener.onAddPage(page);
         }
     }
@@ -182,6 +199,7 @@ public class EmonApplication extends Application {
     }
 
     public void updatePage(MyElectricSettings page) {
+
         for (int i = 0; i < pages.size(); i++) {
             if (pages.get(i).getId() == page.getId()) {
                 pages.set(i,page);
@@ -189,6 +207,7 @@ public class EmonApplication extends Application {
         }
 
         for (PageChangeListener pageChangeListener: pageChangeListeners) {
+            Log.d("emon-app","Calling page change listener " + pageChangeListener);
             pageChangeListener.onUpdatePage(page);
         }
     }

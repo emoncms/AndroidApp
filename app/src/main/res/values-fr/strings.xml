@@ -93,4 +93,6 @@
     <string name="settings_summary_emoncms_name">Short name for the account for easy identification FR</string>
     <string name="settings_title_delete_account">Delete Account FR</string>
     <string name="settings_title_emoncms_name">Account Name FR</string>
+    <string name="settings_title_myelectric_page_name">Page Name</string>
+    <string name="settings_title_delete_page">Delete page FR</string>
 </resources>

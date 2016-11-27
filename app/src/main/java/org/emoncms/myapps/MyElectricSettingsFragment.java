@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -65,6 +64,8 @@ public class MyElectricSettingsFragment extends Fragment {
         powerFeedPreference = (Spinner) result.findViewById(R.id.powerFeedSpinner);
         kWhFeedPreference = (Spinner) result.findViewById(R.id.useFeedSpinner);
         namePreference = (EditText) result.findViewById(R.id.page_name);
+
+
         namePreference.setText(settings.getName());
         return(result);
     }
@@ -86,7 +87,7 @@ public class MyElectricSettingsFragment extends Fragment {
 
     private void savePage() {
 
-        Log.d("settings","Saving Page");
+        Log.d("emon-settings","Saving Page");
 
         settings.setPowerFeedId((int)powerFeedPreference.getSelectedItemId());
         settings.setUseFeedId((int)kWhFeedPreference.getSelectedItemId());
@@ -168,11 +169,13 @@ public class MyElectricSettingsFragment extends Fragment {
                             FeedSpinnerAdapter powerSpinnerAdapter = new FeedSpinnerAdapter(getActivity(),R.layout.support_simple_spinner_dropdown_item,powerEntryValueList,powerEntryList);
                             powerFeedPreference.setAdapter(powerSpinnerAdapter);
                             powerFeedPreference.setEnabled(true);
+                            powerFeedPreference.setSelection(powerEntryValueList.indexOf(settings.getPowerFeedId()));
 
                             FeedSpinnerAdapter useSpinnerAdapter = new FeedSpinnerAdapter(getActivity(),R.layout.support_simple_spinner_dropdown_item,kwhFeedEntryValueList,kwhFeedEntryList);
                             kWhFeedPreference.setAdapter(useSpinnerAdapter);
 
                             kWhFeedPreference.setEnabled(true);
+                            kWhFeedPreference.setSelection(kwhFeedEntryValueList.indexOf(settings.getUseFeedId()));
 
 
                         }

@@ -15,14 +15,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -30,12 +28,13 @@ import android.widget.TextView;
 import com.viewpagerindicator.PageIndicator;
 
 import org.emoncms.myapps.myelectric.MyElectricSettings;
+import org.emoncms.myapps.settings.AccountSettingsActivity;
 import org.emoncms.myapps.settings.SettingsActivity;
 
 /**
  * Handles navigation, account changing and pager
  */
-public class MainActivity extends BaseActivity  {
+public class MainActivity extends BaseActivity implements AccountListChangeListener {
     private Toolbar mToolbar;
     private DrawerLayout mDrawer;
 
@@ -51,25 +50,14 @@ public class MainActivity extends BaseActivity  {
 
     private Handler mFullscreenHandler = new Handler();
 
-    private static final String PREF_APP_FIRST_RUN = "app_first_run";
 
     public static class MyPagerAdapter extends FragmentStatePagerAdapter implements PageChangeListener {
 
-        private AppCompatActivity activity;
 
-        public MyPagerAdapter(FragmentManager fragmentManager, AppCompatActivity activity) {
+        public MyPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
-            this.activity = activity;
+
             EmonApplication.get().addPageChangeListener(this);
-
-
-        }
-
-        @Override
-        public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            ActionBar actionBar =  activity.getSupportActionBar();
-            if (actionBar != null) actionBar.setTitle(EmonApplication.get().getPages().get(position).getName());
-            super.setPrimaryItem(container, position, object);
         }
 
         @Override
@@ -80,8 +68,19 @@ public class MainActivity extends BaseActivity  {
         // Returns the fragment to display for that page
         @Override
         public Fragment getItem(int position) {
-            Log.d("pager","making page " + position);
-            return MyElectricMainFragment.newInstance(EmonApplication.get().getPages().get(position));
+            Log.d("emon", "making page " + position);
+            MyElectricMainFragment frag = MyElectricMainFragment.newInstance(EmonApplication.get().getPages().get(position));
+            if (position == 0) {
+                frag.setUserVisibleHint(true);
+            }
+            //EmonApplication.get().addPageChangeListener(frag);
+            return frag;
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            //will cause all cached fragments to be recreated. no problem.
+            return POSITION_NONE;
         }
 
         // Returns the page title for the top indicator
@@ -109,13 +108,13 @@ public class MainActivity extends BaseActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         UpgradeManager.doUpgrade(this);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        isFirstRun = sp.getBoolean(PREF_APP_FIRST_RUN, true);
-        sp.edit().putBoolean(PREF_APP_FIRST_RUN, false).apply();
 
-        super.onCreate(savedInstanceState);
+
+
 
         PreferenceManager.setDefaultValues(this, R.xml.main_preferences, false);
         PreferenceManager.setDefaultValues(this, R.xml.me_preferences, false);
@@ -136,6 +135,9 @@ public class MainActivity extends BaseActivity  {
             mDrawer.openDrawer(GravityCompat.START);
         }
 
+        EmonApplication.get().addAccountChangeListener(this);
+
+
     }
 
     @Override
@@ -143,6 +145,24 @@ public class MainActivity extends BaseActivity  {
         super.onResume();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         setKeepScreenOn(sp.getBoolean(getString(R.string.setting_keepscreenon), false));
+
+        if (EmonApplication.get().getAccounts().isEmpty()) {
+            openSettingsActivity();
+        }
+
+        //we could have just got back from PageSettings, so set page title if it changed
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null && !EmonApplication.get().getPages().isEmpty() && vpPager != null) {
+            Log.d("emon-main","Resumed setting title to " + EmonApplication.get().getPages().get(vpPager.getCurrentItem()).getName());
+            actionBar.setTitle(EmonApplication.get().getAccounts().get(EmonApplication.get().getCurrentAccount()));
+        }
+
+        //we could have just got back from adding first account.
+        if (!EmonApplication.get().getAccounts().isEmpty() && EmonApplication.get().getPages().isEmpty()) {
+            accountSelector.setText(EmonApplication.get().getAccounts().get(EmonApplication.get().getCurrentAccount()));
+            EmonApplication.get().addFirstPage();
+        }
+
     }
 
     /**
@@ -185,12 +205,15 @@ public class MainActivity extends BaseActivity  {
             @Override
             public void onClick(String id) {
                 mDrawer.closeDrawers();
-                if (id.equals("settings")) {
-                    openSettingsActivity();
+                if (id.equals("new")) {
+                    addNewAccount();
+
                 } else {
                     toggleNavigation();
-                    Log.d("main","Acccount " + id);
+                    Log.d("main", "Account " + id);
                     setCurrentAccount(id);
+                    ActionBar actionBar = getSupportActionBar();
+                    actionBar.setTitle(EmonApplication.get().getAccounts().get(id));
                 }
             }
         };
@@ -224,6 +247,25 @@ public class MainActivity extends BaseActivity  {
 
     }
 
+    private void addNewAccount() {
+
+
+        String newAccountId = EmonApplication.get().addAccount();
+
+        Log.d("emon-main", "Opening New account " + newAccountId);
+
+        Intent intent = new Intent(this, AccountSettingsActivity.class);
+        intent.putExtra("account", newAccountId);
+        startActivity(intent);
+    }
+
+    private void openAccountSettings() {
+        Intent intent = new Intent(this, AccountSettingsActivity.class);
+        intent.putExtra("account", EmonApplication.get().getCurrentAccount());
+        startActivity(intent);
+    }
+
+
     private void setUpPages() {
 
         OnNavigationClick onPageClickListener = new OnNavigationClick() {
@@ -232,8 +274,10 @@ public class MainActivity extends BaseActivity  {
                 mDrawer.closeDrawers();
                 if (id.equals("new")) {
                     openNewPageSettings();
+                } else if (id.equals("settings")) {
+                    openAccountSettings();
                 } else {
-                    vpPager.setCurrentItem(Integer.valueOf(id),true);
+                    vpPager.setCurrentItem(Integer.valueOf(id), true);
                 }
             }
         };
@@ -250,7 +294,20 @@ public class MainActivity extends BaseActivity  {
 
         }
 
-        pagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), this);
+        pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+
+        // When swiping between different sections, select the corresponding tab
+        vpPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                Log.d("emon-main","Page Changed to " + EmonApplication.get().getPages().get(position).getId());
+                ActionBar actionBar = getSupportActionBar();
+                if (actionBar != null && !EmonApplication.get().getPages().isEmpty()) {
+                    //actionBar.setTitle(EmonApplication.get().getPages().get(position).getName());
+                    EmonApplication.get().currentPageIndex = position;
+                }
+            }
+        });
 
         pagerAdapter.notifyDataSetChanged();
         vpPager.setAdapter(pagerAdapter);
@@ -368,5 +425,22 @@ public class MainActivity extends BaseActivity  {
         startActivity(intent);
     }
 
+    @Override
+    public void onAddAccount(String id, String name) {
+        if (id.equals(EmonApplication.get().getCurrentAccount())) {
+            accountSelector.setText(EmonApplication.get().getAccounts().get(EmonApplication.get().getCurrentAccount()));
+        }
+    }
 
+    @Override
+    public void onDeleteAccount(String id) {
+
+    }
+
+    @Override
+    public void onUpdateAccount(String id, String name) {
+        if (id.equals(EmonApplication.get().getCurrentAccount())) {
+            accountSelector.setText(EmonApplication.get().getAccounts().get(EmonApplication.get().getCurrentAccount()));
+        }
+    }
 }

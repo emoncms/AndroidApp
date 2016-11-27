@@ -2,6 +2,7 @@ package org.emoncms.myapps;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +28,14 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
 
     @Override
     public void onAddPage(MyElectricSettings settings) {
-        menuOptionList.add(menuOptionList.size()-1,new MenuOption(""+(menuOptionList.size()-1), R.drawable.ic_my_electric_white_36dp, settings.getName()));
-        notifyDataSetChanged();
+
+        //check it is not already in there
+        int pos = getPosition(settings.getId());
+        if (pos == -1) {
+            Log.d("emon-menu", "Adding page to menu");
+            menuOptionList.add(menuOptionList.size() - 2, new MenuOption("" + (menuOptionList.size() - 2), R.drawable.ic_my_electric_white_36dp, settings.getName()));
+            notifyDataSetChanged();
+        }
 
     }
 
@@ -38,12 +45,13 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
         for (Iterator<MenuOption> iterator = menuOptionList.iterator(); iterator.hasNext(); ) {
             MenuOption item = iterator.next();
             if (item.settings != null && item.settings.getId() == settings.getId()) {
+                Log.d("emon-menu","Removed page from menu " + settings.getName());
                 iterator.remove();
-                notifyDataSetChanged();
+
             }
         }
-        //notifyDataSetChanged();
-
+        notifyDataSetChanged();
+        Log.d("emon-menu","Refreshed menu" + settings.getName());
     }
 
     @Override
@@ -57,6 +65,8 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
         }
         notifyDataSetChanged();
     }
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -85,7 +95,7 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
                 public void onClick(View view) {
                     //only change selection if we are switching accounts
                     notifyItemChanged(selectedItem);
-                    if (!option.id.equals("new")) {
+                    if (!option.id.equals("new") && !option.id.equals("settings")) {
                         selectedItem = getLayoutPosition();
                         notifyItemChanged(selectedItem);
                     }
@@ -113,7 +123,10 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
             menuOptionList.add(new MenuOption(""+i, R.drawable.ic_my_electric_white_36dp, EmonApplication.get().getPages().get(i).getName(),EmonApplication.get().getPages().get(i)));
             index++;
         }
+
+        Log.d("empon-menu","Menu pages added " + index);
         menuOptionList.add(new MenuOption("new", R.drawable.ic_my_electric_white_36dp, "Add Page"));
+        menuOptionList.add(new MenuOption("settings", R.drawable.ic_my_electric_white_36dp, "Settings"));
 
         EmonApplication.get().addPageChangeListener(this);
 
@@ -125,6 +138,17 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
         int position = -1;
         for (int i = 0; i < menuOptionList.size(); i++) {
             if (menuOptionList.get(i).id.equals(id)) {
+                position = i;
+                break;
+            }
+        }
+        return position;
+    }
+
+    private int getPosition(int pageId) {
+        int position = -1;
+        for (int i = 0; i < menuOptionList.size(); i++) {
+            if (menuOptionList.get(i).settings != null && menuOptionList.get(i).settings.getId()== pageId) {
                 position = i;
                 break;
             }

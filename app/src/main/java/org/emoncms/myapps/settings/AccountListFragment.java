@@ -4,7 +4,9 @@ package org.emoncms.myapps.settings;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +36,17 @@ public class AccountListFragment extends ListFragment {
         loadCurrentAccounts();
 
 
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        if (EmonApplication.get().getAccounts().isEmpty()) {
+            Snackbar snackbar = Snackbar.make(view, "Add at least one account to proceed", Snackbar.LENGTH_INDEFINITE);
+            View snackbar_view = snackbar.getView();
+            snackbar_view.setBackgroundColor(Color.GRAY);
+            snackbar.show();
+        }
+        super.onViewCreated(view, savedInstanceState);
     }
 
     private void loadCurrentAccounts() {
