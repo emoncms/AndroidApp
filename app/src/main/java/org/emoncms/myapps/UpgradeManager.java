@@ -26,6 +26,9 @@ public class UpgradeManager
         {
             if (previousVersionCode < 123) // Version 1.1.10
                 upgrade_0_to_123(mActivity, sp);
+
+            if (previousVersionCode < 128) // Version 1.1.10
+                upgradeToMultiAccount(mActivity, sp);
         }
 
         sp.edit().putInt("version_code", currentVersionCode).apply();
@@ -38,7 +41,7 @@ public class UpgradeManager
 
         if (emoncmsURL.toLowerCase().equals("emoncms.org") && !useSSL)
         {
-            sp.edit().putBoolean("emoncms_usessl", true).apply();
+            sp.edit().putBoolean("emoncms_usessl", true).commit();
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
             builder.setTitle("You're now more secure");
             builder.setMessage(
@@ -48,5 +51,50 @@ public class UpgradeManager
             builder.setPositiveButton(android.R.string.ok, null);
             builder.create().show();
         }
+    }
+
+    public static void upgradeToMultiAccount(Activity mActivity, SharedPreferences sp) {
+
+
+        String accountId = EmonApplication.get().addAccount();
+        EmonApplication.get().setCurrentAccount(accountId);
+
+        String emoncmsURL = sp.getString("emoncms_url", "emoncms.org");
+        String emoncmsAPI = sp.getString("emoncms_apikey", ".org");
+        Boolean useSSL = sp.getBoolean("emoncms_usessl", false);
+        String powerFeed = sp.getString("myelectric_power_feed","-1");
+        String scale = sp.getString("myelectric_escale","-1");
+        String unitCost = sp.getString("myelectric_unit_cost","0");
+        String costSymbol = sp.getString("myelectric_cost_symbol","0");
+
+        sp.edit().remove("emoncms_url")
+                .remove("emoncms_apikey")
+                .remove("emoncms_usessl")
+                .remove("myelectric_power_feed")
+                .remove("myelectric_escale")
+                .remove("myelectric_unit_cost")
+                .remove("myelectric_cost_symbol")
+                .commit();
+
+
+        SharedPreferences.Editor accountPrefs = EmonApplication.get().getSharedPreferences(accountId).edit();
+        accountPrefs.putString("emoncms_url", emoncmsURL);
+        accountPrefs.putString("emoncms_apikey", emoncmsAPI);
+        accountPrefs.putBoolean("emoncms_usessl", useSSL);
+
+        accountPrefs.putString("myelectric_power_feed", powerFeed);
+        accountPrefs.putString("myelectric_escale", scale);
+        accountPrefs.putString("myelectric_unit_cost", unitCost);
+        accountPrefs.putString("myelectric_cost_symbol", costSymbol);
+        accountPrefs.commit();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setTitle("Multiple Accounts Supported");
+        builder.setMessage(
+                "Application has been upgraded to support multiple accounts. " +
+                        "Your settings have been migrated. ");
+        builder.setPositiveButton(android.R.string.ok, null);
+        builder.create().show();
+
     }
 }

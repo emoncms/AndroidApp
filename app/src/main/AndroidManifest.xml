@@ -10,7 +10,8 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:name="org.emoncms.myapps.EmonApplication">
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
@@ -26,9 +27,12 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".barcodescanner.BarcodeCaptureActivity"/>
-            android:screenOrientation="landscape"
+        <activity android:name=".settings.SettingsActivity"/>
+        <activity android:name=".settings.AccountSettingsActivity"/>
+        <activity android:name=".MyElectricSettingsActivity"/>
+        <activity android:name=".barcodescanner.BarcodeCaptureActivity"/>
+
+            <!--android:screenOrientation="landscape"-->
             <!--android:resizeableActivity="false"-->
 
     </application>

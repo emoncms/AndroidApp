@@ -1,65 +1,120 @@
 package org.emoncms.myapps;
 
-import android.app.Fragment;
+
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.View;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
-public class MainActivity extends BaseActivity
-{
-    Toolbar mToolbar;
-    DrawerLayout mDrawer;
+import com.viewpagerindicator.PageIndicator;
 
-//    int TITLE_IDS[] = {R.string.me_title, R.string.ms_title, R.string.settings};
-//    int ICONS[] = {R.drawable.ic_my_electric_white_36dp, R.drawable.ic_my_electric_white_36dp, R.drawable.ic_settings_applications_white_36dp};
+import org.emoncms.myapps.myelectric.MyElectricSettings;
+import org.emoncms.myapps.settings.AccountSettingsActivity;
+import org.emoncms.myapps.settings.SettingsActivity;
 
-    int TITLE_IDS[] = {R.string.me_title, R.string.settings};
-    int ICONS[] = {R.drawable.ic_my_electric_white_36dp, R.drawable.ic_settings_applications_white_36dp};
+/**
+ * Handles navigation, account changing and pager
+ */
+public class MainActivity extends BaseActivity implements AccountListChangeListener {
+    private Toolbar mToolbar;
+    private DrawerLayout mDrawer;
 
-    RecyclerView mRecyclerView;
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
-    boolean fullScreenRequested;
-    boolean isFirstRun;
-    Handler mFullscreenHandler = new Handler();
+    private TextView accountSelector;
+    private RecyclerView navAccountView;
+    private RecyclerView navPageView;
+    private MyPagerAdapter pagerAdapter;
+    private ViewPager vpPager;
 
-    private static final String PREF_APP_FIRST_RUN = "app_first_run";
+    private boolean fullScreenRequested;
+    private boolean isFirstRun;
+    private boolean accountListVisible = false;
 
-    public enum MyAppViews {
-        MyElectricView,
-        MyElectricSettingsView,
-        MySolarView,
-        MySolarSettingsView,
-        SettingsView
+    private Handler mFullscreenHandler = new Handler();
+
+
+    public static class MyPagerAdapter extends FragmentStatePagerAdapter implements PageChangeListener {
+
+
+        public MyPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+
+            EmonApplication.get().addPageChangeListener(this);
+        }
+
+        @Override
+        public int getCount() {
+            return EmonApplication.get().getPages().size();
+        }
+
+        // Returns the fragment to display for that page
+        @Override
+        public Fragment getItem(int position) {
+            Log.d("emon", "making page " + position);
+            MyElectricMainFragment frag = MyElectricMainFragment.newInstance(EmonApplication.get().getPages().get(position));
+            if (position == 0) {
+                frag.setUserVisibleHint(true);
+            }
+            //EmonApplication.get().addPageChangeListener(frag);
+            return frag;
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            //will cause all cached fragments to be recreated. no problem.
+            return POSITION_NONE;
+        }
+
+        // Returns the page title for the top indicator
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return EmonApplication.get().getPages().get(position).getName();
+        }
+
+        @Override
+        public void onAddPage(MyElectricSettings settings) {
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onDeletePage(MyElectricSettings settings) {
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onUpdatePage(MyElectricSettings settings) {
+            notifyDataSetChanged();
+        }
     }
 
-    MyAppViews displayed_view;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         UpgradeManager.doUpgrade(this);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        isFirstRun = sp.getBoolean(PREF_APP_FIRST_RUN, true);
-        sp.edit().putBoolean(PREF_APP_FIRST_RUN, false).apply();
 
-        super.onCreate(savedInstanceState);
+
+
 
         PreferenceManager.setDefaultValues(this, R.xml.main_preferences, false);
         PreferenceManager.setDefaultValues(this, R.xml.me_preferences, false);
@@ -71,81 +126,240 @@ public class MainActivity extends BaseActivity
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolbar);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
+        setUpNavigation();
 
-        if (mRecyclerView != null)
-            mRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new NavigationDrawerAdapter(this, TITLE_IDS, ICONS);
-        mRecyclerView.setAdapter(mAdapter);
+        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(mOnSystemUiVisibilityChangeListener);
 
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        if (isFirstRun) {
+            mDrawer.openDrawer(GravityCompat.START);
+        }
 
-        final GestureDetector mGestureDetector = new GestureDetector(MainActivity.this, new GestureDetector.SimpleOnGestureListener() {
-            @Override public boolean onSingleTapUp(MotionEvent e) {
-                return true;
+        EmonApplication.get().addAccountChangeListener(this);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        setKeepScreenOn(sp.getBoolean(getString(R.string.setting_keepscreenon), false));
+
+        if (EmonApplication.get().getAccounts().isEmpty()) {
+            openSettingsActivity();
+        }
+
+        //we could have just got back from PageSettings, so set page title if it changed
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null && !EmonApplication.get().getPages().isEmpty() && vpPager != null) {
+            Log.d("emon-main","Resumed setting title to " + EmonApplication.get().getPages().get(vpPager.getCurrentItem()).getName());
+            actionBar.setTitle(EmonApplication.get().getAccounts().get(EmonApplication.get().getCurrentAccount()));
+        }
+
+        //we could have just got back from adding first account.
+        if (!EmonApplication.get().getAccounts().isEmpty() && EmonApplication.get().getPages().isEmpty()) {
+            accountSelector.setText(EmonApplication.get().getAccounts().get(EmonApplication.get().getCurrentAccount()));
+            EmonApplication.get().addFirstPage();
+        }
+
+    }
+
+    /**
+     * Switch drawer layout contents between accounts and apps
+     */
+    private void toggleNavigation() {
+        if (accountListVisible) {
+            navAccountView.setVisibility(View.GONE);
+            navPageView.setVisibility(View.VISIBLE);
+            accountSelector.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_drop_down_black_24dp, 0);
+            accountListVisible = false;
+        } else {
+            navAccountView.setVisibility(View.VISIBLE);
+            navPageView.setVisibility(View.GONE);
+            accountSelector.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_drop_up_black_24dp, 0);
+            accountListVisible = true;
+        }
+    }
+
+    private void setUpNavigation() {
+        accountSelector = (TextView) findViewById(R.id.selectAccount);
+
+        accountSelector.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleNavigation();
             }
         });
+        accountSelector.setText(EmonApplication.get().getAccounts().get(EmonApplication.get().getCurrentAccount()));
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+        //account list
+        navAccountView = (RecyclerView) findViewById(R.id.accountMenu);
+        navAccountView.setVisibility(View.INVISIBLE);
+
+        if (navAccountView != null) {
+            navAccountView.setHasFixedSize(true);
+        }
+
+        OnNavigationClick onAccountClickListener = new OnNavigationClick() {
             @Override
-            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-                View child = recyclerView.findChildViewUnder(motionEvent.getX(),motionEvent.getY());
+            public void onClick(String id) {
+                mDrawer.closeDrawers();
+                if (id.equals("new")) {
+                    addNewAccount();
 
-                if(child!=null && mGestureDetector.onTouchEvent(motionEvent)){
-                    int position = recyclerView.getChildAdapterPosition(child);
-                    setSelectedNavigationItem(position);
-                    mDrawer.closeDrawers();
-
-                    switch (position) {
-                        case 0:
-                            showFragment(MyAppViews.MyElectricView);
-                            break;
-                        case 1:
-//                            showFragment(MyAppViews.MySolarView);
-//                            break;
-//                        case 2:
-                            showFragment(MyAppViews.SettingsView);
-                            break;
-                    }
-                    return true;
+                } else {
+                    toggleNavigation();
+                    Log.d("main", "Account " + id);
+                    setCurrentAccount(id);
+                    ActionBar actionBar = getSupportActionBar();
+                    actionBar.setTitle(EmonApplication.get().getAccounts().get(id));
                 }
-                return false;
             }
+        };
 
-            @Override
-            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-            }
+        MenuAccountAdapter accountAdapter = new MenuAccountAdapter(this, onAccountClickListener);
+        navAccountView.setAdapter(accountAdapter);
+        EmonApplication.get().addAccountChangeListener(accountAdapter);
+        RecyclerView.LayoutManager navLayoutManager = new LinearLayoutManager(this);
+        navAccountView.setLayoutManager(navLayoutManager);
 
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-            }
-        });
+        //account list
+        navPageView = (RecyclerView) findViewById(R.id.appMenu);
+        navPageView.setVisibility(View.VISIBLE);
 
+        if (navPageView != null) {
+            navPageView.setHasFixedSize(true);
+        }
+
+        setUpPages();
+
+        RecyclerView.LayoutManager navAppLayoutManager = new LinearLayoutManager(this);
+        navPageView.setLayoutManager(navAppLayoutManager);
+
+
+        //drawer toggle
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawer,mToolbar, R.string.open, R.string.close);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.open, R.string.close);
 
         mDrawer.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-        showFragment(MyAppViews.MyElectricView);
+    }
 
-        if (savedInstanceState != null)
-            displayed_view = MyAppViews.values()[savedInstanceState.getInt("displayed_fragment", 0)];
+    private void addNewAccount() {
 
-        showFragment(displayed_view);
 
-        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(mOnSystemUiVisibilityChangeListener);
+        String newAccountId = EmonApplication.get().addAccount();
 
-        if (isFirstRun)
-            mDrawer.openDrawer(GravityCompat.START);
+        Log.d("emon-main", "Opening New account " + newAccountId);
+
+        Intent intent = new Intent(this, AccountSettingsActivity.class);
+        intent.putExtra("account", newAccountId);
+        startActivity(intent);
+    }
+
+    private void openAccountSettings() {
+        Intent intent = new Intent(this, AccountSettingsActivity.class);
+        intent.putExtra("account", EmonApplication.get().getCurrentAccount());
+        startActivity(intent);
+    }
+
+
+    private void setUpPages() {
+
+        OnNavigationClick onPageClickListener = new OnNavigationClick() {
+            @Override
+            public void onClick(String id) {
+                mDrawer.closeDrawers();
+                if (id.equals("new")) {
+                    openNewPageSettings();
+                } else if (id.equals("settings")) {
+                    openAccountSettings();
+                } else {
+                    vpPager.setCurrentItem(Integer.valueOf(id), true);
+                }
+            }
+        };
+
+        MenuPageAdaptor appAdapter = new MenuPageAdaptor(this, onPageClickListener);
+        navPageView.setAdapter(appAdapter);
+
+        vpPager = (ViewPager) findViewById(R.id.vpPager);
+
+        if (pagerAdapter != null) {
+            //this will wipe the fragments already associated with the pager
+            vpPager.setAdapter(null);
+            EmonApplication.get().removePageChangeListener(pagerAdapter);
+
+        }
+
+        pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+
+        // When swiping between different sections, select the corresponding tab
+        vpPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                Log.d("emon-main","Page Changed to " + EmonApplication.get().getPages().get(position).getId());
+                ActionBar actionBar = getSupportActionBar();
+                if (actionBar != null && !EmonApplication.get().getPages().isEmpty()) {
+                    //actionBar.setTitle(EmonApplication.get().getPages().get(position).getName());
+                    EmonApplication.get().currentPageIndex = position;
+                }
+            }
+        });
+
+        pagerAdapter.notifyDataSetChanged();
+        vpPager.setAdapter(pagerAdapter);
+
+        PageIndicator indicator = (PageIndicator) findViewById(R.id.indicator);
+        indicator.setViewPager(vpPager);
+
+
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("displayed_fragment", displayed_view.ordinal());
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            openPageSettings();
+            return true;
+        } else if (id == R.id.full_screen) {
+            boolean fullScreen = setFullScreen();
+            if (fullScreen)
+                item.setIcon(R.drawable.ic_fullscreen_exit_white_24dp);
+            else
+                item.setIcon(R.drawable.ic_fullscreen_white_24dp);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void openPageSettings() {
+        Intent intent = new Intent(this, MyElectricSettingsActivity.class);
+        int index = vpPager.getCurrentItem();
+        MyElectricSettings settings = EmonApplication.get().getPages().get(index);
+        intent.putExtra("settings", settings);
+        startActivity(intent);
+    }
+
+    private void openNewPageSettings() {
+        Intent intent = new Intent(this, MyElectricSettingsActivity.class);
+        startActivity(intent);
+    }
+
+    private void setCurrentAccount(String accountId) {
+        EmonApplication.get().setCurrentAccount(accountId);
+        accountSelector.setText(EmonApplication.get().getAccounts().get(EmonApplication.get().getCurrentAccount()));
+        setUpPages();
+
     }
 
     public boolean setFullScreen() {
@@ -160,29 +374,22 @@ public class MainActivity extends BaseActivity
         return fullScreenRequested;
     }
 
-    private Runnable mSetFullScreenRunner = new Runnable()
-    {
+    private Runnable mSetFullScreenRunner = new Runnable() {
         @Override
-        public void run()
-        {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            {
+        public void run() {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().getDecorView().setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_FULLSCREEN |
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                        View.SYSTEM_UI_FLAG_IMMERSIVE);
-            }
-            else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            {
+                                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                                View.SYSTEM_UI_FLAG_IMMERSIVE);
+            } else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 getWindow().getDecorView().setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_FULLSCREEN |
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-            }
-            else
-            {
+                                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            } else {
                 getWindow().getDecorView().setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_LOW_PROFILE |
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
             }
         }
     };
@@ -201,88 +408,39 @@ public class MainActivity extends BaseActivity
             if (ab == null)
                 return;
 
-            if ((visibility & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == View.VISIBLE)
-            {
+            if ((visibility & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == View.VISIBLE) {
                 mToolbar.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_down));
                 ab.show();
                 if (fullScreenRequested)
                     mFullscreenHandler.postDelayed(mSetFullScreenRunner, 5000);
-            }
-            else
-            {
+            } else {
                 mToolbar.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.slide_up));
                 ab.hide();
             }
         }
     };
 
-    private void setSelectedNavigationItem(int position) {
-        View selected_child = mRecyclerView.getChildAt(((NavigationDrawerAdapter) mAdapter).getSelectedItem());
-        if (selected_child != null) selected_child.setSelected(false);
-        ((NavigationDrawerAdapter) mAdapter).setSelectedItem(position);
-        selected_child = mRecyclerView.getChildAt(position);
-        selected_child.setSelected(true);
+    private void openSettingsActivity() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     @Override
-    public void onBackPressed() {
-
-        if (getFragmentManager().findFragmentByTag(getResources().getString(R.string.tag_me_fragment)) == null)
-        {
-            showFragment(MyAppViews.MyElectricView);
-
-            setSelectedNavigationItem(0);
+    public void onAddAccount(String id, String name) {
+        if (id.equals(EmonApplication.get().getCurrentAccount())) {
+            accountSelector.setText(EmonApplication.get().getAccounts().get(EmonApplication.get().getCurrentAccount()));
         }
-        else
-            super.onBackPressed();
     }
 
-    public void showFragment(MyAppViews appView) {
-        Fragment frag;
-        String tag;
-        displayed_view = appView;
+    @Override
+    public void onDeleteAccount(String id) {
 
-        switch (appView) {
-            case MyElectricSettingsView:
-                tag = getResources().getString(R.string.tag_me_settings_fragment);
-                frag = getFragmentManager().findFragmentByTag(tag);
-                if (frag == null)
-                    frag = new MyElectricSettingsFragment();
-                break;
-            case SettingsView:
-                tag = getResources().getString(R.string.tag_settings_fragment);
-                frag = getFragmentManager().findFragmentByTag(tag);
-                if (frag == null)
-                    frag = new SettingsFragment();
-                break;
-            case MySolarView:
-                tag = getResources().getString(R.string.tag_ms_fragment);
-                frag = getFragmentManager().findFragmentByTag(tag);
-                if (frag == null)
-                    frag = new MySolarMainFragement();
-                break;
-            case MySolarSettingsView:
-                tag = getResources().getString(R.string.tag_ms_settings_fragment);
-                frag = getFragmentManager().findFragmentByTag(tag);
-                if (frag == null)
-                    frag = new MySolarSettingsFragment();
-                break;
-            default:
-                tag = getResources().getString(R.string.tag_me_fragment);
-                frag = getFragmentManager().findFragmentByTag(tag);
-                if (frag == null)
-                    frag = new MyElectricMainFragment();
-                break;
-        }
+    }
 
-        if (fullScreenRequested)
-        {
-            mFullscreenHandler.removeCallbacksAndMessages(null);
-            fullScreenRequested = false;
-            getWindow().getDecorView().setSystemUiVisibility(0);
+    @Override
+    public void onUpdateAccount(String id, String name) {
+        if (id.equals(EmonApplication.get().getCurrentAccount())) {
+            accountSelector.setText(EmonApplication.get().getAccounts().get(EmonApplication.get().getCurrentAccount()));
         }
-        getFragmentManager().beginTransaction()
-                .replace(R.id.container, frag, tag)
-                .commit();
     }
 }

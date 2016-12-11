@@ -1,8 +1,12 @@
 <resources>
-    <string name="app_name" translatable="false">emoncms</string>
+    <string name="app_name" translatable="false">emoncms beta</string>
     <string name="google_app_id" translatable="false">605929908164</string>
 
     <string name="tag_settings_fragment" translatable="false">settings_fragment</string>
+    <string name="tag_accounts_fragment" translatable="false">accounts_fragment</string>
+    <string name="tag_accounts_settings_fragment" translatable="false">account_settings_fragment</string>
+
+
     <string name="tag_me_fragment" translatable="false">myelectric_main_fragment</string>
     <string name="tag_me_settings_fragment" translatable="false">myelectric_settings_fragment</string>
     <string name="tag_ms_fragment" translatable="false">mysolar_main_fragment</string>
@@ -18,7 +22,7 @@
     //  TRANSLATABLE
     //
     <string name="me_title">My Electric</string>
-    <string name="me_settings_title">My Electric Feeds</string>
+    <string name="me_settings_title">Page Settings</string>
 
     <string name="ms_title">My Solar</string>
     <string name="ms_settings_title">My Solar Feeds</string>
@@ -27,15 +31,17 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="cost_label">kWh / Cost</string>
-    <string name="power_now_label">POWER NOW</string>
-    <string name="use_today_label">USE TODAY</string>
+    <string name="power_now_label">Now</string>
+    <string name="use_today_label">Today</string>
     <string name="solar_pv_label">SOLAR PV</string>
 
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="fullscreen">Fullscreen</string>
     <string name="error">Error</string>
+    <string name="accounts">Accounts</string>
     <string name="settings">Settings</string>
+    <string name="account_settings">Account Settings</string>
 
     <string name="server_not_configured">Please configure your emoncms server and API key from the settings menu.</string>
     <string name="me_not_configured_text">Please select feeds to display using the cog icon in the toolbar.</string>
@@ -90,6 +96,10 @@
     <string name="settings_title_app_settings">APP SETTINGS</string>
     <string name="settings_title_scanqrcode">Scan QR Code</string>
     <string name="settings_summary_scanqrcode">Allows filling in the connectivity fields automatically using the QR code on the emoncms account page</string>
+    <string name="settings_title_emoncms_name">Account Name</string>
+    <string name="settings_summary_emoncms_name">Short name for the account for easy identification</string>
+    <string name="settings_title_delete_account">Delete Account</string>
+
     <string name="settings_title_emoncms_url">emoncms URL</string>
     <string name="settings_summary_emoncms_url">Full emoncms URL without http://. e.g. www.myawesomesite.com/emoncms"</string>
     <string name="settings_title_emoncms_apikey">emoncms API KEY</string>
@@ -101,10 +111,12 @@
 
     <string name="settings_title_myelectric_feeds">Feeds</string>
     <string name="settings_title_myelectric_currency">Currency</string>
+    <string name="settings_title_myelectric_page_name">Page Name</string>
     <string name="settings_title_myelectric_power_feed">Power feed (Watts)</string>
     <string name="settings_title_myelectric_kwh_feed">"Bar graph feed (kWh)</string>
     <string name="settings_title_myelectric_escale">Wh or kWh Feed</string>
     <string name="settings_title_myelectric_unit_cost">Cost</string>
     <string name="settings_title_myelectric_cost_symbol">Cost Unit</string>
+    <string name="settings_title_delete_page">Delete Page</string>
 
 </resources>

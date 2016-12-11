@@ -2,34 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="@string/settings_title_emoncms_connectivity">
-
-        <Preference
-            android:key="scanqrcode"
-            android:title="@string/settings_title_scanqrcode"
-            android:summary="@string/settings_summary_scanqrcode"/>
-
-        <EditTextPreference
-            android:key="emoncms_url"
-            android:title="@string/settings_title_emoncms_url"
-            android:summary="@string/settings_summary_emoncms_url"
-            android:defaultValue="emoncms.org"/>
-
-        <EditTextPreference
-            android:key="emoncms_apikey"
-            android:title="@string/settings_title_emoncms_apikey"
-            android:summary="@string/settings_summary_emoncms_apikey"/>
-
-
-        <CheckBoxPreference
-            android:key="emoncms_usessl"
-            android:title="@string/settings_title_emoncms_usessl"
-            android:summary="@string/settings_summary_emoncms_usessl"
-            android:defaultValue="true"/>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:title="@string/settings_title_app_settings">
 
         <CheckBoxPreference
@@ -37,13 +9,13 @@
             android:title="@string/settings_title_keep_screen_on"
             android:summary="@string/settings_summary_keep_screen_on" />
 
-        <ListPreference
+        <!--<ListPreference
             android:key="language"
             android:title="Language"
             android:summary="Select Language"
             android:entries="@array/language_text"
             android:entryValues="@array/language_values" />
-            android:defaultValue="language"/>
+            android:defaultValue="language"/>-->
     </PreferenceCategory>
 
 </PreferenceScreen>

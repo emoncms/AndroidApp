@@ -3,12 +3,12 @@
                                         xmlns:tools="http://schemas.android.com/tools"
                                         tools:context=".MainActivity">
 
-    <item
+    <!--item
         android:id="@+id/cost_switch"
         app:actionViewClass="android.support.v7.widget.SwitchCompat"
         app:showAsAction="always"
         android:orderInCategory="100"
-        android:title=""/>
+        android:title=""/-->
 
     <item android:id="@+id/full_screen"
           android:orderInCategory="200"

@@ -1,5 +1,6 @@
-package org.emoncms.myapps;
+package org.emoncms.myapps.settings;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -16,22 +17,31 @@ import android.widget.TextView;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import org.emoncms.myapps.EmonApplication;
+import org.emoncms.myapps.R;
 import org.emoncms.myapps.barcodescanner.BarcodeCaptureActivity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener
-{
+public class AccountSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final int RC_BARCODE_CAPTURE = 9001;
 //    static final String TAG = "SETTINGSFRAGMENT";
+
+    private static final String ACCOUNT_PREFS_FILE = "emoncms_account_";
+
+    private String account;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        account = getArguments().getString("account");
+
+        getPreferenceManager().setSharedPreferencesName(EmonApplication.getAccountSettingsFile(account));
         // Load the preferences from an XML resource
-        addPreferencesFromResource(R.xml.main_preferences);
+        addPreferencesFromResource(R.xml.account_preferences);
     }
 
     @Override
@@ -58,54 +68,43 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         super.onPause();
     }
 
-    @Override
+    /*@Override
     public void onActivityCreated(Bundle savesInstanceState) {
         super.onActivityCreated(savesInstanceState);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) actionBar.setTitle(R.string.settings);
-    }
+    }*/
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
-    {
-        if (key.equals(getString(R.string.setting_keepscreenon)))
-            ((MainActivity) getActivity()).setKeepScreenOn(sharedPreferences.getBoolean(getString(R.string.setting_keepscreenon), false));
-        else if (key.equals(getString(R.string.setting_language)))
-        {
-            getActivity().finish();
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals("emoncms_name")) {
+            EmonApplication.get().updateAccount(account, sharedPreferences.getString(key,"Name Not Set"));
         }
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == RC_BARCODE_CAPTURE)
-        {
-            if (resultCode == CommonStatusCodes.SUCCESS)
-            {
-                if (data != null)
-                {
+        if (requestCode == RC_BARCODE_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
                     Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
 
                     Pattern pattern = Pattern.compile("^(http[s]?)://([^:/\\s]+.*)/app\\?[readkey=]+=([^&]+)#myelectric");
                     Matcher matcher = pattern.matcher(barcode.displayValue);
 
-                    if (matcher.matches() && matcher.groupCount() == 3)
-                    {
-                        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
+                    if (matcher.matches() && matcher.groupCount() == 3) {
+                        SharedPreferences sp = EmonApplication.get().getSharedPreferences(account);
+
+
                         SharedPreferences.Editor se = sp.edit();
                         se.putString(getString(R.string.setting_url), matcher.group(2));
                         se.putString(getString(R.string.setting_apikey), matcher.group(3));
                         se.putBoolean(getString(R.string.setting_usessl), matcher.group(1).equalsIgnoreCase("https"));
                         se.apply();
                         setPreferenceScreen(null);
-                        addPreferencesFromResource(R.xml.main_preferences);
+                        addPreferencesFromResource(R.xml.account_preferences);
 
                         Snackbar sn = Snackbar.make(getView(), R.string.qr_code_success,
                                 Snackbar.LENGTH_LONG);
@@ -122,9 +121,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                         sn.show();
                     }
                 }
-            }
-            else
-            {
+            } else {
                 super.onActivityResult(requestCode, resultCode, data);
             }
         }
