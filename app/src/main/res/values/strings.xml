@@ -31,8 +31,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="cost_label">kWh / Cost</string>
-    <string name="power_now_label">NOW</string>
-    <string name="use_today_label">TODAY</string>
+    <string name="power_now_label">Now</string>
+    <string name="use_today_label">Today</string>
     <string name="solar_pv_label">SOLAR PV</string>
 
     <string name="open">Open</string>

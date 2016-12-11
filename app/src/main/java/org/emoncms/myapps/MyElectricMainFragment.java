@@ -21,8 +21,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLayoutChangeListener;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -59,6 +61,9 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
 
     private TextView txtPower;
     private TextView txtUseToday;
+
+    private TextView txtPowerUnits;
+    private TextView txtUseTodayUnits;
 
     private SwitchCompat costSwitch;
     private Handler mHandler = new Handler();
@@ -99,11 +104,20 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
     private void updateTextFields() {
         if (getActivity() != null) {
             if (blnShowCost) {
-                txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%s%.2f/h", myElectricSettings.getCostSymbol(), (powerNow * 0.001) * myElectricSettings.getUnitCost()));
-                txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%s%.2f", myElectricSettings.getCostSymbol(), powerToday * myElectricSettings.getUnitCost()));
+                txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.2f/h", (powerNow * 0.001) * myElectricSettings.getUnitCost()));
+                txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.2f", powerToday * myElectricSettings.getUnitCost()));
+
+                txtPowerUnits.setText(myElectricSettings.getCostSymbol());
+                txtUseTodayUnits.setText(myElectricSettings.getCostSymbol());
+
+
+
             } else {
-                txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.0fW", powerNow));
-                txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.1fkWh", powerToday));
+                txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.0f", powerNow));
+                txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.1f", powerToday));
+
+                txtPowerUnits.setText("W");
+                txtUseTodayUnits.setText("kWh");
             }
         }
     }
@@ -156,6 +170,9 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
 
         txtPower = (TextView) view.findViewById(R.id.txtPower);
         txtUseToday = (TextView) view.findViewById(R.id.txtUseToday);
+
+        txtPowerUnits = (TextView) view.findViewById(R.id.powerUnits);
+        txtUseTodayUnits = (TextView) view.findViewById(R.id.useTodayUnits);
         Button power3hButton = (Button) view.findViewById(R.id.btnChart1_3H);
         Button power6hButton = (Button) view.findViewById(R.id.btnChart1_6H);
         Button power1dButton = (Button) view.findViewById(R.id.btnChart1_D);
@@ -403,7 +420,7 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
     }
 
     private Snackbar getSnackbar() {
-        if (snackbar == null) {
+        if (snackbar == null && !this.isDetached() && findSuitableParent(rootView.findViewById(R.id.mefrag)) != null) {
             snackbar = Snackbar.make(rootView.findViewById(R.id.mefrag),  R.string.connection_error, Snackbar.LENGTH_INDEFINITE);
             View snackbar_view = snackbar.getView();
             snackbar_view.setBackgroundColor(Color.GRAY);
@@ -413,6 +430,34 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         return snackbar;
     }
 
+    private static ViewGroup findSuitableParent(View view) {
+        ViewGroup fallback = null;
+        do {
+            if (view instanceof CoordinatorLayout) {
+                // We've found a CoordinatorLayout, use it
+                return (ViewGroup) view;
+            } else if (view instanceof FrameLayout) {
+                if (view.getId() == android.R.id.content) {
+                    // If we've hit the decor content view, then we didn't find a CoL in the
+                    // hierarchy, so use it.
+                    return (ViewGroup) view;
+                } else {
+                    // It's not the content view but we'll use it as our fallback
+                    fallback = (ViewGroup) view;
+                }
+            }
+
+            if (view != null) {
+                // Else, we will loop and crawl up the view hierarchy and try to find a parent
+                final ViewParent parent = view.getParent();
+                view = parent instanceof View ? (View) parent : null;
+            }
+        } while (view != null);
+
+        // If we reach here then we didn't find a CoL or a suitable content view so we'll fallback
+        return fallback;
+    }
+
 
     @Override
     public void showMessage(String message) {
@@ -420,9 +465,12 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         if (myElectricSettings != null) {
             Log.d("me", "showing message " + myElectricSettings.getName() + " - " + message);
         }
-        getSnackbar().setText(message);
-        if (isVisibleInPager) {
-            getSnackbar().show();
+        Snackbar snackbar = getSnackbar();
+        if (snackbar != null) {
+            snackbar.setText(message);
+            if (isVisibleInPager) {
+                getSnackbar().show();
+            }
         }
     }
 
@@ -433,9 +481,12 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
             Log.d("me", "showing message " + myElectricSettings.getName() + " - " + message);
         }
 
-        getSnackbar().setText(message);
-        if (isVisibleInPager) {
-            getSnackbar().show();
+        Snackbar snackbar = getSnackbar();
+        if (snackbar != null) {
+            snackbar.setText(message);
+            if (isVisibleInPager) {
+                getSnackbar().show();
+            }
         }
     }
 

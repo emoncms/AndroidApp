@@ -23,7 +23,10 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:lineSpacingExtra="0dp"
-        android:includeFontPadding="false"/>
+        android:includeFontPadding="false"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 
@@ -33,20 +36,21 @@
         android:id="@+id/txtPower"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/pageName"
         android:text="@string/txt_power_default"
         android:textColor="@color/textColorBlue"
         android:textSize="@dimen/main_stats_text_size"
         android:textStyle="bold"
         android:lineSpacingExtra="0dp"
         android:includeFontPadding="false"
-        android:layout_alignBottom="@+id/txtUseToday" />
+        android:layout_alignTop="@+id/pageName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/powerUnits"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/pageName"
+        android:layout_alignTop="@+id/pageName"
         android:layout_toRightOf="@id/txtPower"
         android:textColor="@color/textColorBlue"
         android:text="W"
@@ -69,9 +73,7 @@
         android:lineSpacingExtra="0dp"
         android:includeFontPadding="false"
         android:layout_marginTop="0dp"
-        android:layout_marginLeft="3dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true" />
+        android:layout_marginLeft="3dp" />
 
     <!-- use today -->
         <TextView
@@ -86,14 +88,13 @@
             android:includeFontPadding="false"
             android:layout_above="@+id/powerLabel"
             android:layout_alignLeft="@+id/useTodayLabel"
-            android:layout_alignStart="@+id/useTodayLabel"
-            android:layout_marginBottom="0dp" />
+            android:layout_alignStart="@+id/useTodayLabel" />
 
         <TextView
             android:id="@+id/txtUseToday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/pageName"
+            android:layout_alignTop="@+id/pageName"
             android:text="@string/use_today_default"
             android:textColor="@color/textColorBlue"
             android:textSize="@dimen/main_stats_text_size"
@@ -117,8 +118,7 @@
             android:layout_alignTop="@+id/powerLabel"
             android:layout_alignRight="@+id/linearLayout"
             android:layout_alignEnd="@+id/linearLayout"
-            android:layout_marginLeft="2dp"
-            android:layout_marginTop="0dp" />
+            android:layout_marginLeft="2dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
