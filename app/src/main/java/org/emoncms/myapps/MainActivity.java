@@ -19,6 +19,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -73,7 +74,7 @@ public class MainActivity extends BaseActivity implements AccountListChangeListe
             if (position == 0) {
                 frag.setUserVisibleHint(true);
             }
-            //EmonApplication.get().addPageChangeListener(frag);
+
             return frag;
         }
 
@@ -303,7 +304,6 @@ public class MainActivity extends BaseActivity implements AccountListChangeListe
                 Log.d("emon-main","Page Changed to " + EmonApplication.get().getPages().get(position).getId());
                 ActionBar actionBar = getSupportActionBar();
                 if (actionBar != null && !EmonApplication.get().getPages().isEmpty()) {
-                    //actionBar.setTitle(EmonApplication.get().getPages().get(position).getName());
                     EmonApplication.get().currentPageIndex = position;
                 }
             }
@@ -316,6 +316,14 @@ public class MainActivity extends BaseActivity implements AccountListChangeListe
         indicator.setViewPager(vpPager);
 
 
+    }
+
+    private void setFullScreenIcon(MenuItem item, boolean fullScreen) {
+        if (fullScreen) {
+            item.setIcon(R.drawable.ic_fullscreen_exit_white_24dp);
+        } else {
+            item.setIcon(R.drawable.ic_fullscreen_white_24dp);
+        }
     }
 
     @Override
@@ -332,14 +340,18 @@ public class MainActivity extends BaseActivity implements AccountListChangeListe
             return true;
         } else if (id == R.id.full_screen) {
             boolean fullScreen = setFullScreen();
-            if (fullScreen)
-                item.setIcon(R.drawable.ic_fullscreen_exit_white_24dp);
-            else
-                item.setIcon(R.drawable.ic_fullscreen_white_24dp);
+            setFullScreenIcon(item,fullScreen);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        setFullScreenIcon(menu.findItem(R.id.full_screen),fullScreenRequested);
+        return true;
     }
 
     private void openPageSettings() {
