@@ -3,9 +3,11 @@ package org.emoncms.myapps.settings;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -88,14 +90,25 @@ public class AccountSettingsActivity extends BaseActivity {
     }
 
     private void deleteAccount() {
-        SharedPreferences settings = getSharedPreferences("emoncms_account_" + account, Context.MODE_PRIVATE);
-        settings.edit().clear().commit();
 
-        //update main setting
-        EmonApplication.get().removeAccount(account);
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(this);
 
-        // go back to the settings page
-        onBackPressed();
+        builder.setTitle("Confirm delete");
+        builder.setMessage("Are you sure you want to delete this account? All settings will be lost.");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                SharedPreferences settings = getSharedPreferences("emoncms_account_" + account, Context.MODE_PRIVATE);
+                settings.edit().clear().commit();
+                //update main setting
+                EmonApplication.get().removeAccount(account);
+                // go back to the settings page
+                onBackPressed();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
     }
 
 }

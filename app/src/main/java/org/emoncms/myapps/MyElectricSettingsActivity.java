@@ -2,9 +2,13 @@ package org.emoncms.myapps;
 
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -73,7 +77,6 @@ public class MyElectricSettingsActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.action_delete_page:
                 deletePage();
-                onBackPressed();
                 return true;
 
             case android.R.id.home:
@@ -84,9 +87,22 @@ public class MyElectricSettingsActivity extends BaseActivity {
     }
 
     private void deletePage() {
-        //TODO move database access into EmonApplication
-        EmonDatabaseHelper.getInstance(this).deletePage(settings.getId());
-        EmonApplication.get().removePage(settings);
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(this);
+
+        builder.setTitle("Confirm delete");
+        builder.setMessage("Are you sure you want to delete this page?");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                EmonApplication.get().removePage(settings);
+                onBackPressed();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
+
+
     }
 
 

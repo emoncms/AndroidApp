@@ -190,6 +190,8 @@ public class EmonApplication extends Application {
 
     public void removePage(MyElectricSettings page) {
 
+        EmonDatabaseHelper.getInstance(this).deletePage(page.getId());
+
         for (Iterator<MyElectricSettings> iterator = pages.iterator(); iterator.hasNext(); ) {
             MyElectricSettings item = iterator.next();
             if (item.getId()  == page.getId()) {
