@@ -21,6 +21,13 @@
         android:paddingBottom="16dp"
         android:paddingTop="16dp">
 
+        <ImageView
+            android:id="@+id/rowIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:src="@mipmap/ic_account" />
+
         <TextView
             android:id="@+id/name"
             android:layout_width="match_parent"

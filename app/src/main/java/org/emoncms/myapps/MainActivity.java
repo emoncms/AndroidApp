@@ -276,7 +276,7 @@ public class MainActivity extends BaseActivity implements AccountListChangeListe
                 if (id.equals("new")) {
                     openNewPageSettings();
                 } else if (id.equals("settings")) {
-                    openAccountSettings();
+                    openSettingsActivity();
                 } else {
                     vpPager.setCurrentItem(Integer.valueOf(id), true);
                 }
@@ -319,10 +319,12 @@ public class MainActivity extends BaseActivity implements AccountListChangeListe
     }
 
     private void setFullScreenIcon(MenuItem item, boolean fullScreen) {
-        if (fullScreen) {
-            item.setIcon(R.drawable.ic_fullscreen_exit_white_24dp);
-        } else {
-            item.setIcon(R.drawable.ic_fullscreen_white_24dp);
+        if (item != null) {
+            if (fullScreen) {
+                item.setIcon(R.drawable.ic_fullscreen_exit_white_24dp);
+            } else {
+                item.setIcon(R.drawable.ic_fullscreen_white_24dp);
+            }
         }
     }
 

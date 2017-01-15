@@ -125,8 +125,8 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
         }
 
         Log.d("empon-menu","Menu pages added " + index);
-        menuOptionList.add(new MenuOption("new", R.drawable.ic_my_electric_white_36dp, "Add Page"));
-        menuOptionList.add(new MenuOption("settings", R.drawable.ic_my_electric_white_36dp, "Settings"));
+        menuOptionList.add(new MenuOption("new", R.drawable.ic_plus_box_36dp, "Add Page"));
+        menuOptionList.add(new MenuOption("settings", R.drawable.ic_settings_applications_white_36dp, "Settings"));
 
         EmonApplication.get().addPageChangeListener(this);
 

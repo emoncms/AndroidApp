@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -35,11 +36,11 @@ public class AccountSettingsFragment extends PreferenceFragment implements Share
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d("prefs","created " + getArguments().getString("account"));
 
         account = getArguments().getString("account");
-
         getPreferenceManager().setSharedPreferencesName(EmonApplication.getAccountSettingsFile(account));
+
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.account_preferences);
     }
@@ -47,6 +48,8 @@ public class AccountSettingsFragment extends PreferenceFragment implements Share
     @Override
     public void onResume() {
         super.onResume();
+
+        Log.d("prefs",getPreferenceManager().getSharedPreferencesName());
 
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 
@@ -64,7 +67,7 @@ public class AccountSettingsFragment extends PreferenceFragment implements Share
 
     @Override
     public void onPause() {
-        getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        //getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
     }
 
@@ -78,7 +81,9 @@ public class AccountSettingsFragment extends PreferenceFragment implements Share
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.d("settings","prefs changed: " + key);
         if (key.equals("emoncms_name")) {
+            Log.d("settings","name was changed");
             EmonApplication.get().updateAccount(account, sharedPreferences.getString(key,"Name Not Set"));
         }
     }

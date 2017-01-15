@@ -25,7 +25,6 @@ public class MenuAccountAdapter extends RecyclerView.Adapter<MenuAccountAdapter.
     private int currentItemRestoreIndex = -1;
 
 
-
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView textView;
@@ -36,14 +35,17 @@ public class MenuAccountAdapter extends RecyclerView.Adapter<MenuAccountAdapter.
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.rowText);
             imageView = (ImageView) itemView.findViewById(R.id.rowIcon);
-            imageView.setVisibility(View.GONE);
+            //imageView.setVisibility(View.GONE);
             divider = itemView.findViewById(R.id.rowDivider);
+            divider.setVisibility(View.INVISIBLE);
         }
 
         public void bind(final MenuOption option, final OnNavigationClick onNavigationClick) {
+            Log.d("emon-menu", "calling on bind for " + option.id + " " + option.text);
+
             if (option != null) {
                 textView.setText(option.text);
-                //imageView.setImageResource(option.icon);
+                imageView.setImageResource(option.icon);
                 itemView.setSelected(false);
 
                 if (menuOptionList.indexOf(option) == currentItemRestoreIndex) {
@@ -52,31 +54,10 @@ public class MenuAccountAdapter extends RecyclerView.Adapter<MenuAccountAdapter.
                     textView.setVisibility(View.VISIBLE);
                 }
 
-
-                if (option.id.equals("new")) {
-                    divider.setVisibility(View.VISIBLE);
-                } else {
-                    divider.setVisibility(View.INVISIBLE);
-                }
-
-
-
                 View.OnClickListener onClickListener = new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
-                        if (!option.id.equals("new")) {
-                            currentItemRestoreIndex = menuOptionList.indexOf(option);
-
-                            /*
-                            menuOptionList.add(currentItemRestoreIndex, currentItem);
-
-                            menuOptionList.remove(option);
-                            currentItem = option;
-                            */
-                            notifyDataSetChanged();
-
-                        }
+                        Log.d("emon-menu", "clicked " + option.id + " " + textView.getText());
                         onNavigationClick.onClick(option.id);
                     }
                 };
@@ -88,50 +69,30 @@ public class MenuAccountAdapter extends RecyclerView.Adapter<MenuAccountAdapter.
 
     /**
      * Context is required
+     *
      * @param context
      */
     public MenuAccountAdapter(Context context, OnNavigationClick onNavigationClick) {
         mContext = context;
         this.onNavigationClick = onNavigationClick;
         menuOptionList = new ArrayList<>();
-
-
-
-        Log.d("emon-menu","creating account menu");
-
-            for (Map.Entry<String, String> account : EmonApplication.get().getAccounts().entrySet()) {
-                menuOptionList.add(new MenuOption(account.getKey(), R.drawable.ic_my_electric_white_36dp, account.getValue()));
-                /*
-                int index = 0;
-                if (account.getKey().equals(EmonApplication.get().getCurrentAccount())) {
-                    Log.d("emon-menu", "current account not added  " + account.getValue());
-                    currentItemRestoreIndex = index;
-                    currentItem = new MenuOption(account.getKey(), R.drawable.ic_my_electric_white_36dp, account.getValue());
-                } else {
-                    Log.d("emon-menu", "adding " + account.getValue());
-                    index++;
-
-                }*/
-            }
-
-
-        menuOptionList.add(new MenuOption("new", R.drawable.ic_settings_applications_white_36dp, "Add Account"));
+        Log.d("emon-menu", "creating account menu");
+        for (Map.Entry<String, String> account : EmonApplication.get().getAccounts().entrySet()) {
+            menuOptionList.add(new MenuOption(account.getKey(), R.mipmap.ic_account, account.getValue()));
+        }
     }
 
     @Override
     public void onAddAccount(String id, String name) {
+        int newPosition = menuOptionList.size();
+        Log.d("emon-menu", "Adding account at position " + newPosition + " with name " + name);
+        menuOptionList.add(newPosition,new MenuOption(id, R.mipmap.ic_account, name));
 
-        int newPosition = menuOptionList.size()-1;
-        Log.d("emon-menu","Adding account at position " + newPosition);
-        menuOptionList.add(newPosition,new MenuOption(id, R.drawable.ic_my_electric_white_36dp, name));
 
-
-        EmonApplication.get().setCurrentAccount(id);
-        this.currentItemRestoreIndex = newPosition;
+        notifyItemInserted(newPosition);
         notifyDataSetChanged();
-        //notifyItemInserted(newPosition);
-
     }
+
     @Override
     public void onDeleteAccount(String id) {
         int position = getPosition(id);
@@ -140,12 +101,16 @@ public class MenuAccountAdapter extends RecyclerView.Adapter<MenuAccountAdapter.
             notifyItemRemoved(position);
         }
     }
+
     @Override
     public void onUpdateAccount(String id, String name) {
+        Log.d("emon-menu", "Updating account at with name " + name);
         int position = getPosition(id);
         if (position > -1) {
+            Log.d("menu","Fixing account name" + name);
             menuOptionList.get(position).text = name;
             notifyItemChanged(position);
+            //notifyDataSetChanged();
         }
     }
 
@@ -162,7 +127,7 @@ public class MenuAccountAdapter extends RecyclerView.Adapter<MenuAccountAdapter.
 
     @Override
     public MenuAccountAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.menu_item_page,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.menu_item_page, parent, false);
         return new ViewHolder(v);
     }
 

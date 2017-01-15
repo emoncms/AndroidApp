@@ -1,6 +1,7 @@
 package org.emoncms.myapps.settings;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -54,17 +55,17 @@ public class AccountSettingsActivity extends BaseActivity {
     private void setUpFragments() {
 
         String accountsSettingsTag = "account_settings_fragment";
-        Fragment fragAccounts = getFragmentManager().findFragmentByTag(accountsSettingsTag);
-        if (fragAccounts == null) {
-            fragAccounts = new AccountSettingsFragment();
-        }
+        Fragment fragAccounts = new AccountSettingsFragment();
+
 
         //pass this on as contains accountId
         fragAccounts.setArguments(getIntent().getExtras());
 
-        getFragmentManager().beginTransaction()
-                .replace(R.id.prefs, fragAccounts, accountsSettingsTag)
-                .commit();
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.prefs, fragAccounts, accountsSettingsTag);
+
+        transaction.commit();
 
     }
 

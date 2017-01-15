@@ -145,6 +145,10 @@ public class EmonApplication extends Application {
             listener.onDeleteAccount(accountId);
         }
         writeAccountList();
+
+        if (currentAccount.equals(accountId) && !this.accounts.isEmpty()) {
+            setCurrentAccount(accounts.keySet().iterator().next());
+        }
     }
 
     private void writeAccountList() {

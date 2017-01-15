@@ -93,7 +93,7 @@
     <string name="wh_elapsed">Watt hours elapsed</string>
 
     <string name="settings_title_emoncms_connectivity">EMONCMS CONNECTIVITY</string>
-    <string name="settings_title_app_settings">APP SETTINGS</string>
+    <string name="settings_title_app_settings">GENERAL SETTINGS</string>
     <string name="settings_title_scanqrcode">Scan QR Code</string>
     <string name="settings_summary_scanqrcode">Allows filling in the connectivity fields automatically using the QR code on the emoncms account page</string>
     <string name="settings_title_emoncms_name">Account Name</string>
