@@ -71,28 +71,28 @@
     <string name="chart_no_data_available">No data available</string>
 
     <string name="settings_title_emoncms_connectivity">EMONCMS CONNECTIVITY FR</string>
-    <string name="settings_title_app_settings">APP SETTINGS FR</string>
-    <string name="settings_title_scanqrcode">Scan QR Code FR</string>
-    <string name="settings_summary_scanqrcode">Allows filling in the connectivity fields automatically using the QR code on the emoncms account page FR</string>
-    <string name="settings_title_emoncms_url">emoncms URL FR</string>
-    <string name="settings_summary_emoncms_url">Full emoncms URL without http://. e.g. www.myawesomesite.com/emoncms" FR</string>
-    <string name="settings_title_emoncms_apikey">emoncms API KEY FR</string>
-    <string name="settings_summary_emoncms_apikey">Read API key from the emoncms My Account page. FR</string>
-    <string name="settings_title_emoncms_usessl">Use SSL FR</string>
-    <string name="settings_summary_emoncms_usessl">Connect using https, supported by emoncms.org NOT emonPi FR</string>
-    <string name="settings_title_keep_screen_on">Keep Screen On FR</string>
-    <string name="settings_summary_keep_screen_on">Stops the device screen powering off FR</string>
+    <string name="settings_title_app_settings">PARAMÈTRES APP</string>
+    <string name="settings_title_scanqrcode">Numériser le code QR</string>
+    <string name="settings_summary_scanqrcode">Permet de remplir automatiquement les champs de connectivité en utilisant le code QR sur la page du compte emoncms</string>
+    <string name="settings_title_emoncms_url">emoncms URL</string>
+    <string name="settings_summary_emoncms_url">Full emoncms URL sans http:// par exemple "www.myawesomesite.com/emoncms"</string>
+    <string name="settings_title_emoncms_apikey">emoncms CLÉ API</string>
+    <string name="settings_summary_emoncms_apikey">Lire la clé API de la page emoncms Mon compte</string>
+    <string name="settings_title_emoncms_usessl">Utiliser SSL</string>
+    <string name="settings_summary_emoncms_usessl"> Se connecter en utilisant https, pris en charge par emoncms.org, NE PAS emonPi</string>
+    <string name="settings_title_keep_screen_on">Gardez l\'écran allumé</string>
+    <string name="settings_summary_keep_screen_on">Arrête l\'extinction de l\'écran de l\'appareil</string>
     <string name="settings_title_language">Langue</string>
     <string name="settings_summary_language">Choisir la Langue</string>
 
-    <string name="settings_title_myelectric_feeds">Feeds FR</string>
-    <string name="settings_title_myelectric_currency">Currency FR</string>
-    <string name="settings_title_myelectric_power_feed">Power feed (Watts) FR</string>
-    <string name="settings_title_myelectric_kwh_feed">"Bar graph feed (kWh) FR</string>
-    <string name="settings_title_myelectric_escale">Wh or kWh Feed FR</string>
-    <string name="settings_title_myelectric_unit_cost">Cost FR</string>
-    <string name="settings_title_myelectric_cost_symbol">Cost Unit FR</string>
+    <string name="settings_title_myelectric_feeds">Accueil</string>
+    <string name="settings_title_myelectric_currency">Devise</string>
+    <string name="settings_title_myelectric_power_feed">Puissance alimentation (W)</string>
+    <string name="settings_title_myelectric_kwh_feed">"Alimentation graphique à barres (kWh)</string>
+    <string name="settings_title_myelectric_escale">Wh au kWh Feed FR</string>
+    <string name="settings_title_myelectric_unit_cost">Coût</string>
+    <string name="settings_title_myelectric_cost_symbol">Unité de coût</string>
 
     <string name="system_default">Défaillance du Système</string>
-    <string name="no_camera_found">No camera found for barcode scanning.</string>
+    <string name="no_camera_found">Aucune caméra détectée pour la numérisation de codes à barres.</string>
 </resources>
