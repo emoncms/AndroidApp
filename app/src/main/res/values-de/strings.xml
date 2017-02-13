@@ -23,7 +23,7 @@
     <string name="ok">OK</string>
     <string name="pounds">Pfund</string>
     <string name="permission_camera_rationale">Zugriff auf die Kamera ist erforderlich</string>
-    <string name="power_now_label">AKTUELLER VERBRAUCH</string>
+    <string name="power_now_label">JETZT</string>
     <string name="qr_code_fail">Ungültiger QR Code</string>
     <string name="qr_code_success">Einstellungen wurden erfolgreich vom QR Code übernommen</string>
     <string name="read_barcode">Barcode scannen</string>
@@ -41,7 +41,7 @@
     <string name="settings_title_myelectric_currency">Währung</string>
     <string name="settings_title_myelectric_escale">Wh oder kWh Feed</string>
     <string name="settings_title_myelectric_feeds">Feeds</string>
-    <string name="settings_title_myelectric_kwh_feed">\"Balkendiagramm feed (kWh)</string>
+    <string name="settings_title_myelectric_kwh_feed">Balkendiagramm feed (kWh)</string>
     <string name="settings_title_myelectric_power_feed">Strom feed (Watt)</string>
     <string name="settings_title_myelectric_unit_cost">Kosten</string>
     <string name="settings_title_scanqrcode">QR Code scannen</string>
@@ -53,7 +53,7 @@
     <string name="txt_power_default">0W</string>
     <string name="tuesday_initial">T</string>
     <string name="use_today_default">0.0kWh</string>
-    <string name="use_today_label">VERBRAUCH HEUTE</string>
+    <string name="use_today_label">HEUTE</string>
     <string name="wednesday_initial">W</string>
     <string name="wh_elapsed">Watt Stunden verbaucht</string>
     <string name="yen">Yen</string>
@@ -73,7 +73,7 @@
     <string name="kwh_elapsed">kWh verbaucht</string>
 
     // These may not be correct as I used Google
-    <string name="chart_no_data_available">No data available</string>
+    <string name="chart_no_data_available">Keine Daten verfügbar</string>
     <string name="system_default">Systemfehler</string>
     <string name="me_not_configured_text">Wählen Sie die Feeds aus, die mit dem Cog-Symbol in der Symbolleiste angezeigt werden sollen.</string>
     <string name="invalid_kwh_feedid">Ungültige Verwendung kwh feed ID, wählen Sie bitte eine kwh-Feed aus dem Konfigurationsmenü.</string>
@@ -81,6 +81,6 @@
     <string name="low_storage_error">Gesichtserkennung Abhängigkeiten können nicht heruntergeladen werden aufgrund der geringen Gerätespeicher</string>
     <string name="settings_title_language">Sprache</string>
     <string name="settings_summary_language">Sprache auswählen</string>
-    <string name="no_camera_found">No camera found for barcode scanning.</string>
+    <string name="no_camera_found">Keine Kamera für Barcodescannen gefunden.</string>
 
 </resources>
