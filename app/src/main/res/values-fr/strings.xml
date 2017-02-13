@@ -9,8 +9,8 @@
     <string name="navigation_drawer_close">Fermer le tiroir de navigation</string>
 
     <string name="cost_label">kWh / Coût</string>
-    <string name="power_now_label">PUISSANCE ACTUELLE</string>
-    <string name="use_today_label">UTILISATION JOURNALIÈRE</string>
+    <string name="power_now_label">ACTUELLE</string>
+    <string name="use_today_label">AUJOURD\'HUI</string>
     <string name="solar_pv_label">PANNEAUX SOLAIRE</string>
 
     <string name="open">ouvrir</string>
