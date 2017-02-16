@@ -9,7 +9,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.emoncms.myapps.R;
@@ -109,7 +109,7 @@ public class DailyBarChart {
     }
 
     public void refreshChart(int start) {
-        barData.getXVals().clear();
+
         BarDataSet dataSet = (BarDataSet) barData.getDataSetByLabel("kWh", true);
         dataSet.clear();
         if (chartBarColours != null) {
@@ -117,8 +117,7 @@ public class DailyBarChart {
         }
 
         for (int i = start; i < chartLabels.size(); i++) {
-            barData.addEntry(new BarEntry(chartValues.get(i).floatValue(), i), 0);
-            barData.addXValue(chartLabels.get(i));
+            barData.addEntry(new BarEntry(i, chartValues.get(i).floatValue()), 0);
         }
 
 
@@ -140,7 +139,7 @@ public class DailyBarChart {
         barChart.getAxisLeft().setEnabled(false);
         barChart.getAxisRight().setEnabled(false);
         barChart.setHardwareAccelerationEnabled(true);
-        barChart.setDescription("");
+        barChart.getDescription().setEnabled(false);
         barChart.setNoDataText("");
         barChart.setTouchEnabled(false);
         barChart.setExtraBottomOffset(2);
@@ -151,6 +150,7 @@ public class DailyBarChart {
         xAxis2.setTextSize(context.getResources().getInteger(R.integer.chartValueTextSize));
         xAxis2.setDrawGridLines(false);
         xAxis2.setDrawAxisLine(false);
+        xAxis2.setValueFormatter(new LabelAxisFormatter(chartLabels));
     }
 
     private BarData createDataSet() {
@@ -166,7 +166,7 @@ public class DailyBarChart {
         return chart2_bardata;
     }
 
-    public class Chart2ValueFormatter implements ValueFormatter {
+    public class Chart2ValueFormatter implements IValueFormatter {
 
         private DecimalFormat mFormat;
 

@@ -67,6 +67,11 @@ public final class BarcodeCaptureActivity extends BaseActivity
         super.onCreate(icicle);
         setContentView(R.layout.barcode_capture);
 
+        if (Camera.getNumberOfCameras() == 0) {
+            Toast.makeText(this, R.string.no_camera_found, Toast.LENGTH_LONG).show();
+            finish();
+        }
+
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (LinearLayout) findViewById(R.id.topLayout);
 

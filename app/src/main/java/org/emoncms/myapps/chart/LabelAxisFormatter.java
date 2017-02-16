@@ -2,7 +2,6 @@ package org.emoncms.myapps.chart;
 
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -11,23 +10,20 @@ import java.util.Calendar;
 import java.util.Locale;
 
 
-public class HoursMinutesXAxisValueFormatter implements IAxisValueFormatter {
+public class LabelAxisFormatter implements IAxisValueFormatter {
 
     private ArrayList<String> labels;
 
-    public HoursMinutesXAxisValueFormatter(ArrayList<String> labels) {
+    public LabelAxisFormatter(ArrayList<String> labels) {
         this.labels = labels;
     }
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        if (value >= labels.size()) {
+        if ((int)value >= labels.size()) {
             return "";
         }
-        DateFormat df = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(Long.parseLong(labels.get((int) value)));
-        return (df.format(cal.getTime()));
+        return labels.get((int) value);
     }
 
     @Override

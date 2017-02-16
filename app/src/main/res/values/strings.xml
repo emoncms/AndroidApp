@@ -18,6 +18,10 @@
     <string name="setting_keepscreenon" translatable="false">keep_screen_on</string>
     <string name="setting_language" translatable="false">language</string>
 
+    <string name="english" translatable="false">English</string>
+    <string name="french" translatable="false">Français</string>
+    <string name="german" translatable="false">Deutsch</string>
+
     //
     //  TRANSLATABLE
     //
@@ -92,6 +96,8 @@
     <string name="kwh_elapsed">kWh elapsed</string>
     <string name="wh_elapsed">Watt hours elapsed</string>
 
+    <string name="chart_no_data_available">No data available</string>
+
     <string name="settings_title_emoncms_connectivity">EMONCMS CONNECTIVITY</string>
     <string name="settings_title_app_settings">GENERAL SETTINGS</string>
     <string name="settings_title_scanqrcode">Scan QR Code</string>
@@ -108,6 +114,8 @@
     <string name="settings_summary_emoncms_usessl">Connect using https, supported by emoncms.org NOT emonPi"</string>
     <string name="settings_title_keep_screen_on">Keep Screen On</string>
     <string name="settings_summary_keep_screen_on">Stops the device screen powering off</string>
+    <string name="settings_title_language">Language</string>
+    <string name="settings_summary_language">Select Language</string>
 
     <string name="settings_title_myelectric_feeds">Feeds</string>
     <string name="settings_title_myelectric_currency">Currency</string>
@@ -119,4 +127,6 @@
     <string name="settings_title_myelectric_cost_symbol">Cost Unit</string>
     <string name="settings_title_delete_page">Delete Page</string>
 
+    <string name="system_default">System Default</string>
+    <string name="no_camera_found">No camera found for barcode scanning.</string>
 </resources>

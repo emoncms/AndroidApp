@@ -85,13 +85,13 @@ public class PowerChart {
      */
     public void refreshChart() {
 
-        powerData.getXVals().clear();
+
         LineDataSet dataSet = (LineDataSet) powerData.getDataSetByLabel("watts", true);
         dataSet.clear();
 
         for (int i = 0; i < chartLabels.size(); i++) {
-            powerData.addXValue(chartLabels.get(i));
-            powerData.addEntry(new Entry(chartValues.get(i).floatValue(), i), 0);
+
+            powerData.addEntry(new Entry(i, chartValues.get(i).floatValue()), 0);
         }
 
         if (requiresReset) {
@@ -155,8 +155,8 @@ public class PowerChart {
         powerChart.setDrawGridBackground(false);
         powerChart.getLegend().setEnabled(false);
         powerChart.getAxisRight().setEnabled(false);
-        powerChart.setDescription("");
-        powerChart.setNoDataText("");
+        powerChart.getDescription().setEnabled(false);
+                powerChart.setNoDataText("");
         powerChart.setHardwareAccelerationEnabled(true);
 
         YAxis yAxis = powerChart.getAxisLeft();
@@ -175,8 +175,8 @@ public class PowerChart {
         xAxis.setDrawLabels(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextColor(ContextCompat.getColor(context, R.color.lightGrey));
-        xAxis.setValueFormatter(new HoursMinutesXAxisValueFormatter());
-        xAxis.setSpaceBetweenLabels(0);
+        xAxis.setValueFormatter(new HoursMinutesXAxisValueFormatter(chartLabels));
+
         xAxis.setTextSize(context.getResources().getInteger(R.integer.chartDateTextSize));
     }
 

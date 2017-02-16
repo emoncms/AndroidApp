@@ -150,7 +150,7 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         if (view == null)
             throw new NullPointerException("getView returned null");
 
-            view.addOnLayoutChangeListener(new OnLayoutChangeListener() {
+        view.addOnLayoutChangeListener(new OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                 if (v.getWidth() != 0) {

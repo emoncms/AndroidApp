@@ -112,13 +112,10 @@ public class MainActivity extends BaseActivity implements AccountListChangeListe
         super.onCreate(savedInstanceState);
         UpgradeManager.doUpgrade(this);
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-
-
-
-
         PreferenceManager.setDefaultValues(this, R.xml.main_preferences, false);
         PreferenceManager.setDefaultValues(this, R.xml.me_preferences, false);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
         setKeepScreenOn(sp.getBoolean(getString(R.string.setting_keepscreenon), false));
 
