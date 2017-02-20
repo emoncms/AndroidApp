@@ -235,13 +235,11 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
 
         if (savedInstanceState != null) {
 
-            Log.d("emon-me","Loading saved instance state " + savedInstanceState.getDoubleArray("chart1_values").length);
-            //blnShowCost = savedInstanceState.getBoolean("show_cost", false);
+
             powerChart.setChartLength(savedInstanceState.getInt("power_graph_length", -6));
             powerNow = savedInstanceState.getDouble("power_now", 0);
             powerToday = savedInstanceState.getDouble("power_today", 0);
-            //wattFeedId = savedInstanceState.getInt("watt_feed_id", -1);
-            //kWhFeelId = savedInstanceState.getInt("kwh_feed_id", -1);
+
             int[] chart2_colors = savedInstanceState.getIntArray("chart2_colors");
 
             updateTextFields();
@@ -267,7 +265,6 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.d("LIFECYCLE", "onSaveInstanceState");
         //outState.putBoolean("show_cost", blnShowCost);
         outState.putInt("power_graph_length", powerChart.getChartLength());
         outState.putDouble("power_now", powerNow);
@@ -327,7 +324,7 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
 
     @Override
     public void onResume() {
-        Log.d("emon-me","resume");
+
         super.onResume();
         clearMessage();
         loadConfig();

@@ -123,6 +123,7 @@ public class PowerChart {
         powerData.notifyDataChanged();
         powerChart.notifyDataSetChanged();
         powerChart.invalidate();
+
     }
 
 

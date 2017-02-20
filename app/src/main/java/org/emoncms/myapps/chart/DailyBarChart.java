@@ -71,21 +71,25 @@ public class DailyBarChart {
 
     public void restoreData(ArrayList<String> savedChartLabels, double[] savedChartValues, int[] colours, int daysToDisplay) {
         if (validNonNullSavedData(savedChartLabels, savedChartValues)) {
+            int tooMany = chartLabels.size() - daysToDisplay + 1;
+            if (tooMany < 0) tooMany = 0;
+
+            for (int i = 0; i < tooMany; i++) {
+                savedChartLabels.remove(0);
+            }
+
 
             chartLabels = savedChartLabels;
-            for (int i = 0; i < chartLabels.size(); i++) {
+
+            for (int i = tooMany; i < chartLabels.size(); i++) {
                 chartValues.add(savedChartValues[i]);
             }
         }
 
-        int start = 0;
-        if (daysToDisplay < chartLabels.size()) {
-            start = chartLabels.size() - daysToDisplay;
-        }
 
         setBarColours(colours);
 
-        refreshChart(start);
+        refreshChart(0);
     }
 
     private boolean validNonNullSavedData(List<String> savedChartLabels, double[] savedChartValues) {
@@ -119,13 +123,16 @@ public class DailyBarChart {
         for (int i = start; i < chartLabels.size(); i++) {
             barData.addEntry(new BarEntry(i, chartValues.get(i).floatValue()), 0);
         }
-
-
+        XAxis xAxis2 = barChart.getXAxis();
+        xAxis2.setValueFormatter(new LabelAxisFormatter(chartLabels));
+        barChart.getXAxis().setLabelCount(chartLabels.size());
         notifyDataChanged();
 
     }
 
     private void notifyDataChanged() {
+        BarDataSet dataSet = (BarDataSet) barData.getDataSetByLabel("kWh", true);
+        dataSet.notifyDataSetChanged();
         barData.notifyDataChanged();
         barChart.notifyDataSetChanged();
         barChart.invalidate();
