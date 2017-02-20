@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -41,6 +42,8 @@ public class MyElectricSettingsFragment extends Fragment {
     Spinner powerFeedPreference;
     Spinner kWhFeedPreference;
     EditText namePreference;
+    Spinner currencyPreference;
+    EditText unitCostPreference;
     Handler mHandler = new Handler();
     SharedPreferences sp;
 
@@ -64,6 +67,18 @@ public class MyElectricSettingsFragment extends Fragment {
         powerFeedPreference = (Spinner) result.findViewById(R.id.powerFeedSpinner);
         kWhFeedPreference = (Spinner) result.findViewById(R.id.useFeedSpinner);
         namePreference = (EditText) result.findViewById(R.id.page_name);
+        currencyPreference = (Spinner) result.findViewById(R.id.currency);
+        unitCostPreference = (EditText) result.findViewById(R.id.costUnit);
+
+        ArrayAdapter<CharSequence> costUnitArray = ArrayAdapter.createFromResource(result.getContext(),R.array.me_cost_text, R.layout.support_simple_spinner_dropdown_item);
+
+
+
+        currencyPreference.setAdapter(costUnitArray);
+
+        unitCostPreference.setText(""+settings.getUnitCost());
+
+        currencyPreference.setSelection(costUnitArray.getPosition(settings.getCurrency()));
 
 
         namePreference.setText(settings.getName());
@@ -92,6 +107,17 @@ public class MyElectricSettingsFragment extends Fragment {
         settings.setPowerFeedId((int)powerFeedPreference.getSelectedItemId());
         settings.setUseFeedId((int)kWhFeedPreference.getSelectedItemId());
         settings.setName(namePreference.getText().toString());
+        settings.setCurrency((String) currencyPreference.getSelectedItem());
+        settings.setUnitCost(Double.valueOf(unitCostPreference.getText().toString()));
+
+        String[] symbolArray = getActivity().getResources().getStringArray(R.array.me_cost_values);
+
+        String currencySymbol = symbolArray[currencyPreference.getSelectedItemPosition()];
+        settings.setCostSymbol(currencySymbol);
+
+
+        Log.w("settings","Setting Cost Symbol to " + currencySymbol);
+
 
         if (settings.getId() == 0) {
             //FIXME probably move database access into EmonApplication

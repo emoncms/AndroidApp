@@ -31,7 +31,7 @@ public class MyElectricSettingsActivity extends BaseActivity {
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("settings")) {
             settings = getIntent().getExtras().getParcelable("settings");
         } else {
-            settings = new MyElectricSettings(0,"new page",0,0,0,"£");
+            settings = new MyElectricSettings(0,"new page",0,0,0,"Pounds","£");
         }
 
         setContentView(R.layout.activity_ms_settings);

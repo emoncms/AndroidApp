@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -103,6 +104,15 @@ public class MainActivity extends BaseActivity implements AccountListChangeListe
         @Override
         public void onUpdatePage(MyElectricSettings settings) {
             notifyDataSetChanged();
+        }
+
+        @Override
+        public void finishUpdate(ViewGroup container) {
+            try{
+                super.finishUpdate(container);
+            } catch (NullPointerException nullPointerException){
+                System.out.println("Catch the NullPointerException in FragmentPagerAdapter.finishUpdate");
+            }
         }
     }
 

@@ -103,8 +103,5 @@
     <string name="system_default">Défaillance du Système</string>
     <string name="no_camera_found">Aucune caméra détectée pour la numérisation de codes à barres.</string>
     <string name="settings_title_emoncms_connectivity">EMONCMS CONNECTIVITY FR</string>
-    <string name="french">Français</string>
-    <string name="english">Anglais</string>
-    <string name="german" translatable="false">Allemand</string>
 </resources>
 

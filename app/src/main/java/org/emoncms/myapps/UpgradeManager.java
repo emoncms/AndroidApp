@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import org.emoncms.myapps.myelectric.MyElectricSettings;
+
 public class UpgradeManager
 {
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
@@ -67,6 +69,12 @@ public class UpgradeManager
         String unitCost = sp.getString("myelectric_unit_cost","0");
         String costSymbol = sp.getString("myelectric_cost_symbol","0");
 
+
+        String useFeed = sp.getString("myelectric_kwh_feed","-1");
+
+        //if (costSymbol.equals("0") || costSymbol.equals(""))
+        String currency = "pounds";
+
         sp.edit().remove("emoncms_url")
                 .remove("emoncms_apikey")
                 .remove("emoncms_usessl")
@@ -82,11 +90,10 @@ public class UpgradeManager
         accountPrefs.putString("emoncms_apikey", emoncmsAPI);
         accountPrefs.putBoolean("emoncms_usessl", useSSL);
 
-        accountPrefs.putString("myelectric_power_feed", powerFeed);
-        accountPrefs.putString("myelectric_escale", scale);
-        accountPrefs.putString("myelectric_unit_cost", unitCost);
-        accountPrefs.putString("myelectric_cost_symbol", costSymbol);
         accountPrefs.commit();
+
+        MyElectricSettings settings = new MyElectricSettings(0, "My Electric", Integer.parseInt(powerFeed), Integer.parseInt(useFeed), Double.parseDouble(unitCost), currency, costSymbol);
+        EmonApplication.get().addPage(settings);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setTitle("Multiple Accounts Supported");

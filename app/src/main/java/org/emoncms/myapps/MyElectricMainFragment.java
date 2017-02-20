@@ -6,9 +6,11 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
@@ -130,6 +132,11 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
 
         }
 
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        if (sp.contains("show_cost")) {
+            blnShowCost = sp.getBoolean("show_cost",false);
+        }
+
 
     }
 
@@ -229,7 +236,7 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         if (savedInstanceState != null) {
 
             Log.d("emon-me","Loading saved instance state " + savedInstanceState.getDoubleArray("chart1_values").length);
-            blnShowCost = savedInstanceState.getBoolean("show_cost", false);
+            //blnShowCost = savedInstanceState.getBoolean("show_cost", false);
             powerChart.setChartLength(savedInstanceState.getInt("power_graph_length", -6));
             powerNow = savedInstanceState.getDouble("power_now", 0);
             powerToday = savedInstanceState.getDouble("power_today", 0);
@@ -261,7 +268,7 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Log.d("LIFECYCLE", "onSaveInstanceState");
-        outState.putBoolean("show_cost", blnShowCost);
+        //outState.putBoolean("show_cost", blnShowCost);
         outState.putInt("power_graph_length", powerChart.getChartLength());
         outState.putDouble("power_now", powerNow);
         outState.putDouble("power_today", powerToday);
@@ -296,9 +303,9 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.me_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
-        /*costSwitch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.cost_switch));
+        costSwitch = (SwitchCompat) MenuItemCompat.getActionView(menu.findItem(R.id.cost_switch));
         costSwitch.setOnCheckedChangeListener(checkedChangedListener);
-        costSwitch.setChecked(blnShowCost);*/
+        costSwitch.setChecked(blnShowCost);
     }
 
     @Override
@@ -362,6 +369,8 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             blnShowCost = isChecked;
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+            sp.edit().putBoolean("show_cost",blnShowCost).commit();
             dailyUsageBarChart.refreshChart();
             updateTextFields();
         }

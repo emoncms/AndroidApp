@@ -89,7 +89,5 @@
     <string name="settings_title_delete_page">Delete Page</string>
     <string name="settings_title_emoncms_name">Account name DE</string>
     <string name="settings_title_myelectric_page_name">Page Name</string>
-    <string name="german">Deutsche</string>
-    <string name="french" translatable="false">Français</string>
 
 </resources>

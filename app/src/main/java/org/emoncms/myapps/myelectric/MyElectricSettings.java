@@ -17,6 +17,7 @@ public class MyElectricSettings implements Parcelable {
     private int useFeedId;
     private double unitCost;
     private String costSymbol;
+    private String currency;
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public MyElectricSettings createFromParcel(Parcel in) {
@@ -32,16 +33,18 @@ public class MyElectricSettings implements Parcelable {
                 jsonObject.getInt("powerFeedId"),
                 jsonObject.getInt("useFeedId"),
                 jsonObject.getDouble("unitCost"),
+                jsonObject.has("currency") ? jsonObject.getString("currency") : "",
                 jsonObject.getString("costSymbol"));
     }
 
-    public MyElectricSettings(int id, String name, int powerFeedId, int useFeedId, double unitCost, String costSymbol) {
+    public MyElectricSettings(int id, String name, int powerFeedId, int useFeedId, double unitCost, String currency, String costSymbol) {
         this.id = id;
         this.name = name;
         this.powerFeedId = powerFeedId;
         this.useFeedId = useFeedId;
         this.unitCost = unitCost;
         this.costSymbol = costSymbol;
+        this.currency = currency;
     }
 
     public MyElectricSettings(Parcel in) {
@@ -50,6 +53,7 @@ public class MyElectricSettings implements Parcelable {
         this.powerFeedId = in.readInt();
         this.useFeedId = in.readInt();
         this.unitCost = in.readDouble();
+        this.currency = in.readString();
         this.costSymbol = in.readString();
     }
 
@@ -101,6 +105,14 @@ public class MyElectricSettings implements Parcelable {
         this.unitCost = unitCost;
     }
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -113,6 +125,7 @@ public class MyElectricSettings implements Parcelable {
         parcel.writeInt(powerFeedId);
         parcel.writeInt(useFeedId);
         parcel.writeDouble(unitCost);
+        parcel.writeString(currency);
         parcel.writeString(costSymbol);
     }
 
@@ -123,6 +136,7 @@ public class MyElectricSettings implements Parcelable {
         jsonObject.put("useFeedId",useFeedId);
         jsonObject.put("unitCost",unitCost);
         jsonObject.put("costSymbol",costSymbol);
+        jsonObject.put("currency",currency);
         return jsonObject.toString();
     }
 
