@@ -27,6 +27,7 @@ import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -348,6 +349,10 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
             clearMessage();
             mHandler.post(mGetPowerRunner);
         }
+
+        RelativeLayout buttonPanel = (RelativeLayout) getActivity().findViewById(R.id.buttonPanel);
+        if (buttonPanel != null)
+            buttonPanel.setVisibility(View.VISIBLE);
 
     }
 
