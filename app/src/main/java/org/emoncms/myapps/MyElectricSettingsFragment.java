@@ -47,6 +47,8 @@ public class MyElectricSettingsFragment extends Fragment {
     Handler mHandler = new Handler();
     SharedPreferences sp;
 
+    private String[] costSymbolArray;
+
     private MyElectricSettings settings;
 
     @Override
@@ -78,11 +80,24 @@ public class MyElectricSettingsFragment extends Fragment {
 
         unitCostPreference.setText(""+settings.getUnitCost());
 
-        currencyPreference.setSelection(costUnitArray.getPosition(settings.getCurrency()));
+        currencyPreference.setSelection(costSymbolToIndex(settings.getCostSymbol()));
 
 
         namePreference.setText(settings.getName());
         return(result);
+    }
+
+    private int costSymbolToIndex(String symbol) {
+        if (costSymbolArray == null) {
+            costSymbolArray = getActivity().getResources().getStringArray(R.array.me_cost_values);
+        }
+
+        for (int i = 0; i < costSymbolArray.length; i++) {
+            if (costSymbolArray[i].equals(symbol)) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     @Override
@@ -91,6 +106,8 @@ public class MyElectricSettingsFragment extends Fragment {
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) actionBar.setTitle(R.string.me_settings_title);
+
+        costSymbolArray = getActivity().getResources().getStringArray(R.array.me_cost_values);
     }
 
 
@@ -107,7 +124,7 @@ public class MyElectricSettingsFragment extends Fragment {
         settings.setPowerFeedId((int)powerFeedPreference.getSelectedItemId());
         settings.setUseFeedId((int)kWhFeedPreference.getSelectedItemId());
         settings.setName(namePreference.getText().toString());
-        settings.setCurrency((String) currencyPreference.getSelectedItem());
+
         settings.setUnitCost(Double.valueOf(unitCostPreference.getText().toString()));
 
         String[] symbolArray = getActivity().getResources().getStringArray(R.array.me_cost_values);

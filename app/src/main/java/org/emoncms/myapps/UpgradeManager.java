@@ -72,8 +72,6 @@ public class UpgradeManager
 
         String useFeed = sp.getString("myelectric_kwh_feed","-1");
 
-        //if (costSymbol.equals("0") || costSymbol.equals(""))
-        String currency = "pounds";
 
         sp.edit().remove("emoncms_url")
                 .remove("emoncms_apikey")
@@ -92,13 +90,13 @@ public class UpgradeManager
 
         accountPrefs.commit();
 
-        MyElectricSettings settings = new MyElectricSettings(0, "My Electric", Integer.parseInt(powerFeed), Integer.parseInt(useFeed), Double.parseDouble(unitCost), currency, costSymbol);
+        MyElectricSettings settings = new MyElectricSettings(0, "My Electric", Integer.parseInt(powerFeed), Integer.parseInt(useFeed), Double.parseDouble(unitCost), costSymbol);
         EmonApplication.get().addPage(settings);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setTitle("Multiple Accounts Supported");
         builder.setMessage(
-                "Application has been upgraded to support multiple accounts. " +
+                "Application has been upgraded to support multiple accounts and pages. " +
                         "Your settings have been migrated. ");
         builder.setPositiveButton(android.R.string.ok, null);
         builder.create().show();
