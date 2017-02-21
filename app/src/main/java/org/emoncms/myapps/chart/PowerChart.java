@@ -100,6 +100,11 @@ public class PowerChart {
             powerChart.fitScreen();
         }
         requiresReset = false;
+
+        XAxis xAxis = powerChart.getXAxis();
+        xAxis.setValueFormatter(new HoursMinutesXAxisValueFormatter(chartLabels));
+
+
         notifyDataChanged();
     }
 

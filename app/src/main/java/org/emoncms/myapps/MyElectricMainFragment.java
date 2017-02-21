@@ -262,9 +262,8 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
                 ArrayList<String> chart2Labels = savedInstanceState.getStringArrayList("chart2_labels");
                 dailyUsageBarChart.restoreData(chart2Labels, saved_chart2_values, chart2_colors, daysToDisplay);
             }
-
-
         }
+
     }
 
 
@@ -349,11 +348,6 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
             clearMessage();
             mHandler.post(mGetPowerRunner);
         }
-
-        RelativeLayout buttonPanel = (RelativeLayout) getActivity().findViewById(R.id.buttonPanel);
-        if (buttonPanel != null)
-            buttonPanel.setVisibility(View.VISIBLE);
-
     }
 
     @Override
