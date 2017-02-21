@@ -194,6 +194,8 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
 
         powerChart = new PowerChart((LineChart) view.findViewById(R.id.chart1), getActivity());
         dailyUsageBarChart = new DailyBarChart((BarChart) view.findViewById(R.id.chart2), getActivity());
+        dailyUsageBarChart.setShowCost(blnShowCost);
+        dailyUsageBarChart.setPowerCost(myElectricSettings.getUnitCost());
 
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         setDaysToDisplay(displayMetrics.widthPixels, displayMetrics.density);
@@ -259,13 +261,15 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
                 ArrayList<String> chart2Labels = savedInstanceState.getStringArrayList("chart2_labels");
                 dailyUsageBarChart.restoreData(chart2Labels, saved_chart2_values, chart2_colors, daysToDisplay);
             }
+
+
         }
     }
 
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        //outState.putBoolean("show_cost", blnShowCost);
+
         outState.putInt("power_graph_length", powerChart.getChartLength());
         outState.putDouble("power_now", powerNow);
         outState.putDouble("power_today", powerToday);
@@ -334,6 +338,8 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         mGetPowerRunner = new PowerNowDataLoader(getActivity(), this, myElectricSettings.getPowerFeedId(), myElectricSettings.getUseFeedId());
         mGetUsageByDayRunner = new UseByDayDataLoader(getActivity(), this, dailyUsageBarChart, myElectricSettings.getUseFeedId());
 
+        dailyUsageBarChart.setPowerCost(myElectricSettings.getUnitCost());
+
         if (emonCmsApiKey == null || emonCmsApiKey.equals("") || emonCmsUrl == null || emonCmsUrl.equals("")) {
             showMessage(R.string.server_not_configured);
         } else if (myElectricSettings.getPowerFeedId() == -1 || myElectricSettings.getUseFeedId() == -1) {
@@ -368,6 +374,7 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
             blnShowCost = isChecked;
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
             sp.edit().putBoolean("show_cost",blnShowCost).commit();
+            dailyUsageBarChart.setShowCost(blnShowCost);
             dailyUsageBarChart.refreshChart();
             updateTextFields();
         }

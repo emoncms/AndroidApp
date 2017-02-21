@@ -32,9 +32,8 @@ public class DailyBarChart {
 
     private BarData barData;
 
-    //FIXME need to load these
     private boolean showCost;
-    private float powerCost = 0;
+    private double powerCost = 0;
 
     public DailyBarChart(BarChart barChart, Context context) {
         this.barChart = barChart;
@@ -62,6 +61,14 @@ public class DailyBarChart {
 
     public void setBarColours(int[] colours) {
         chartBarColours = colours;
+    }
+
+    public void setShowCost(boolean showCost) {
+        this.showCost = showCost;
+    }
+
+    public void setPowerCost(double powerCost) {
+        this.powerCost = powerCost;
     }
 
     public void clearData() {
@@ -186,7 +193,7 @@ public class DailyBarChart {
         public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
 
             if (showCost)
-                value = value * powerCost;
+                value = value * (float)powerCost;
 
             return mFormat.format(value);
         }

@@ -42,6 +42,8 @@ public class PowerChart {
         
     }
 
+
+
     public ArrayList<String> getLabels() {
         return chartLabels;
     }
@@ -157,7 +159,7 @@ public class PowerChart {
         powerChart.getLegend().setEnabled(false);
         powerChart.getAxisRight().setEnabled(false);
         powerChart.getDescription().setEnabled(false);
-                powerChart.setNoDataText("");
+        powerChart.setNoDataText("");
         powerChart.setHardwareAccelerationEnabled(true);
 
         YAxis yAxis = powerChart.getAxisLeft();
