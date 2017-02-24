@@ -7,12 +7,27 @@
         <item name="android:windowBackground">@color/windowBackground</item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/loading</item>
+    </style>
+
     <style name="ChartButton" parent="android:Widget.Holo.Button">
         <item name="android:minHeight">40dip</item>
         <item name="android:minWidth">40dip</item>
         <item name="android:maxHeight">40dip</item>
         <item name="android:maxWidth">40dip</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="PrefHeader">
+
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center_vertical</item>
+
     </style>
 
 </resources>

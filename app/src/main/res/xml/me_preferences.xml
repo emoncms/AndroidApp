@@ -4,6 +4,12 @@
     <PreferenceCategory
         android:title="@string/settings_title_myelectric_feeds">
 
+        <EditTextPreference
+            android:key="page_name"
+            android:title="@string/settings_title_myelectric_page_name"
+            android:inputType="text"
+            android:defaultValue="" />
+
         <ListPreference
             android:key="myelectric_power_feed"
             android:title="@string/settings_title_myelectric_power_feed"
@@ -16,12 +22,12 @@
             android:defaultValue="-1"
             android:enabled="false"/>
 
-        <ListPreference
+        <!--ListPreference
             android:key="myelectric_escale"
             android:title="@string/settings_title_myelectric_escale"
             android:defaultValue="0"
             android:entries="@array/escale_text"
-            android:entryValues="@array/escale_values" />
+            android:entryValues="@array/escale_values" /-->
     </PreferenceCategory>
 
     <PreferenceCategory

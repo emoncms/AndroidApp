@@ -70,7 +70,6 @@
 
     <string name="chart_no_data_available">No data available</string>
 
-    <string name="settings_title_emoncms_connectivity">EMONCMS CONNECTIVITY FR</string>
     <string name="settings_title_app_settings">PARAMÈTRES APP</string>
     <string name="settings_title_scanqrcode">Numériser le code QR</string>
     <string name="settings_summary_scanqrcode">Permet de remplir automatiquement les champs de connectivité en utilisant le code QR sur la page du compte emoncms</string>
@@ -93,6 +92,16 @@
     <string name="settings_title_myelectric_unit_cost">Coût</string>
     <string name="settings_title_myelectric_cost_symbol">Unité de coût</string>
 
+    <string name="account_settings">Account Settings FR</string>
+    <string name="accounts">Accounts FR</string>
+    <string name="settings_summary_emoncms_name">Short name for the account for easy identification FR</string>
+    <string name="settings_title_delete_account">Delete Account FR</string>
+    <string name="settings_title_emoncms_name">Account Name FR</string>
+    <string name="settings_title_myelectric_page_name">Page Name</string>
+    <string name="settings_title_delete_page">Delete page FR</string>
+
     <string name="system_default">Défaillance du Système</string>
     <string name="no_camera_found">Aucune caméra détectée pour la numérisation de codes à barres.</string>
+    <string name="settings_title_emoncms_connectivity">EMONCMS CONNECTIVITY FR</string>
 </resources>
+

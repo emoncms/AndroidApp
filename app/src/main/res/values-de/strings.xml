@@ -82,5 +82,12 @@
     <string name="settings_title_language">Sprache</string>
     <string name="settings_summary_language">Sprache auswählen</string>
     <string name="no_camera_found">Keine Kamera für Barcodescannen gefunden.</string>
+    <string name="account_settings">Account Settings DE</string>
+    <string name="accounts">Accounts DE</string>
+    <string name="settings_summary_emoncms_name">Short name for the account for easy identification</string>
+    <string name="settings_title_delete_account">Delete Account</string>
+    <string name="settings_title_delete_page">Delete Page</string>
+    <string name="settings_title_emoncms_name">Account name DE</string>
+    <string name="settings_title_myelectric_page_name">Page Name</string>
 
 </resources>

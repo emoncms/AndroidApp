@@ -1,5 +1,5 @@
 <resources>
-    <string-array name="escale_text">
+    <string-array name="escale_text" translatable="false">
         <item>@string/kwh_elapsed</item>
         <item>@string/wh_elapsed</item>
     </string-array>

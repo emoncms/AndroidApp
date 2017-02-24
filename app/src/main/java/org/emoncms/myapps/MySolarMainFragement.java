@@ -237,7 +237,7 @@ public class MySolarMainFragement extends Fragment
         yAxis.setDrawAxisLine(false);
         yAxis.setTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
         yAxis.setTextSize(getResources().getInteger(R.integer.chartDateTextSize));
-        yAxis.setValueFormatter(new Chart1YAxisValueFormatter());
+        yAxis.setValueFormatter(new IntegerYAxisValueFormatter());
 
         XAxis xAxis = chart1.getXAxis();
         xAxis.setDrawAxisLine(false);
@@ -245,7 +245,7 @@ public class MySolarMainFragement extends Fragment
         xAxis.setDrawLabels(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextColor(ContextCompat.getColor(getActivity(), R.color.lightGrey));
-        xAxis.setValueFormatter(new Chart1XAxisValueFormatter());
+        xAxis.setValueFormatter(new HoursMinutesXAxisValueFormatter());
         xAxis.setSpaceBetweenLabels(0);
         xAxis.setTextSize(getResources().getInteger(R.integer.chartDateTextSize));
 
@@ -288,7 +288,7 @@ public class MySolarMainFragement extends Fragment
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            ((MainActivity) getActivity()).showFragment(MainActivity.MyAppViews.MySolarSettingsView);
+            //((MainActivity) getActivity()).showFragment(MainActivity.MyAppViews.MySolarSettingsView);
             return true;
         }
         else if (id == R.id.full_screen) {

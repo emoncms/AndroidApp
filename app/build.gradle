@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.0"
 
     defaultConfig {
-        applicationId "org.emoncms.myapps"
+        applicationId "org.emoncms.myapps.beta"
         minSdkVersion 14
-        targetSdkVersion 25
-        versionCode 127
+        targetSdkVersion 23
+        versionCode 128
         versionName "1.3.0"
     }
     buildTypes {
@@ -26,9 +26,10 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.volley:volley:1.0.0'
-    compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.android.support:recyclerview-v7:25.0.0'
+    compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
+    compile 'com.android.support:appcompat-v7:23.0.0'
+    compile 'com.android.support:recyclerview-v7:23.0.0'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0'
     compile 'com.google.android.gms:play-services-vision:9.8.0'
-    compile 'com.android.support:design:25.0.0'
+    compile 'com.android.support:design:23.0.0'
 }

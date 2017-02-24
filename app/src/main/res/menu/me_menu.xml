@@ -8,7 +8,7 @@
         app:actionViewClass="android.support.v7.widget.SwitchCompat"
         app:showAsAction="always"
         android:orderInCategory="100"
-        android:title=""/>
+        android:title="@string/cost_label"/>
 
     <item android:id="@+id/full_screen"
           android:orderInCategory="200"
