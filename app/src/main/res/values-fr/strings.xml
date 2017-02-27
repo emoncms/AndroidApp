@@ -40,7 +40,7 @@
     <string name="ok">OK</string>
     <string name="permission_camera_rationale">L\'accès à la caméra est nécessaire pour la détection\'</string>
     <string name="no_camera_permission">Le scanneur de code barre nécessite la caméra, autorisation refusé</string>
-    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+    <string name="low_storage_error">Les dépendences de détection faciale ne peuvent être chargées par manque de place sur votre appareil</string>
     <string name="title_activity_main">Exemple du lecteur de codes barre</string>
     <string name="barcode_header">Clicker &quot;Lire code barre&quot; pour scanner le code barre</string>
     <string name="read_barcode">Lire le code barre</string>
@@ -49,7 +49,7 @@
     <string name="barcode_error">"erreur de la lecture du code barre: %1$s"</string>
     <string name="qr_code_success">Paramètres bien enregistrés suite à la lecture du code barre</string>
     <string name="qr_code_fail">Code QR invalide</string>
-    <string name="barcode_scan_instructions">"Scanner le code barre su la page Mon Compte de emoncms."</string>
+    <string name="barcode_scan_instructions">"Scanner le code barre sur la page Mon Compte de emoncms."</string>
 
     <string name="monday_initial">L</string>
     <string name="tuesday_initial">M</string>
@@ -68,17 +68,17 @@
     <string name="kwh_elapsed">kWh passé</string>
     <string name="wh_elapsed">Watt heure passé</string>
 
-    <string name="chart_no_data_available">No data available</string>
+    <string name="chart_no_data_available">pas de données disponibles</string>
 
     <string name="settings_title_app_settings">PARAMÈTRES APP</string>
     <string name="settings_title_scanqrcode">Numériser le code QR</string>
     <string name="settings_summary_scanqrcode">Permet de remplir automatiquement les champs de connectivité en utilisant le code QR sur la page du compte emoncms</string>
     <string name="settings_title_emoncms_url">emoncms URL</string>
-    <string name="settings_summary_emoncms_url">Full emoncms URL sans http:// par exemple "www.myawesomesite.com/emoncms"</string>
+    <string name="settings_summary_emoncms_url">l\'url emoncms complet sans http:// par exemple "www.myawesomesite.com/emoncms"</string>
     <string name="settings_title_emoncms_apikey">emoncms CLÉ API</string>
     <string name="settings_summary_emoncms_apikey">Lire la clé API de la page emoncms Mon compte</string>
     <string name="settings_title_emoncms_usessl">Utiliser SSL</string>
-    <string name="settings_summary_emoncms_usessl"> Se connecter en utilisant https, pris en charge par emoncms.org, NE PAS emonPi</string>
+    <string name="settings_summary_emoncms_usessl"> Se connecter en utilisant https, pris en charge par emoncms.org, MAIS PAS POUR emonPi</string>
     <string name="settings_title_keep_screen_on">Gardez l\'écran allumé</string>
     <string name="settings_summary_keep_screen_on">Arrête l\'extinction de l\'écran de l\'appareil</string>
     <string name="settings_title_language">Langue</string>
@@ -92,16 +92,16 @@
     <string name="settings_title_myelectric_unit_cost">Coût</string>
     <string name="settings_title_myelectric_cost_symbol">Unité de coût</string>
 
-    <string name="account_settings">Account Settings FR</string>
-    <string name="accounts">Accounts FR</string>
-    <string name="settings_summary_emoncms_name">Short name for the account for easy identification FR</string>
-    <string name="settings_title_delete_account">Delete Account FR</string>
-    <string name="settings_title_emoncms_name">Account Name FR</string>
-    <string name="settings_title_myelectric_page_name">Page Name</string>
-    <string name="settings_title_delete_page">Delete page FR</string>
+    <string name="account_settings">Paramètres du compte</string>
+    <string name="accounts">Compte</string>
+    <string name="settings_summary_emoncms_name">Nom court pour le compte</string>
+    <string name="settings_title_delete_account">Supprimer le compte</string>
+    <string name="settings_title_emoncms_name">Nom du compte</string>
+    <string name="settings_title_myelectric_page_name">Nom de la page</string>
+    <string name="settings_title_delete_page">Supprimer la page</string>
 
     <string name="system_default">Défaillance du Système</string>
     <string name="no_camera_found">Aucune caméra détectée pour la numérisation de codes à barres.</string>
-    <string name="settings_title_emoncms_connectivity">EMONCMS CONNECTIVITY FR</string>
+    <string name="settings_title_emoncms_connectivity">EMONCMS connectivité</string>
 </resources>
 
