@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Power Feed" />
+        android:text="Power feed (W)" />
 
     <Spinner
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Use Feed" />
+        android:text="Bar graph feed (kwh)" />
 
     <Spinner
         android:layout_width="match_parent"
