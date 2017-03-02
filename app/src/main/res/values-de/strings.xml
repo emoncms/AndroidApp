@@ -71,14 +71,13 @@
     <string name="no_camera_permission">Der Barcode Scanner benötigt Zugriff auf die Kamera, hat jedoch keine Berechtigung dazu.</string>
     <string name="settings_summary_scanqrcode">Erlaubt es, die Formularfelder durch den QR Code auf der emoncms-Account-Seite automatisch auszufüllen</string>
     <string name="kwh_elapsed">kWh verbaucht</string>
-
-    // These may not be correct as I used Google
+    
     <string name="chart_no_data_available">Keine Daten für Charts verfügbar</string>
     <string name="system_default">Systemstandard</string>
-    <string name="me_not_configured_text">Wählen Sie die Feeds aus, die mit dem Cog-Symbol in der Symbolleiste angezeigt werden sollen.</string>
+    <string name="me_not_configured_text">Wählen Sie die Feeds aus die angezeigt werden sollen. Konfigurationsmenü --&gt; Zahnrad-Symbol in der Symbolleiste.</string>
     <string name="invalid_kwh_feedid">Ungültige Verwendung kwh feed ID, wählen Sie bitte eine kwh-Feed aus dem Konfigurationsmenü.</string>
     <string name="invalid_watt_feedid">Ungültige Verwendung der feed ID, bitte wählen Sie einen Watt-Feed aus dem Konfigurationsmenü.</string>
-    <string name="low_storage_error">Gesichtserkennung Abhängigkeiten können nicht heruntergeladen werden aufgrund der geringen Gerätespeicher</string>
+    <string name="low_storage_error">Abhängigkeiten können nicht heruntergeladen werden. Interner Speicher zu gering!</string>
     <string name="settings_title_language">Sprache</string>
     <string name="settings_summary_language">Sprache auswählen</string>
     <string name="no_camera_found">Keine Kamera gefunden.</string>
