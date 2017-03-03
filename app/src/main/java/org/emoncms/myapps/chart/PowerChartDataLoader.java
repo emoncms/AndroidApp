@@ -25,13 +25,13 @@ public class PowerChartDataLoader implements Runnable {
     private Context context;
     private PowerChart powerChart;
     private MyElectricDataManager myElectricDataManager;
-    //private int wattFeedId;
+
 
     public PowerChartDataLoader(PowerChart powerChart, Context context, MyElectricDataManager myElectricDataManager) {
         this.powerChart = powerChart;
         this.context = context;
         this.myElectricDataManager = myElectricDataManager;
-       // this.wattFeedId = wattFeedId;
+
     }
 
     @Override

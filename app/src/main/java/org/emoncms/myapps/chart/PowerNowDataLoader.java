@@ -21,19 +21,13 @@ public class PowerNowDataLoader implements Runnable {
 
     private static final String FEED_URL = "%s/feed/fetch.json?apikey=%s&ids=%d,%d";
 
-    //private int wattFeedId;
-    //private int kWhFeedId;
     private Context context;
     private MyElectricDataManager myElectricDataManager;
 
-    //private float powerScale;
 
     public PowerNowDataLoader(Context context, MyElectricDataManager myElectricDataManager) {
-        //this.wattFeedId = wattFeedId;
-        //this.kWhFeedId = kWhFeedId;
         this.context = context;
         this.myElectricDataManager = myElectricDataManager;
-        //this.powerScale = powerScale;
     }
 
 
