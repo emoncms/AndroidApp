@@ -139,36 +139,39 @@ public class MyElectricSettingsFragment extends Fragment {
 
     private void savePage() {
 
-        Log.d("emon-settings","Saving Page");
+        if (!settings.isDeleted()) {
 
-        settings.setPowerFeedId((int)powerFeedPreference.getSelectedItemId());
-        settings.setUseFeedId((int)kWhFeedPreference.getSelectedItemId());
-        settings.setName(namePreference.getText().toString());
-        settings.setUnitCost(unitCostPreference.getText().toString());
+            Log.d("emon-settings", "Saving Page");
 
-        String[] scaleArray = getActivity().getResources().getStringArray(R.array.escale_values);
-        String scaleValue = scaleArray[scalePreference.getSelectedItemPosition()];
-        settings.setPowerScale(scaleValue);
+            settings.setPowerFeedId((int) powerFeedPreference.getSelectedItemId());
+            settings.setUseFeedId((int) kWhFeedPreference.getSelectedItemId());
+            settings.setName(namePreference.getText().toString());
+            settings.setUnitCost(unitCostPreference.getText().toString());
 
-        String[] symbolArray = getActivity().getResources().getStringArray(R.array.me_cost_values);
+            String[] scaleArray = getActivity().getResources().getStringArray(R.array.escale_values);
+            String scaleValue = scaleArray[scalePreference.getSelectedItemPosition()];
+            settings.setPowerScale(scaleValue);
 
-        String currencySymbol = symbolArray[currencyPreference.getSelectedItemPosition()];
-        settings.setCostSymbol(currencySymbol);
+            String[] symbolArray = getActivity().getResources().getStringArray(R.array.me_cost_values);
+
+            String currencySymbol = symbolArray[currencyPreference.getSelectedItemPosition()];
+            settings.setCostSymbol(currencySymbol);
 
 
-        Log.w("settings","Setting Cost Symbol to " + currencySymbol);
+            Log.w("settings", "Setting Cost Symbol to " + currencySymbol);
 
 
-        if (settings.getId() == 0) {
-            //FIXME probably move database access into EmonApplication
-            Log.d("settings","Inserting");
-            int id = EmonDatabaseHelper.getInstance(getActivity()).addPage(EmonApplication.get().getCurrentAccount(), settings);
-            settings.setId(id);
-            EmonApplication.get().addPage(settings);
-        } else {
-            Log.d("settings","Updating");
-            EmonDatabaseHelper.getInstance(getActivity()).updatePage(settings.getId(), settings);
-            EmonApplication.get().updatePage(settings);
+            if (settings.getId() == 0) {
+                //FIXME probably move database access into EmonApplication
+                Log.d("settings", "Inserting");
+                int id = EmonDatabaseHelper.getInstance(getActivity()).addPage(EmonApplication.get().getCurrentAccount(), settings);
+                settings.setId(id);
+                EmonApplication.get().addPage(settings);
+            } else {
+                Log.d("settings", "Updating");
+                EmonDatabaseHelper.getInstance(getActivity()).updatePage(settings.getId(), settings);
+                EmonApplication.get().updatePage(settings);
+            }
         }
     }
 

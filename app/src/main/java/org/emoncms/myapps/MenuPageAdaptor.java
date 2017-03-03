@@ -32,8 +32,7 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
         //check it is not already in there
         int pos = getPosition(settings.getId());
         if (pos == -1) {
-            Log.d("emon-menu", "Adding page to menu");
-            menuOptionList.add(menuOptionList.size() - 2, new MenuOption("" + (menuOptionList.size() - 2), R.drawable.ic_my_electric_white_36dp, settings.getName()));
+            menuOptionList.add(menuOptionList.size() - 2, new MenuOption("" + (menuOptionList.size() - 2), R.drawable.ic_my_electric_white_36dp, settings.getName(), settings));
             notifyDataSetChanged();
         }
 
@@ -43,19 +42,19 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
     public void onDeletePage(MyElectricSettings settings) {
 
         for (Iterator<MenuOption> iterator = menuOptionList.iterator(); iterator.hasNext(); ) {
+
             MenuOption item = iterator.next();
             if (item.settings != null && item.settings.getId() == settings.getId()) {
-                Log.d("emon-menu","Removed page from menu " + settings.getName());
                 iterator.remove();
-
             }
         }
         notifyDataSetChanged();
-        Log.d("emon-menu","Refreshed menu" + settings.getName());
+
     }
 
     @Override
     public void onUpdatePage(MyElectricSettings settings) {
+
         for (Iterator<MenuOption> iterator = menuOptionList.iterator(); iterator.hasNext(); ) {
             MenuOption item = iterator.next();
             if (item.settings != null && item.settings.getId() == settings.getId()) {
@@ -126,7 +125,6 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
             index++;
         }
 
-        Log.d("empon-menu","Menu pages added " + index);
         menuOptionList.add(new MenuOption("new", R.drawable.ic_plus_box_36dp, "Add Page"));
         menuOptionList.add(new MenuOption("settings", R.drawable.ic_settings_applications_white_36dp, "Settings"));
 

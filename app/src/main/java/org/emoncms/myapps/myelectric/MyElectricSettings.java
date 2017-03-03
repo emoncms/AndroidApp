@@ -20,6 +20,7 @@ public class MyElectricSettings implements Parcelable {
     private String powerScale;
     private float powerScaleFloat;
     private float unitCostFloat;
+    private boolean deleted = false;
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public MyElectricSettings createFromParcel(Parcel in) {
@@ -61,6 +62,14 @@ public class MyElectricSettings implements Parcelable {
         this.costSymbol = in.readString();
         this.powerScaleFloat = Float.parseFloat(powerScale);
         this.unitCostFloat = Float.parseFloat(unitCost);
+    }
+
+    public void setDeleted() {
+        deleted = true;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 
     public int getId() {

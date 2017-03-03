@@ -96,6 +96,7 @@ public class MyElectricSettingsActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 EmonApplication.get().removePage(settings);
+                settings.setDeleted();
                 onBackPressed();
             }
         });
