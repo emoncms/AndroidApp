@@ -87,6 +87,8 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
             itemView.setSelected(selectedItem == getLayoutPosition());
             if (option.id.equals("new")) {
                 divider.setVisibility(View.VISIBLE);
+            } else {
+                divider.setVisibility(View.INVISIBLE);
             }
 
 

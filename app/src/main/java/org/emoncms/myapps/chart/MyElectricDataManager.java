@@ -1,5 +1,7 @@
 package org.emoncms.myapps.chart;
 
+import org.emoncms.myapps.myelectric.MyElectricSettings;
+
 /**
  * Created by tamsin on 10/10/16.
  */
@@ -40,6 +42,8 @@ public interface MyElectricDataManager {
      * @return
      */
     String getPageTag();
+
+    MyElectricSettings getSettings();
 
 
 

@@ -334,10 +334,10 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         clearMessage();
         loadConfig();
 
-        mGetPowerHistoryRunner = new PowerChartDataLoader(powerChart, this.getActivity(), this, myElectricSettings.getPowerFeedId());
+        mGetPowerHistoryRunner = new PowerChartDataLoader(powerChart, this.getActivity(), this);
         mGetFeedsRunner = new FeedDataLoader(getActivity(), this);
-        mGetPowerRunner = new PowerNowDataLoader(getActivity(), this, myElectricSettings.getPowerFeedId(), myElectricSettings.getUseFeedId(),myElectricSettings.getPowerScaleAsFloat());
-        mGetUsageByDayRunner = new UseByDayDataLoader(getActivity(), this, dailyUsageBarChart, myElectricSettings.getUseFeedId(), myElectricSettings.getPowerScaleAsFloat());
+        mGetPowerRunner = new PowerNowDataLoader(getActivity(), this);
+        mGetUsageByDayRunner = new UseByDayDataLoader(getActivity(), this, dailyUsageBarChart);
 
         dailyUsageBarChart.setPowerCost(myElectricSettings.getUnitCostFloat());
 
@@ -555,6 +555,11 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
     @Override
     public String getPageTag() {
         return EmonApplication.get().getCurrentAccount() + myElectricSettings.getName();
+    }
+
+    @Override
+    public MyElectricSettings getSettings() {
+        return myElectricSettings;
     }
 
 

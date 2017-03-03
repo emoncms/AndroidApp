@@ -29,20 +29,20 @@ public class UseByDayDataLoader implements Runnable {
     private MyElectricDataManager myElectricDataManager;
     private Context context;
     private long timeZoneOffset;
-    private int kWhFeedId;
+    //private int kWhFeedId;
     private DailyBarChart dailyUsageBarChart;
     private int daysToDisplay;
 
 
-    private float powerScale;
+    //private float powerScale;
 
-    public UseByDayDataLoader(Context context, MyElectricDataManager myElectricDataManager, DailyBarChart dailyUsageBarChart, int kWhFeedId, float powerScale) {
+    public UseByDayDataLoader(Context context, MyElectricDataManager myElectricDataManager, DailyBarChart dailyUsageBarChart) {
         this.myElectricDataManager = myElectricDataManager;
         this.context = context;
-        this.kWhFeedId = kWhFeedId;
+        //this.kWhFeedId = kWhFeedId;
         this.dailyUsageBarChart = dailyUsageBarChart;
         timeZoneOffset = (long) Math.floor((Calendar.getInstance().get(Calendar.ZONE_OFFSET) + Calendar.getInstance().get(Calendar.DST_OFFSET)) * 0.001);
-        this.powerScale = powerScale;
+        //this.powerScale = powerScale;
     }
 
     public void setDaysToDisplay(int days) {
@@ -51,6 +51,7 @@ public class UseByDayDataLoader implements Runnable {
 
     @Override
     public void run() {
+        int kWhFeedId = myElectricDataManager.getSettings().getUseFeedId();
 
         long end = (long) Math.floor(((Calendar.getInstance().getTimeInMillis() * 0.001) + timeZoneOffset) / INTERVAL) * INTERVAL;
 
@@ -81,7 +82,7 @@ public class UseByDayDataLoader implements Runnable {
                                 Long date = row.getLong(0);
                                 if (date <= chart2EndTime) {
                                     dates.add(date);
-                                    power.add(row.getDouble(1) * powerScale);
+                                    power.add(row.getDouble(1) *  myElectricDataManager.getSettings().getPowerScaleAsFloat());
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
