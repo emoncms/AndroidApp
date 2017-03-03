@@ -25,9 +25,4 @@ public class LabelAxisFormatter implements IAxisValueFormatter {
         }
         return labels.get((int) value);
     }
-
-    @Override
-    public int getDecimalDigits() {
-        return 0;
-    }
 }
