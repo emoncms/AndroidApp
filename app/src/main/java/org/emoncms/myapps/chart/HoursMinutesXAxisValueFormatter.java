@@ -29,9 +29,4 @@ public class HoursMinutesXAxisValueFormatter implements IAxisValueFormatter {
         cal.setTimeInMillis(Long.parseLong(labels.get((int) value)));
         return (df.format(cal.getTime()));
     }
-
-    @Override
-    public int getDecimalDigits() {
-        return 0;
-    }
 }
