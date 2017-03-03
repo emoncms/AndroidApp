@@ -151,7 +151,7 @@ public class PowerChart {
         powerDataset.setDrawFilled(true);
         powerDataset.setFillColor(ContextCompat.getColor(context, R.color.chartBlue));
         powerDataset.setDrawValues(false);
-        powerDataset.setValueTextSize(ContextCompat.getColor(context, R.integer.chartValueTextSize));
+        powerDataset.setValueTextSize(R.integer.chartValueTextSize);
         powerDataset.setHighlightEnabled(false);
         LineData ld = new LineData();
         ld.addDataSet(powerDataset);
