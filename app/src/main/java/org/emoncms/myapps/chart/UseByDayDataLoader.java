@@ -1,7 +1,6 @@
 package org.emoncms.myapps.chart;
 
 import android.content.Context;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -34,15 +33,16 @@ public class UseByDayDataLoader implements Runnable {
     private DailyBarChart dailyUsageBarChart;
     private int daysToDisplay;
 
-    //FIX ME should come from config?
-    private int powerScale = 1;
 
-    public UseByDayDataLoader(Context context, MyElectricDataManager myElectricDataManager, DailyBarChart dailyUsageBarChart, int kWhFeedId) {
+    private float powerScale;
+
+    public UseByDayDataLoader(Context context, MyElectricDataManager myElectricDataManager, DailyBarChart dailyUsageBarChart, int kWhFeedId, float powerScale) {
         this.myElectricDataManager = myElectricDataManager;
         this.context = context;
         this.kWhFeedId = kWhFeedId;
         this.dailyUsageBarChart = dailyUsageBarChart;
         timeZoneOffset = (long) Math.floor((Calendar.getInstance().get(Calendar.ZONE_OFFSET) + Calendar.getInstance().get(Calendar.DST_OFFSET)) * 0.001);
+        this.powerScale = powerScale;
     }
 
     public void setDaysToDisplay(int days) {
@@ -97,8 +97,8 @@ public class UseByDayDataLoader implements Runnable {
 
                             dailyUsageBarChart.addData(dayOfWeekInitials[calendar.get(Calendar.DAY_OF_WEEK) - 1],power.get(i + 1) - power.get(i));
 
-                            if (calendar.get(Calendar.DAY_OF_WEEK) == 1 ||
-                                    calendar.get(Calendar.DAY_OF_WEEK) == 7)
+                            if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ||
+                                    calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
                                 chart2_colors[i] = ContextCompat.getColor(context, R.color.chartBlueDark);
                             else
                                 chart2_colors[i] = ContextCompat.getColor(context, R.color.chartBlue);
@@ -106,7 +106,7 @@ public class UseByDayDataLoader implements Runnable {
 
                         if (power.size() > 0) {
                             double yesterdaysPowerUsage = power.get(power.size() - 1);
-                            double powerToday = myElectricDataManager.getTotalUsage() - yesterdaysPowerUsage;
+                            double powerToday = (myElectricDataManager.getTotalUsagekWh()) - yesterdaysPowerUsage;
                             myElectricDataManager.setUseToYesterday((float)yesterdaysPowerUsage);
 
 
@@ -115,8 +115,8 @@ public class UseByDayDataLoader implements Runnable {
                             dailyUsageBarChart.addData(dayOfWeekInitials[calendar.get(Calendar.DAY_OF_WEEK) - 1],powerToday);
 
 
-                            if (calendar.get(Calendar.DAY_OF_WEEK) == 1 ||
-                                    calendar.get(Calendar.DAY_OF_WEEK) == 7) {
+                            if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ||
+                                    calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
                                 chart2_colors[chart2_colors.length - 1] = ContextCompat.getColor(context, R.color.chartBlueDark);
                             } else {
                                 chart2_colors[chart2_colors.length - 1] = ContextCompat.getColor(context, R.color.chartBlue);

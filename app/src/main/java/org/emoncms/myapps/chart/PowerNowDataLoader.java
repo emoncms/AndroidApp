@@ -25,11 +25,14 @@ public class PowerNowDataLoader implements Runnable {
     private Context context;
     private MyElectricDataManager myElectricDataManager;
 
-    public PowerNowDataLoader(Context context, MyElectricDataManager myElectricDataManager, int wattFeedId, int kWhFeedId) {
+    private float powerScale;
+
+    public PowerNowDataLoader(Context context, MyElectricDataManager myElectricDataManager, int wattFeedId, int kWhFeedId, float powerScale) {
         this.wattFeedId = wattFeedId;
         this.kWhFeedId = kWhFeedId;
         this.context = context;
         this.myElectricDataManager = myElectricDataManager;
+        this.powerScale = powerScale;
     }
 
     @Override
@@ -56,7 +59,7 @@ public class PowerNowDataLoader implements Runnable {
                                 }
 
                                 if (Utils.isNumeric(kwh_value)) {
-                                    totalPowerUsage = Float.parseFloat(kwh_value);
+                                    totalPowerUsage = Float.parseFloat(kwh_value) * powerScale;
                                 }
 
                                 myElectricDataManager.setCurrentValues(powerNow, totalPowerUsage);

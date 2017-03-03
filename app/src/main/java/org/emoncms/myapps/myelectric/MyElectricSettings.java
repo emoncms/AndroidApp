@@ -15,8 +15,11 @@ public class MyElectricSettings implements Parcelable {
     private String name;
     private int powerFeedId;
     private int useFeedId;
-    private double unitCost;
+    private String unitCost;
     private String costSymbol;
+    private String powerScale;
+    private float powerScaleFloat;
+    private float unitCostFloat;
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public MyElectricSettings createFromParcel(Parcel in) {
@@ -31,17 +34,21 @@ public class MyElectricSettings implements Parcelable {
         return new MyElectricSettings(id, jsonObject.getString("name"),
                 jsonObject.getInt("powerFeedId"),
                 jsonObject.getInt("useFeedId"),
-                jsonObject.getDouble("unitCost"),
+                jsonObject.getString("powerScale"),
+                jsonObject.getString("unitCost"),
                 jsonObject.getString("costSymbol"));
     }
 
-    public MyElectricSettings(int id, String name, int powerFeedId, int useFeedId, double unitCost, String costSymbol) {
+    public MyElectricSettings(int id, String name, int powerFeedId, int useFeedId, String powerScale, String unitCost, String costSymbol) {
         this.id = id;
         this.name = name;
         this.powerFeedId = powerFeedId;
         this.useFeedId = useFeedId;
         this.unitCost = unitCost;
         this.costSymbol = costSymbol;
+        this.powerScale = powerScale;
+        this.powerScaleFloat = Float.parseFloat(powerScale);
+        this.unitCostFloat = Float.parseFloat(unitCost);
     }
 
     public MyElectricSettings(Parcel in) {
@@ -49,8 +56,11 @@ public class MyElectricSettings implements Parcelable {
         this.name = in.readString();
         this.powerFeedId = in.readInt();
         this.useFeedId = in.readInt();
-        this.unitCost = in.readDouble();
+        this.powerScale = in.readString();
+        this.unitCost = in.readString();
         this.costSymbol = in.readString();
+        this.powerScaleFloat = Float.parseFloat(powerScale);
+        this.unitCostFloat = Float.parseFloat(unitCost);
     }
 
     public int getId() {
@@ -73,7 +83,20 @@ public class MyElectricSettings implements Parcelable {
         return useFeedId;
     }
 
-    public double getUnitCost() {
+    public String getPowerScale() {
+        return powerScale;
+    }
+
+    public float getPowerScaleAsFloat() {
+        return powerScaleFloat;
+    }
+
+    public void setPowerScale(String powerScale) {
+        this.powerScale = powerScale;
+        this.powerScaleFloat = Float.parseFloat(powerScale);
+    }
+
+    public String getUnitCost() {
         return unitCost;
     }
 
@@ -97,8 +120,13 @@ public class MyElectricSettings implements Parcelable {
         this.costSymbol = costSymbol;
     }
 
-    public void setUnitCost(double unitCost) {
+    public void setUnitCost(String unitCost) {
         this.unitCost = unitCost;
+        this.unitCostFloat = Float.parseFloat(unitCost);
+    }
+
+    public float getUnitCostFloat() {
+        return unitCostFloat;
     }
 
     @Override
@@ -112,7 +140,8 @@ public class MyElectricSettings implements Parcelable {
         parcel.writeString(name);
         parcel.writeInt(powerFeedId);
         parcel.writeInt(useFeedId);
-        parcel.writeDouble(unitCost);
+        parcel.writeString(powerScale);
+        parcel.writeString(unitCost);
         parcel.writeString(costSymbol);
     }
 
@@ -121,6 +150,7 @@ public class MyElectricSettings implements Parcelable {
         jsonObject.put("name",name);
         jsonObject.put("powerFeedId",powerFeedId);
         jsonObject.put("useFeedId",useFeedId);
+        jsonObject.put("powerScale",powerScale);
         jsonObject.put("unitCost",unitCost);
         jsonObject.put("costSymbol",costSymbol);
         return jsonObject.toString();

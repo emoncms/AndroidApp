@@ -119,7 +119,7 @@ public class EmonApplication extends Application {
     }
 
     public void addFirstPage() {
-        MyElectricSettings defaultPage = new MyElectricSettings(0,"My Electric",0,0,0,"£");
+        MyElectricSettings defaultPage = new MyElectricSettings(0,"My Electric",0,0,"1","0","£");
         int id = EmonDatabaseHelper.getInstance(this).addPage(currentAccount,defaultPage);
         defaultPage.setId(id);
         if (currentAccount.equals(currentAccount)) {
