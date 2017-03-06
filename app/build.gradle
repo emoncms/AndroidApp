@@ -5,11 +5,11 @@ android {
     buildToolsVersion "25.0.2"
 
     defaultConfig {
-        applicationId "org.emoncms.myapps.beta"
+        applicationId "org.emoncms.myapps"
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 129
-        versionName "2.0.0 beta"
+        versionName "2.0.0 alpha"
     }
     buildTypes {
         release {
