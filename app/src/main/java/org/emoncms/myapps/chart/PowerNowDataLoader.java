@@ -10,6 +10,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import org.emoncms.myapps.HTTPClient;
 import org.emoncms.myapps.R;
 import org.emoncms.myapps.Utils;
+import org.emoncms.myapps.myelectric.MyElectricSettings;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -20,20 +21,21 @@ public class PowerNowDataLoader implements Runnable {
 
     private static final String FEED_URL = "%s/feed/fetch.json?apikey=%s&ids=%d,%d";
 
-    private int wattFeedId;
-    private int kWhFeedId;
     private Context context;
     private MyElectricDataManager myElectricDataManager;
 
-    public PowerNowDataLoader(Context context, MyElectricDataManager myElectricDataManager, int wattFeedId, int kWhFeedId) {
-        this.wattFeedId = wattFeedId;
-        this.kWhFeedId = kWhFeedId;
+
+    public PowerNowDataLoader(Context context, MyElectricDataManager myElectricDataManager) {
         this.context = context;
         this.myElectricDataManager = myElectricDataManager;
     }
 
+
     @Override
     public void run() {
+
+        int wattFeedId = myElectricDataManager.getSettings().getPowerFeedId();
+        int kWhFeedId = myElectricDataManager.getSettings().getUseFeedId();
         String url = String.format(context.getResources().getConfiguration().locale, FEED_URL, myElectricDataManager.getEmonCmsUrl() , myElectricDataManager.getEmoncmsApikey(), wattFeedId, kWhFeedId);
         Log.i("EMONCMS:URL", "mGetPowerRunner:" + url);
         JsonArrayRequest jsArrayRequest = new JsonArrayRequest
@@ -56,7 +58,7 @@ public class PowerNowDataLoader implements Runnable {
                                 }
 
                                 if (Utils.isNumeric(kwh_value)) {
-                                    totalPowerUsage = Float.parseFloat(kwh_value);
+                                    totalPowerUsage = Float.parseFloat(kwh_value) * myElectricDataManager.getSettings().getPowerScaleAsFloat();
                                 }
 
                                 myElectricDataManager.setCurrentValues(powerNow, totalPowerUsage);

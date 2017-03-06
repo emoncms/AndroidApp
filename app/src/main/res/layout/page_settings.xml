@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Power feed (W)" />
+        android:text="@string/settings_title_myelectric_power_feed" />
 
     <Spinner
         android:layout_width="match_parent"
@@ -29,12 +29,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Bar graph feed (kwh)" />
+        android:text="@string/settings_title_myelectric_kwh_feed" />
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/useFeedSpinner" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/settings_title_myelectric_escale" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/escaleSpinner" />
 
     <TextView
         android:layout_width="wrap_content"

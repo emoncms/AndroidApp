@@ -1,5 +1,7 @@
 package org.emoncms.myapps.chart;
 
+import org.emoncms.myapps.myelectric.MyElectricSettings;
+
 /**
  * Created by tamsin on 10/10/16.
  */
@@ -7,11 +9,11 @@ public interface MyElectricDataManager {
 
     void setFeedIds(int flowId, int useId);
 
-    void setCurrentValues(float powerNow, float totalUsage);
+    void setCurrentValues(float powerNowW, float totalUsagekWh);
 
-    float getTotalUsage();
+    float getTotalUsagekWh();
 
-    void setUseToYesterday(float useToYesterday);
+    void setUseToYesterday(float useToYesterdaykWh);
 
     void loadFeeds(int delay);
 
@@ -40,6 +42,8 @@ public interface MyElectricDataManager {
      * @return
      */
     String getPageTag();
+
+    MyElectricSettings getSettings();
 
 
 

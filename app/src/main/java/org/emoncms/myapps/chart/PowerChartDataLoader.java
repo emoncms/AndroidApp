@@ -25,17 +25,20 @@ public class PowerChartDataLoader implements Runnable {
     private Context context;
     private PowerChart powerChart;
     private MyElectricDataManager myElectricDataManager;
-    private int wattFeedId;
 
-    public PowerChartDataLoader(PowerChart powerChart, Context context, MyElectricDataManager myElectricDataManager, int wattFeedId) {
+
+    public PowerChartDataLoader(PowerChart powerChart, Context context, MyElectricDataManager myElectricDataManager) {
         this.powerChart = powerChart;
         this.context = context;
         this.myElectricDataManager = myElectricDataManager;
-        this.wattFeedId = wattFeedId;
+
     }
 
     @Override
     public void run() {
+
+        int wattFeedId = myElectricDataManager.getSettings().getPowerFeedId();
+
         final long lastEntry;
 
         if (powerChart.requiresReset()) {

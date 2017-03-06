@@ -46,7 +46,7 @@ public class MySolarMainFragement extends Fragment
 //    BarChart chart2;
     boolean blnDebugOnShow = false;
     Handler mHandler = new Handler();
-//    Float yesterdaysPowerUsage = 0F;
+//    Float toYesterdayPowerUsagekWh = 0F;
     Float totalPowerUsage = 0F;
 //    int powerGraphLength = -6;
 //    boolean resetPowerGraph = false;
@@ -65,7 +65,7 @@ public class MySolarMainFragement extends Fragment
 //    long nextDailyChartUpdate = 0;
 
     float powerNow = 0;
-    //float powerToday = 0;
+    //float powerTodaykWh = 0;
 
     boolean blnShowCost = false;
 
@@ -148,12 +148,12 @@ public class MySolarMainFragement extends Fragment
         if (blnShowCost)
         {
             txtPower.setText(String.format("%s%.2f/h", powerCostSymbol, (powerNow*0.001)*powerCost));
-            //txtUseToday.setText(String.format("%s%.2f", powerCostSymbol, powerToday*powerCost));
+            //txtUseToday.setText(String.format("%s%.2f", powerCostSymbol, powerTodaykWh*powerCost));
         }
         else
         {
             txtPower.setText(String.format("%.0fW", powerNow));
-            //txtUseToday.setText(String.format("%.1fkWh", powerToday));
+            //txtUseToday.setText(String.format("%.1fkWh", powerTodaykWh));
         }
     }
 

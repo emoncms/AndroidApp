@@ -43,10 +43,12 @@ public class MyElectricSettingsFragment extends Fragment {
     Spinner kWhFeedPreference;
     EditText namePreference;
     Spinner currencyPreference;
+    Spinner scalePreference;
     EditText unitCostPreference;
     Handler mHandler = new Handler();
     SharedPreferences sp;
 
+    private String[] powerValueArray;
     private String[] costSymbolArray;
 
     private MyElectricSettings settings;
@@ -68,23 +70,41 @@ public class MyElectricSettingsFragment extends Fragment {
         View result=inflater.inflate(R.layout.page_settings, container, false);
         powerFeedPreference = (Spinner) result.findViewById(R.id.powerFeedSpinner);
         kWhFeedPreference = (Spinner) result.findViewById(R.id.useFeedSpinner);
+        scalePreference = (Spinner) result.findViewById(R.id.escaleSpinner);
+
+        ArrayAdapter<CharSequence> scaleArray = ArrayAdapter.createFromResource(result.getContext(),R.array.escale_text, R.layout.support_simple_spinner_dropdown_item);
+        scalePreference.setAdapter(scaleArray);
+        scalePreference.setSelection(scaleValueToIndex(settings.getPowerScale()));
+
+
         namePreference = (EditText) result.findViewById(R.id.page_name);
         currencyPreference = (Spinner) result.findViewById(R.id.currency);
         unitCostPreference = (EditText) result.findViewById(R.id.costUnit);
 
         ArrayAdapter<CharSequence> costUnitArray = ArrayAdapter.createFromResource(result.getContext(),R.array.me_cost_text, R.layout.support_simple_spinner_dropdown_item);
-
-
-
         currencyPreference.setAdapter(costUnitArray);
+        currencyPreference.setSelection(costSymbolToIndex(settings.getCostSymbol()));
 
         unitCostPreference.setText(""+settings.getUnitCost());
 
-        currencyPreference.setSelection(costSymbolToIndex(settings.getCostSymbol()));
+
 
 
         namePreference.setText(settings.getName());
         return(result);
+    }
+
+    private int scaleValueToIndex(String symbol) {
+        if (powerValueArray == null) {
+            powerValueArray = getActivity().getResources().getStringArray(R.array.escale_values);
+        }
+
+        for (int i = 0; i < powerValueArray.length; i++) {
+            if (powerValueArray[i].equals(symbol)) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     private int costSymbolToIndex(String symbol) {
@@ -119,33 +139,39 @@ public class MyElectricSettingsFragment extends Fragment {
 
     private void savePage() {
 
-        Log.d("emon-settings","Saving Page");
+        if (!settings.isDeleted()) {
 
-        settings.setPowerFeedId((int)powerFeedPreference.getSelectedItemId());
-        settings.setUseFeedId((int)kWhFeedPreference.getSelectedItemId());
-        settings.setName(namePreference.getText().toString());
+            Log.d("emon-settings", "Saving Page");
 
-        settings.setUnitCost(Double.valueOf(unitCostPreference.getText().toString()));
+            settings.setPowerFeedId((int) powerFeedPreference.getSelectedItemId());
+            settings.setUseFeedId((int) kWhFeedPreference.getSelectedItemId());
+            settings.setName(namePreference.getText().toString());
+            settings.setUnitCost(unitCostPreference.getText().toString());
 
-        String[] symbolArray = getActivity().getResources().getStringArray(R.array.me_cost_values);
+            String[] scaleArray = getActivity().getResources().getStringArray(R.array.escale_values);
+            String scaleValue = scaleArray[scalePreference.getSelectedItemPosition()];
+            settings.setPowerScale(scaleValue);
 
-        String currencySymbol = symbolArray[currencyPreference.getSelectedItemPosition()];
-        settings.setCostSymbol(currencySymbol);
+            String[] symbolArray = getActivity().getResources().getStringArray(R.array.me_cost_values);
+
+            String currencySymbol = symbolArray[currencyPreference.getSelectedItemPosition()];
+            settings.setCostSymbol(currencySymbol);
 
 
-        Log.w("settings","Setting Cost Symbol to " + currencySymbol);
+            Log.w("settings", "Setting Cost Symbol to " + currencySymbol);
 
 
-        if (settings.getId() == 0) {
-            //FIXME probably move database access into EmonApplication
-            Log.d("settings","Inserting");
-            int id = EmonDatabaseHelper.getInstance(getActivity()).addPage(EmonApplication.get().getCurrentAccount(), settings);
-            settings.setId(id);
-            EmonApplication.get().addPage(settings);
-        } else {
-            Log.d("settings","Updating");
-            EmonDatabaseHelper.getInstance(getActivity()).updatePage(settings.getId(), settings);
-            EmonApplication.get().updatePage(settings);
+            if (settings.getId() == 0) {
+                //FIXME probably move database access into EmonApplication
+                Log.d("settings", "Inserting");
+                int id = EmonDatabaseHelper.getInstance(getActivity()).addPage(EmonApplication.get().getCurrentAccount(), settings);
+                settings.setId(id);
+                EmonApplication.get().addPage(settings);
+            } else {
+                Log.d("settings", "Updating");
+                EmonDatabaseHelper.getInstance(getActivity()).updatePage(settings.getId(), settings);
+                EmonApplication.get().updatePage(settings);
+            }
         }
     }
 

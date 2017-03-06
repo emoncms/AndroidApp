@@ -73,6 +73,8 @@ public class UpgradeManager
         String useFeed = sp.getString("myelectric_kwh_feed","-1");
 
 
+        String scaleValue = scale.equals("1") ? "0.001" : "1";
+
         sp.edit().remove("emoncms_url")
                 .remove("emoncms_apikey")
                 .remove("emoncms_usessl")
@@ -90,7 +92,7 @@ public class UpgradeManager
 
         accountPrefs.commit();
 
-        MyElectricSettings settings = new MyElectricSettings(0, "My Electric", Integer.parseInt(powerFeed), Integer.parseInt(useFeed), Double.parseDouble(unitCost), costSymbol);
+        MyElectricSettings settings = new MyElectricSettings(0, "My Electric", Integer.parseInt(powerFeed), Integer.parseInt(useFeed), scaleValue, unitCost, costSymbol);
         EmonApplication.get().addPage(settings);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);

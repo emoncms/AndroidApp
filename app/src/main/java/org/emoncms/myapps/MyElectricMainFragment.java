@@ -11,8 +11,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -27,7 +25,6 @@ import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -45,6 +42,8 @@ import org.emoncms.myapps.myelectric.MyElectricSettings;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Currency;
+import java.util.Locale;
 
 /**
  * Handles UI components for MyElectric
@@ -73,12 +72,15 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
 
     long timezone = 0;
 
-    double yesterdaysPowerUsage;
-    float totalPowerUsage;
+
     long nextDailyChartUpdate = 0;
 
-    double powerNow = 0;
-    double powerToday = 0;
+
+    double toYesterdayPowerUsagekWh;
+    float totalPowerUsagekWh;
+
+    double powerNowWatts = 0;
+    double powerTodaykWh = 0;
 
     private boolean blnShowCost = false;
 
@@ -107,17 +109,25 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
     private void updateTextFields() {
         if (getActivity() != null) {
             if (blnShowCost) {
-                txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.2f/h", (powerNow * 0.001) * myElectricSettings.getUnitCost()));
-                txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.2f", powerToday * myElectricSettings.getUnitCost()));
+                txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.2f/h", (powerNowWatts * 0.001) * myElectricSettings.getUnitCostFloat()));
+                txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.2f", powerTodaykWh * myElectricSettings.getUnitCostFloat()));
 
-                txtPowerUnits.setText(myElectricSettings.getCostSymbol());
-                txtUseTodayUnits.setText(myElectricSettings.getCostSymbol());
+                String powerCostSymbol = myElectricSettings.getCostSymbol();
+                try {
+                    if (powerCostSymbol.equals("0"))
+                        powerCostSymbol = Currency.getInstance(Locale.getDefault()).getSymbol();
+                } catch (IllegalArgumentException e) {
+                    powerCostSymbol = "£";
+                }
 
+                txtPowerUnits.setText(powerCostSymbol);
+                txtUseTodayUnits.setText(powerCostSymbol);
 
 
             } else {
-                txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.0f", powerNow));
-                txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.1f", powerToday));
+                txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.0f", powerNowWatts));
+                txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.1f", powerTodaykWh));
+
 
                 txtPowerUnits.setText("W");
                 txtUseTodayUnits.setText("kWh");
@@ -135,16 +145,14 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         if (sp.contains("show_cost")) {
-            blnShowCost = sp.getBoolean("show_cost",false);
+            blnShowCost = sp.getBoolean("show_cost", false);
         }
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView =  inflater.inflate(R.layout.me_fragment, container, false);
+        rootView = inflater.inflate(R.layout.me_fragment, container, false);
 
         return rootView;
     }
@@ -196,7 +204,7 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         powerChart = new PowerChart((LineChart) view.findViewById(R.id.chart1), getActivity());
         dailyUsageBarChart = new DailyBarChart((BarChart) view.findViewById(R.id.chart2), getActivity());
         dailyUsageBarChart.setShowCost(blnShowCost);
-        dailyUsageBarChart.setPowerCost(myElectricSettings.getUnitCost());
+        dailyUsageBarChart.setPowerCost(myElectricSettings.getUnitCostFloat());
 
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         setDaysToDisplay(displayMetrics.widthPixels, displayMetrics.density);
@@ -240,8 +248,8 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
 
 
             powerChart.setChartLength(savedInstanceState.getInt("power_graph_length", -6));
-            powerNow = savedInstanceState.getDouble("power_now", 0);
-            powerToday = savedInstanceState.getDouble("power_today", 0);
+            powerNowWatts = savedInstanceState.getDouble("power_now", 0);
+            powerTodaykWh = savedInstanceState.getDouble("power_today", 0);
 
             int[] chart2_colors = savedInstanceState.getIntArray("chart2_colors");
 
@@ -271,8 +279,8 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
     public void onSaveInstanceState(Bundle outState) {
 
         outState.putInt("power_graph_length", powerChart.getChartLength());
-        outState.putDouble("power_now", powerNow);
-        outState.putDouble("power_today", powerToday);
+        outState.putDouble("power_now", powerNowWatts);
+        outState.putDouble("power_today", powerTodaykWh);
 
         outState.putInt("power_feed_id", myElectricSettings.getPowerFeedId());
         outState.putInt("use_feed_id", myElectricSettings.getUseFeedId());
@@ -333,12 +341,12 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         clearMessage();
         loadConfig();
 
-        mGetPowerHistoryRunner = new PowerChartDataLoader(powerChart, this.getActivity(), this, myElectricSettings.getPowerFeedId());
+        mGetPowerHistoryRunner = new PowerChartDataLoader(powerChart, this.getActivity(), this);
         mGetFeedsRunner = new FeedDataLoader(getActivity(), this);
-        mGetPowerRunner = new PowerNowDataLoader(getActivity(), this, myElectricSettings.getPowerFeedId(), myElectricSettings.getUseFeedId());
-        mGetUsageByDayRunner = new UseByDayDataLoader(getActivity(), this, dailyUsageBarChart, myElectricSettings.getUseFeedId());
+        mGetPowerRunner = new PowerNowDataLoader(getActivity(), this);
+        mGetUsageByDayRunner = new UseByDayDataLoader(getActivity(), this, dailyUsageBarChart);
 
-        dailyUsageBarChart.setPowerCost(myElectricSettings.getUnitCost());
+        dailyUsageBarChart.setPowerCost(myElectricSettings.getUnitCostFloat());
 
         if (emonCmsApiKey == null || emonCmsApiKey.equals("") || emonCmsUrl == null || emonCmsUrl.equals("")) {
             showMessage(R.string.server_not_configured);
@@ -372,7 +380,7 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             blnShowCost = isChecked;
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-            sp.edit().putBoolean("show_cost",blnShowCost).commit();
+            sp.edit().putBoolean("show_cost", blnShowCost).commit();
             dailyUsageBarChart.setShowCost(blnShowCost);
             dailyUsageBarChart.refreshChart();
             updateTextFields();
@@ -433,7 +441,7 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
 
     private Snackbar getSnackbar() {
         if (snackbar == null && !this.isDetached() && findSuitableParent(rootView.findViewById(R.id.mefrag)) != null) {
-            snackbar = Snackbar.make(rootView.findViewById(R.id.mefrag),  R.string.connection_error, Snackbar.LENGTH_INDEFINITE);
+            snackbar = Snackbar.make(rootView.findViewById(R.id.mefrag), R.string.connection_error, Snackbar.LENGTH_INDEFINITE);
             View snackbar_view = snackbar.getView();
             snackbar_view.setBackgroundColor(Color.GRAY);
             TextView tv = (TextView) snackbar_view.findViewById(android.support.design.R.id.snackbar_text);
@@ -527,24 +535,26 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
     }
 
     @Override
-    public void setCurrentValues(float powerNow, float totalPowerUsage) {
-        this.powerNow = powerNow;
-        this.totalPowerUsage = totalPowerUsage;
-        if (yesterdaysPowerUsage > 0) {
-            this.powerToday = totalPowerUsage - yesterdaysPowerUsage;
+    public void setCurrentValues(float powerNowWatts, float totalPowerUsagekWh) {
+        this.powerNowWatts = powerNowWatts;
+
+        this.totalPowerUsagekWh = totalPowerUsagekWh;
+
+        if (toYesterdayPowerUsagekWh > 0) {
+            this.powerTodaykWh = totalPowerUsagekWh - toYesterdayPowerUsagekWh;
         }
         updateTextFields();
     }
 
     @Override
-    public float getTotalUsage() {
-        return totalPowerUsage;
+    public float getTotalUsagekWh() {
+        return totalPowerUsagekWh;
     }
 
     @Override
-    public void setUseToYesterday(float useToYesterday) {
-        this.yesterdaysPowerUsage = useToYesterday;
-        this.powerToday = totalPowerUsage - yesterdaysPowerUsage;
+    public void setUseToYesterday(float useToYesterdaykWh) {
+        this.toYesterdayPowerUsagekWh = useToYesterdaykWh;
+        this.powerTodaykWh = totalPowerUsagekWh - toYesterdayPowerUsagekWh;
         updateTextFields();
 
     }
@@ -552,6 +562,11 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
     @Override
     public String getPageTag() {
         return EmonApplication.get().getCurrentAccount() + myElectricSettings.getName();
+    }
+
+    @Override
+    public MyElectricSettings getSettings() {
+        return myElectricSettings;
     }
 
 
