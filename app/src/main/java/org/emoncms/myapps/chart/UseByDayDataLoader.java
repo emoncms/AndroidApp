@@ -37,7 +37,7 @@ public class UseByDayDataLoader implements Runnable {
         this.context = context;
         this.dailyUsageBarChart = dailyUsageBarChart;
         timeZoneOffset = (long) Math.floor((Calendar.getInstance().get(Calendar.ZONE_OFFSET) + Calendar.getInstance().get(Calendar.DST_OFFSET)) * 0.001);
-        
+
     }
 
     public void setDaysToDisplay(int days) {

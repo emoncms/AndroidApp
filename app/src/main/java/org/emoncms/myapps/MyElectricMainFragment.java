@@ -42,6 +42,8 @@ import org.emoncms.myapps.myelectric.MyElectricSettings;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Currency;
+import java.util.Locale;
 
 /**
  * Handles UI components for MyElectric
@@ -69,7 +71,6 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
     private Handler mHandler = new Handler();
 
     long timezone = 0;
-
 
 
     long nextDailyChartUpdate = 0;
@@ -111,15 +112,21 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
                 txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.2f/h", (powerNowWatts * 0.001) * myElectricSettings.getUnitCostFloat()));
                 txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.2f", powerTodaykWh * myElectricSettings.getUnitCostFloat()));
 
-                txtPowerUnits.setText(myElectricSettings.getCostSymbol());
-                txtUseTodayUnits.setText(myElectricSettings.getCostSymbol());
+                String powerCostSymbol = myElectricSettings.getCostSymbol();
+                try {
+                    if (powerCostSymbol.equals("0"))
+                        powerCostSymbol = Currency.getInstance(Locale.getDefault()).getSymbol();
+                } catch (IllegalArgumentException e) {
+                    powerCostSymbol = "£";
+                }
 
+                txtPowerUnits.setText(powerCostSymbol);
+                txtUseTodayUnits.setText(powerCostSymbol);
 
 
             } else {
                 txtPower.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.0f", powerNowWatts));
-                txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.1f",  powerTodaykWh));
-
+                txtUseToday.setText(String.format(getActivity().getResources().getConfiguration().locale, "%.1f", powerTodaykWh));
 
 
                 txtPowerUnits.setText("W");
@@ -138,14 +145,14 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         if (sp.contains("show_cost")) {
-            blnShowCost = sp.getBoolean("show_cost",false);
+            blnShowCost = sp.getBoolean("show_cost", false);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView =  inflater.inflate(R.layout.me_fragment, container, false);
+        rootView = inflater.inflate(R.layout.me_fragment, container, false);
 
         return rootView;
     }
@@ -373,7 +380,7 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             blnShowCost = isChecked;
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-            sp.edit().putBoolean("show_cost",blnShowCost).commit();
+            sp.edit().putBoolean("show_cost", blnShowCost).commit();
             dailyUsageBarChart.setShowCost(blnShowCost);
             dailyUsageBarChart.refreshChart();
             updateTextFields();
@@ -434,7 +441,7 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
 
     private Snackbar getSnackbar() {
         if (snackbar == null && !this.isDetached() && findSuitableParent(rootView.findViewById(R.id.mefrag)) != null) {
-            snackbar = Snackbar.make(rootView.findViewById(R.id.mefrag),  R.string.connection_error, Snackbar.LENGTH_INDEFINITE);
+            snackbar = Snackbar.make(rootView.findViewById(R.id.mefrag), R.string.connection_error, Snackbar.LENGTH_INDEFINITE);
             View snackbar_view = snackbar.getView();
             snackbar_view.setBackgroundColor(Color.GRAY);
             TextView tv = (TextView) snackbar_view.findViewById(android.support.design.R.id.snackbar_text);
