@@ -48,8 +48,8 @@ public class MyElectricSettings implements Parcelable {
         this.unitCost = unitCost;
         this.costSymbol = costSymbol;
         this.powerScale = powerScale;
-        this.powerScaleFloat = Float.parseFloat(powerScale);
-        this.unitCostFloat = Float.parseFloat(unitCost);
+        this.powerScaleFloat = stringToFloat(powerScale);
+        this.unitCostFloat = stringToFloat(unitCost);
     }
 
     public MyElectricSettings(Parcel in) {
@@ -60,8 +60,8 @@ public class MyElectricSettings implements Parcelable {
         this.powerScale = in.readString();
         this.unitCost = in.readString();
         this.costSymbol = in.readString();
-        this.powerScaleFloat = Float.parseFloat(powerScale);
-        this.unitCostFloat = Float.parseFloat(unitCost);
+        this.powerScaleFloat = stringToFloat(powerScale);
+        this.unitCostFloat = stringToFloat(unitCost);
     }
 
     public void setDeleted() {
@@ -102,7 +102,7 @@ public class MyElectricSettings implements Parcelable {
 
     public void setPowerScale(String powerScale) {
         this.powerScale = powerScale;
-        this.powerScaleFloat = Float.parseFloat(powerScale);
+        this.powerScaleFloat = stringToFloat(powerScale);
     }
 
     public String getUnitCost() {
@@ -130,8 +130,10 @@ public class MyElectricSettings implements Parcelable {
     }
 
     public void setUnitCost(String unitCost) {
+
         this.unitCost = unitCost;
-        this.unitCostFloat = Float.parseFloat(unitCost);
+        this.unitCostFloat = stringToFloat(unitCost);
+
     }
 
     public float getUnitCostFloat() {
@@ -167,5 +169,13 @@ public class MyElectricSettings implements Parcelable {
 
     public String toString() {
         return name + ", power: " + powerFeedId + ", use: " + useFeedId;
+    }
+
+    private float stringToFloat(String val) {
+        try {
+            return Float.parseFloat(val);
+        } catch (NumberFormatException ex) {
+            return 0;
+        }
     }
 }
