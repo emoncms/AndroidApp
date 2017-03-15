@@ -58,6 +58,7 @@ public class PowerChart {
     }
 
     public void setChartLength(int length) {
+        powerData = createDataSet();
         powerChartLength = length;
         requiresReset = true;
     }
