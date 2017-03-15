@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity implements AccountListChangeListe
     private ViewPager vpPager;
 
     private boolean fullScreenRequested;
-    private boolean isFirstRun;
+
     private boolean accountListVisible = false;
 
     private Handler mFullscreenHandler = new Handler();
@@ -138,10 +138,6 @@ public class MainActivity extends BaseActivity implements AccountListChangeListe
 
 
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(mOnSystemUiVisibilityChangeListener);
-
-        if (isFirstRun) {
-            mDrawer.openDrawer(GravityCompat.START);
-        }
 
         EmonApplication.get().addAccountChangeListener(this);
 

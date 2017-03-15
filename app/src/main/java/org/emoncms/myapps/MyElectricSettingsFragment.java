@@ -59,8 +59,7 @@ public class MyElectricSettingsFragment extends Fragment {
 
         settings = getArguments().getParcelable("settings");
         sp = EmonApplication.get().getSharedPreferences(EmonApplication.get().getCurrentAccount());
-        loadValues();
-        updateFeedList();
+
     }
 
     @Override
@@ -93,6 +92,15 @@ public class MyElectricSettingsFragment extends Fragment {
         namePreference.setText(settings.getName());
         return(result);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadValues();
+        updateFeedList();
+    }
+
+
 
     private int scaleValueToIndex(String symbol) {
         if (powerValueArray == null) {
@@ -131,10 +139,14 @@ public class MyElectricSettingsFragment extends Fragment {
     }
 
 
+
     @Override
     public void onPause() {
         savePage();
+
         super.onPause();
+        HTTPClient.getInstance(getActivity()).cancellAll(TAG);
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     private void savePage() {
