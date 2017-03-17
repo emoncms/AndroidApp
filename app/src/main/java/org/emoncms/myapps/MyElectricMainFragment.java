@@ -297,9 +297,9 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         outState.putStringArrayList("chart1_labels", powerChart.getLabels());
         outState.putDoubleArray("chart1_values", values);
 
-        values = new double[dailyUsageBarChart.getLabels().size()];
+        values = new double[dailyUsageBarChart.getValues().size()];
 
-        for (int i = 0; i < dailyUsageBarChart.getLabels().size(); i++)
+        for (int i = 0; i < dailyUsageBarChart.getValues().size(); i++)
             values[i] = dailyUsageBarChart.getValues().get(i);
 
         outState.putStringArrayList("chart2_labels", dailyUsageBarChart.getLabels());

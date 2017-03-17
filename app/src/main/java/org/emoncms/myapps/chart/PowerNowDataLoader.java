@@ -64,7 +64,7 @@ public class PowerNowDataLoader implements Runnable {
                                 myElectricDataManager.setCurrentValues(powerNow, totalPowerUsage);
                                 myElectricDataManager.clearMessage();
                             } catch (JSONException e) {
-                                myElectricDataManager.showMessage(e.getMessage());
+                                e.printStackTrace();
                             }
                         } else {
                             myElectricDataManager.showMessage(R.string.invalid_number_of_responses);
@@ -84,7 +84,7 @@ public class PowerNowDataLoader implements Runnable {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        myElectricDataManager.showMessage(R.string.connection_error + error.getMessage());
+                        myElectricDataManager.showMessage(R.string.connection_error);
                         myElectricDataManager.loadPowerNow(5000);
                     }
                 });

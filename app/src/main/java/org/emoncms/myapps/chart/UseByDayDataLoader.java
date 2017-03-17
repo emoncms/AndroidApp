@@ -129,7 +129,7 @@ public class UseByDayDataLoader implements Runnable {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        myElectricDataManager.showMessage(R.string.connection_error + error.getMessage());
+                        myElectricDataManager.showMessage(R.string.connection_error);
                         myElectricDataManager.loadUseHistory(5000);
 
                     }
