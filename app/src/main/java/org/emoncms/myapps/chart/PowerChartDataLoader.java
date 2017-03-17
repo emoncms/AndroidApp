@@ -93,7 +93,7 @@ public class PowerChartDataLoader implements Runnable {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                myElectricDataManager.showMessage(R.string.connection_error + error.getMessage());
+                myElectricDataManager.showMessage(R.string.connection_error);
                 myElectricDataManager.loadPowerHistory(5000);
             }
         });
