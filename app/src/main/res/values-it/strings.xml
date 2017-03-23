@@ -22,9 +22,9 @@
     <string name="account_settings">Impostazioni Account</string>
 
     <string name="server_not_configured">Si prega di configurare il server di emoncms e la chiave API dal menu impostazioni.</string>
-    <string name="me_not_configured_text">Si prega di selezionare i feed da visualizzare utilizzando l'icona dell'ingranaggio sulla barra degli strumenti.</string>
-    <string name="feed_download_error_message">Impossibile scaricare l'elenco dei feed. Si prega di controllare le impostazioni dell'URL e della chiave API, nonchÈ la connettivit‡ a emoncms.</string>
-    <string name="invalid_number_of_responses">Numero di risposte dall'API non valido</string>
+    <string name="me_not_configured_text">Si prega di selezionare i feed da visualizzare utilizzando l\'icona dell\'ingranaggio sulla barra degli strumenti.</string>
+    <string name="feed_download_error_message">Impossibile scaricare l\'elenco dei feed. Si prega di controllare le impostazioni dell\'URL e della chiave API, nonch√© la connettivit√† a emoncms.</string>
+    <string name="invalid_number_of_responses">Numero di risposte dall\'API non valido</string>
     <string name="invalid_kwh_feedid">Feed ID Use_kwh non valido, si prega di selezionare un feed kwh dal menu di configurazione</string>
     <string name="invalid_watt_feedid">Feed ID Use non valido, si prega di selezionare un feed watt dal menu di configurazione</string>
 
@@ -40,9 +40,9 @@
     <string name="connection_error">ERRORE DI CONNESSIONE</string>
 
     <string name="ok">OK</string>
-    <string name="permission_camera_rationale">L'accesso alla telecamera Ë necessario per il rilevamento</string>
-    <string name="no_camera_permission">Lo scanner di codici a barre utilizza la fotocamera e non puÚ essere eseguito perchÈ non ha i permessi.</string>
-    <string name="low_storage_error">Le dipendenze per il riconoscimento Facciale possono essere scaricate c'Ë poco spazio di archiviazione  sul dispositivo</string>
+    <string name="permission_camera_rationale">L\'accesso alla telecamera √® necessario per il rilevamento</string>
+    <string name="no_camera_permission">Lo scanner di codici a barre utilizza la fotocamera e non pu√≤ essere eseguito perch√® non ha i permessi.</string>
+    <string name="low_storage_error">Le dipendenze per il riconoscimento Facciale possono essere scaricate c\'√® poco spazio di archiviazione  sul dispositivo</string>
     <string name="title_activity_main">Esempio di lettura di codice a barre</string>
     <string name="barcode_header">Fare clic su &quot;Lettura codice a barre&quot; per leggere un codice a barre</string>
     <string name="read_barcode">Lettura codice a barre</string>
@@ -51,7 +51,7 @@
     <string name="barcode_error">"Errore di lettura del codice a barre:  %1$s"</string>
     <string name="qr_code_success">Impostazioni salvate con successo da QR code</string>
     <string name="qr_code_fail">QR code non valido</string>
-    <string name="barcode_scan_instructions">"Eseguire la scansione del codice a barre nella pagina dell'account di emoncms."</string>
+    <string name="barcode_scan_instructions">Eseguire la scansione del codice a barre nella pagina dell\'account di emoncms.</string>
 
     <string name="monday_initial">L</string>
     <string name="tuesday_initial">M</string>
@@ -72,12 +72,12 @@
 
     <string name="chart_no_data_available">Nessun dato disponibile</string>
 
-    <string name="settings_title_emoncms_connectivity">CONNETTIVIT¿ EMONCMS</string>
+    <string name="settings_title_emoncms_connectivity">CONNETTIVIT√Ä EMONCMS</string>
     <string name="settings_title_app_settings">IMPOSTAZIONI GENERALI</string>
     <string name="settings_title_scanqrcode">Scansiona il QR Code</string>
-    <string name="settings_summary_scanqrcode">Permette la compilazione dei campi di connettivit‡ automaticamente utilizzando il QR code nella pagina account emoncms</string>
+    <string name="settings_summary_scanqrcode">Permette la compilazione dei campi di connettivit√† automaticamente utilizzando il QR code nella pagina account emoncms</string>
     <string name="settings_title_emoncms_name">Nome Account</string>
-    <string name="settings_summary_emoncms_name">Nome breve dell'account per una facile identificazione</string>
+    <string name="settings_summary_emoncms_name">Nome breve dell\'account per una facile identificazione</string>
     <string name="settings_title_delete_account">Elimina Account</string>
 
     <string name="settings_title_emoncms_url">URL emoncms</string>
