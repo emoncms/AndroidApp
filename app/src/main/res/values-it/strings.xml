@@ -1,6 +1,6 @@
 <resources>
     <string name="me_title">My Electric</string>
-    <string name="me_settings_title">Pagina Impostazioni</string>
+    <string name="me_settings_title">Impostazioni Pagina</string>
 
     <string name="ms_title">My Solar</string>
     <string name="ms_settings_title">My Solar Feeds</string>
@@ -61,7 +61,7 @@
     <string name="saturday_initial">S</string>
     <string name="sunday_initial">D</string>
 
-    <string name="system_locale">Locale di sistema</string>
+    <string name="system_locale">Lingua di Sistema</string>
     <string name="dollars">Dollari</string>
     <string name="pounds">Sterline</string>
     <string name="euros">Euro</string>
@@ -81,7 +81,7 @@
     <string name="settings_title_delete_account">Elimina Account</string>
 
     <string name="settings_title_emoncms_url">URL emoncms</string>
-    <string name="settings_summary_emoncms_url">Emoncms URL completo senza http://. es. &quot;www.myawesomesite.com/emoncms&quot;</string>
+    <string name="settings_summary_emoncms_url">Emoncms URL completo senza http://. es. &quot;www.ilmiosito.it/emoncms&quot;</string>
     <string name="settings_title_emoncms_apikey">emoncms API KEY</string>
     <string name="settings_summary_emoncms_apikey">Read API key dalla pagina account di emoncms.</string>
     <string name="settings_title_emoncms_usessl">Usa SSL</string>
