@@ -53,13 +53,13 @@
     <string name="qr_code_fail">QR code non valido</string>
     <string name="barcode_scan_instructions">Eseguire la scansione del codice a barre nella pagina dell\'account di emoncms.</string>
 
-    <string name="monday_initial">L</string>
-    <string name="tuesday_initial">M</string>
-    <string name="wednesday_initial">M</string>
-    <string name="thursday_initial">G</string>
-    <string name="friday_initial">V</string>
-    <string name="saturday_initial">S</string>
-    <string name="sunday_initial">D</string>
+    <string name="monday_initial">lu</string>
+    <string name="tuesday_initial">ma</string>
+    <string name="wednesday_initial">me</string>
+    <string name="thursday_initial">gi</string>
+    <string name="friday_initial">ve</string>
+    <string name="saturday_initial">sa</string>
+    <string name="sunday_initial">do</string>
 
     <string name="system_locale">Locale di sistema</string>
     <string name="dollars">Dollari</string>

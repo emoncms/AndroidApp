@@ -16,9 +16,16 @@
     <string name="error">Fehler</string>
     <string name="euros">Euro</string>
     <string name="feed_download_error_message">Download der Feedliste gescheitert. Bitte überprüfe die URL und die APi Einstellungen als auch die Verbindung zu emoncms.</string>
-    <string name="friday_initial">F</string>
+    
+    <string name="monday_initial">ma</string>
+    <string name="tuesday_initial">di</string>
+    <string name="wednesday_initial">wo</string>
+    <string name="thursday_initial">do</string>
+    <string name="friday_initial">vr</string>
+    <string name="saturday_initial">za</string>
+    <string name="sunday_initial">zo</string>
+    
     <string name="fullscreen">Vollbild</string>
-    <string name="monday_initial">M</string>
     <string name="me_title">Mein Strom</string>
     <string name="ok">OK</string>
     <string name="pounds">Pfund</string>
@@ -27,7 +34,6 @@
     <string name="qr_code_fail">Ungültiger QR Code</string>
     <string name="qr_code_success">Einstellungen wurden erfolgreich vom QR Code übernommen</string>
     <string name="read_barcode">Barcode scannen</string>
-    <string name="saturday_initial">S</string>
     <string name="server_not_configured">Bitte konfigurere deinen emoncms-server mit den API-Schlüsseln in den Einstellungen.</string>
     <string name="settings">Einstellungen</string>
     <string name="settings_summary_emoncms_apikey">Lese API-Schlüssel von der emoncms &quot;My Account&quot;-Seite</string>
@@ -46,15 +52,11 @@
     <string name="settings_title_myelectric_unit_cost">Kosten</string>
     <string name="settings_title_scanqrcode">QR Code scannen</string>
     <string name="solar_pv_label">SOLAR PV</string>
-    <string name="sunday_initial">S</string>
-    <string name="system_locale">System Standard</string>
-    <string name="thursday_initial">T</string>
+    <string name="system_locale">System-standaard</string>
     <string name="title_activity_main">Barcode-Leser Beispiel</string>
     <string name="txt_power_default">0W</string>
-    <string name="tuesday_initial">T</string>
     <string name="use_today_default">0.0kWh</string>
     <string name="use_today_label">HEUTE</string>
-    <string name="wednesday_initial">W</string>
     <string name="wh_elapsed">Watt Stunden verbaucht</string>
     <string name="yen">Yen</string>
     <string name="settings_summary_emoncms_url">\"Vollständige emoncms URL ohne http://. z.B. www.myawesomesite.com/emoncms\"</string>
