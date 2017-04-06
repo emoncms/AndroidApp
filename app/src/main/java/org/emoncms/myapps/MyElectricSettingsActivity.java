@@ -31,7 +31,8 @@ public class MyElectricSettingsActivity extends BaseActivity {
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("settings")) {
             settings = getIntent().getExtras().getParcelable("settings");
         } else {
-            settings = new MyElectricSettings(0,"new page",-1,-1,"1", "0","£");
+            String defaultName = getResources().getString(R.string.settings_title_page_name_default);
+            settings = new MyElectricSettings(0,defaultName,-1,-1,"1", "0","£");
         }
 
         setContentView(R.layout.activity_ms_settings);
@@ -90,9 +91,9 @@ public class MyElectricSettingsActivity extends BaseActivity {
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(this);
 
-        builder.setTitle("Confirm delete");
-        builder.setMessage("Are you sure you want to delete this page?");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.settings_title_delete_page);
+        builder.setMessage(R.string.settings_confirm_delete_page);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 EmonApplication.get().removePage(settings);
@@ -100,7 +101,7 @@ public class MyElectricSettingsActivity extends BaseActivity {
                 onBackPressed();
             }
         });
-        builder.setNegativeButton("Cancel", null);
+        builder.setNegativeButton(R.string.cancel, null);
         builder.show();
 
 
