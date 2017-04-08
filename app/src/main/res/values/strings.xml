@@ -67,6 +67,7 @@
     <string name="connection_error">CONNECTION ERROR</string>
 
     <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
     <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
     <string name="no_camera_permission">The barcode scanner uses the camera and cannot run because it does not have permission.</string>
     <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
@@ -100,12 +101,15 @@
     <string name="chart_no_data_available">No data available</string>
 
     <string name="settings_title_emoncms_connectivity">EMONCMS CONNECTIVITY</string>
+    <string name="settings_title_accounts">ACCOUNTS</string>
     <string name="settings_title_app_settings">GENERAL SETTINGS</string>
     <string name="settings_title_scanqrcode">Scan QR Code</string>
     <string name="settings_summary_scanqrcode">Allows filling in the connectivity fields automatically using the QR code on the emoncms account page</string>
     <string name="settings_title_emoncms_name">Account Name</string>
     <string name="settings_summary_emoncms_name">Short name for the account for easy identification</string>
     <string name="settings_title_delete_account">Delete Account</string>
+    <string name="settings_title_add_account">Add Account</string>
+    <string name="settings_confirm_delete_account">Are you sure you want to delete this account? All settings will be lost.</string>
 
     <string name="settings_title_emoncms_url">emoncms URL</string>
     <string name="settings_summary_emoncms_url">Full emoncms URL without http://. e.g. www.myawesomesite.com/emoncms"</string>
@@ -118,6 +122,8 @@
     <string name="settings_title_language">Language</string>
     <string name="settings_summary_language">Select Language</string>
 
+    <string name="settings_title_page_name">Page name</string>
+    <string name="settings_title_page_name_default">New page</string>
     <string name="settings_title_myelectric_feeds">Feeds</string>
     <string name="settings_title_myelectric_currency">Currency</string>
     <string name="settings_title_myelectric_page_name">Page Name</string>
@@ -127,7 +133,12 @@
     <string name="settings_title_myelectric_unit_cost">Cost</string>
     <string name="settings_title_myelectric_cost_symbol">Cost Unit</string>
     <string name="settings_title_delete_page">Delete Page</string>
+    <string name="settings_confirm_delete_page"> Are you sure you want to delete this page?</string>
+
 
     <string name="system_default">System Default</string>
     <string name="no_camera_found">No camera found for barcode scanning.</string>
+
+
+
 </resources>

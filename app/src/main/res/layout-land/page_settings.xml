@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Page Name" />
+        android:text="@string/settings_title_page_name" />
 
     <EditText
         android:layout_width="match_parent"

@@ -90,5 +90,11 @@
     <string name="settings_title_delete_page">Seite löschen</string>
     <string name="settings_title_emoncms_name">Emoncms Server Name</string>
     <string name="settings_title_myelectric_page_name">Mein Strom</string>
+    <string name="cancel">CANCEL</string>
+    <string name="settings_confirm_delete_account">Are you sure you want to delete this account? All settings will be lost.</string>
+    <string name="settings_confirm_delete_page">" Are you sure you want to delete this page?"</string>
+    <string name="settings_title_accounts">ACCOUNTS</string>
+    <string name="settings_title_add_account">Add Account</string>
+    <string name="settings_title_page_name">Page name</string>
 
 </resources>
