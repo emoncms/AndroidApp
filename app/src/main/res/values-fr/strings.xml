@@ -74,7 +74,7 @@
     <string name="settings_title_scanqrcode">Numériser le code QR</string>
     <string name="settings_summary_scanqrcode">Permet de remplir automatiquement les champs de connectivité en utilisant le code QR sur la page du compte emoncms</string>
     <string name="settings_title_emoncms_url">emoncms URL</string>
-    <string name="settings_summary_emoncms_url">l\'url emoncms complet sans http:// par exemple "www.myawesomesite.com/emoncms"</string>
+    <string name="settings_summary_emoncms_url">l\'url emoncms complet sans http:// par exemple "www.monsupersite.com/emoncms"</string>
     <string name="settings_title_emoncms_apikey">emoncms CLÉ API</string>
     <string name="settings_summary_emoncms_apikey">Lire la clé API de la page emoncms Mon compte</string>
     <string name="settings_title_emoncms_usessl">Utiliser SSL</string>
@@ -103,12 +103,12 @@
     <string name="system_default">Défaillance du Système</string>
     <string name="no_camera_found">Aucune caméra détectée pour la numérisation de codes à barres.</string>
     <string name="settings_title_emoncms_connectivity">EMONCMS connectivité</string>
-    <string name="cancel">CANCEL</string>
-    <string name="settings_confirm_delete_account">Are you sure you want to delete this account? All settings will be lost.</string>
-    <string name="settings_confirm_delete_page">" Are you sure you want to delete this page?"</string>
-    <string name="settings_title_accounts">ACCOUNTS</string>
-    <string name="settings_title_add_account">Add Account</string>
-    <string name="settings_title_page_name">Page name</string>
-    <string name="settings_title_page_name_default">New page</string>
+    <string name="cancel">ANNULER</string>
+    <string name="settings_confirm_delete_account">Etes-vous certain de vouloir supprimer ce compte? tous les réglages seront perdu.</string>
+    <string name="settings_confirm_delete_page">"Etes-vous certain de vouloir supprimer cette page?"</string>
+    <string name="settings_title_accounts">COMPTES</string>
+    <string name="settings_title_add_account">Ajouter compte</string>
+    <string name="settings_title_page_name">Nom de la page</string>
+    <string name="settings_title_page_name_default">Nouvelle page</string>
 </resources>
 
