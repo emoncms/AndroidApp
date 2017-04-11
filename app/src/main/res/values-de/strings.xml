@@ -97,5 +97,6 @@
     <string name="settings_title_add_account">Account hinzufügen</string>
     <string name="settings_title_page_name">Seitenname</string>
     <string name="settings_title_page_name_default">Neue Seite</string>
+    <string name="menu_add_page">Seite Hinzufügen</string>
 
 </resources>

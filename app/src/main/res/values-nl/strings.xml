@@ -96,5 +96,7 @@
     <string name="settings_title_accounts">ACCOUNTS</string>
     <string name="settings_title_add_account">Account toevoegen</string>
     <string name="settings_title_page_name">Pagina naam</string>
+    <string name="menu_add_page">Pagina toevoegen</string>
+    <string name="settings_title_page_name_default">Pagina toevoegen</string>
 
 </resources>

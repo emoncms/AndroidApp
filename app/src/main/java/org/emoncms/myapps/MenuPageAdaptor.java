@@ -125,8 +125,9 @@ public class MenuPageAdaptor extends RecyclerView.Adapter<MenuPageAdaptor.ViewHo
             index++;
         }
 
-        menuOptionList.add(new MenuOption("new", R.drawable.ic_plus_box_36dp, "Add Page"));
-        menuOptionList.add(new MenuOption("settings", R.drawable.ic_settings_applications_white_36dp, "Settings"));
+        String AddPage = context.getResources().getString(R.string.menu_add_page);
+        menuOptionList.add(new MenuOption("new", R.drawable.ic_plus_box_36dp, AddPage));
+        menuOptionList.add(new MenuOption("settings", R.drawable.ic_settings_applications_white_36dp, context.getResources().getString(R.string.settings)));
 
         EmonApplication.get().addPageChangeListener(this);
 

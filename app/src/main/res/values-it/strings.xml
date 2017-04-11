@@ -110,5 +110,6 @@
     <string name="settings_title_add_account">Aggiungi Account</string>
     <string name="settings_title_page_name">Nome Pagina</string>
     <string name="settings_title_page_name_default">Nuova pagina</string>
+    <string name="menu_add_page">Aggiungi pagina</string>
 </resources>
 

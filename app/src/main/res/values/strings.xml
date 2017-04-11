@@ -138,7 +138,7 @@
 
     <string name="system_default">System Default</string>
     <string name="no_camera_found">No camera found for barcode scanning.</string>
-
+    <string name="menu_add_page">Add Page</string>
 
 
 </resources>
