@@ -4,7 +4,7 @@
     <string name="barcode_header">Drücke &quot;Barcode scannen&quot; um einen Bacode einzulesen</string>
     <string name="barcode_scan_instructions">\"Scanne den Barcode auf der My Account Seite von emoncms\"</string>
     <string name="barcode_success">Barcode erfolgreich gescannt</string>
-    <string name="button_1d_label">D</string>
+    <string name="button_1d_label">Tag</string>
     <string name="button_30d_label">M</string>
     <string name="button_3h_label">3H</string>
     <string name="button_6h_label">6H</string>
@@ -15,10 +15,17 @@
     <string name="dollars">Dollar</string>
     <string name="error">Fehler</string>
     <string name="euros">Euro</string>
-    <string name="feed_download_error_message">Download der Feedliste gescheitert. Bitte überprüfe die URL und die APi Einstellungen als auch die Verbindung zu emoncms.</string>
-    <string name="friday_initial">F</string>
+    <string name="feed_download_error_message">Download der Feedliste gescheitert. Bitte überprüfe die URL und die API Einstellungen als auch die Verbindung zu emoncms.</string>
+    
+    <string name="monday_initial">Mo</string>
+    <string name="tuesday_initial">Di</string>
+    <string name="wednesday_initial">Mi</string>
+    <string name="thursday_initial">Do</string>
+    <string name="friday_initial">Fr</string>
+    <string name="saturday_initial">Sa</string>
+    <string name="sunday_initial">So</string>
+    
     <string name="fullscreen">Vollbild</string>
-    <string name="monday_initial">M</string>
     <string name="me_title">Mein Strom</string>
     <string name="ok">OK</string>
     <string name="pounds">Pfund</string>
@@ -27,8 +34,7 @@
     <string name="qr_code_fail">Ungültiger QR Code</string>
     <string name="qr_code_success">Einstellungen wurden erfolgreich vom QR Code übernommen</string>
     <string name="read_barcode">Barcode scannen</string>
-    <string name="saturday_initial">S</string>
-    <string name="server_not_configured">Bitte konfigurere deinen emoncms-server mit den API-Schlüsseln in den Einstellungen.</string>
+    <string name="server_not_configured">Bitte konfiguriere deinen emoncms-Server mit den API-Schlüsseln in den Einstellungen.</string>
     <string name="settings">Einstellungen</string>
     <string name="settings_summary_emoncms_apikey">Lese API-Schlüssel von der emoncms &quot;My Account&quot;-Seite</string>
     <string name="settings_title_emoncms_usessl">Verwende SSL</string>
@@ -46,16 +52,12 @@
     <string name="settings_title_myelectric_unit_cost">Kosten</string>
     <string name="settings_title_scanqrcode">QR Code scannen</string>
     <string name="solar_pv_label">SOLAR PV</string>
-    <string name="sunday_initial">S</string>
     <string name="system_locale">System Standard</string>
-    <string name="thursday_initial">T</string>
     <string name="title_activity_main">Barcode-Leser Beispiel</string>
     <string name="txt_power_default">0W</string>
-    <string name="tuesday_initial">T</string>
     <string name="use_today_default">0.0kWh</string>
     <string name="use_today_label">HEUTE</string>
-    <string name="wednesday_initial">W</string>
-    <string name="wh_elapsed">Watt Stunden verbaucht</string>
+    <string name="wh_elapsed">Watt Stunden verbraucht</string>
     <string name="yen">Yen</string>
     <string name="settings_summary_emoncms_url">\"Vollständige emoncms URL ohne http://. z.B. www.myawesomesite.com/emoncms\"</string>
     <string name="settings_summary_emoncms_usessl">Verbindung via https. Unterstützt von emoncms.org NICHT emonPi\"</string>
@@ -70,12 +72,12 @@
     <string name="barcode_error">\"Fehler beim Einlesen des Barcodes: %1$s\"</string>
     <string name="no_camera_permission">Der Barcode Scanner benötigt Zugriff auf die Kamera, hat jedoch keine Berechtigung dazu.</string>
     <string name="settings_summary_scanqrcode">Erlaubt es, die Formularfelder durch den QR Code auf der emoncms-Account-Seite automatisch auszufüllen</string>
-    <string name="kwh_elapsed">kWh verbaucht</string>
+    <string name="kwh_elapsed">kWh verbraucht</string>
     
     <string name="chart_no_data_available">Keine Daten für Charts verfügbar</string>
     <string name="system_default">Systemstandard</string>
-    <string name="me_not_configured_text">Wählen Sie die Feeds aus die angezeigt werden sollen. Konfigurationsmenü --&gt; Zahnrad-Symbol in der Symbolleiste.</string>
-    <string name="invalid_kwh_feedid">Ungültige Verwendung kwh feed ID, wählen Sie bitte eine kwh-Feed aus dem Konfigurationsmenü.</string>
+    <string name="me_not_configured_text">Wählen Sie die Feeds aus, die angezeigt werden sollen. Konfigurationsmenü --&gt; Zahnrad-Symbol in der Symbolleiste.</string>
+    <string name="invalid_kwh_feedid">Ungültige Verwendung kwh feed ID, wählen Sie bitte einen kwh-Feed aus dem Konfigurationsmenü.</string>
     <string name="invalid_watt_feedid">Ungültige Verwendung der feed ID, bitte wählen Sie einen Watt-Feed aus dem Konfigurationsmenü.</string>
     <string name="low_storage_error">Abhängigkeiten können nicht heruntergeladen werden. Interner Speicher zu gering!</string>
     <string name="settings_title_language">Sprache</string>
@@ -88,5 +90,12 @@
     <string name="settings_title_delete_page">Seite löschen</string>
     <string name="settings_title_emoncms_name">Emoncms Server Name</string>
     <string name="settings_title_myelectric_page_name">Mein Strom</string>
+    <string name="cancel">ABBRUCH</string>
+    <string name="settings_confirm_delete_account">Sind Sie sicher, dass Sie diesen Account löschen wollen? Alle Einstellungen gehen dann verloren.</string>
+    <string name="settings_confirm_delete_page">" Sind Sie sicher, dass Sie diese Seite löschen wollen?"</string>
+    <string name="settings_title_accounts">ACCOUNTS</string>
+    <string name="settings_title_add_account">Account hinzufügen</string>
+    <string name="settings_title_page_name">Seitenname</string>
+    <string name="settings_title_page_name_default">Neue Seite</string>
 
 </resources>

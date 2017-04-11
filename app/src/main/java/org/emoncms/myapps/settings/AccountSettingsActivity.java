@@ -94,9 +94,9 @@ public class AccountSettingsActivity extends BaseActivity {
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(this);
 
-        builder.setTitle("Confirm delete");
-        builder.setMessage("Are you sure you want to delete this account? All settings will be lost.");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.settings_title_delete_account);
+        builder.setMessage(R.string.settings_confirm_delete_account);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 SharedPreferences settings = getSharedPreferences("emoncms_account_" + account, Context.MODE_PRIVATE);
@@ -107,7 +107,7 @@ public class AccountSettingsActivity extends BaseActivity {
                 onBackPressed();
             }
         });
-        builder.setNegativeButton("Cancel", null);
+        builder.setNegativeButton(R.string.cancel, null);
         builder.show();
     }
 

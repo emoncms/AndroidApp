@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Accounts"
+        android:text="@string/settings_title_accounts"
         android:layout_marginLeft="18dip"
         style="@style/PrefHeader"
         />
@@ -26,7 +26,7 @@
         android:id="@+id/add_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Account"
+        android:text="@string/settings_title_add_account"
         android:layout_marginLeft="18dip"
         android:paddingTop="10dip"
         android:paddingBottom="10dip"
