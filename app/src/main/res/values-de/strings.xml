@@ -4,7 +4,7 @@
     <string name="barcode_header">Drücke &quot;Barcode scannen&quot; um einen Bacode einzulesen</string>
     <string name="barcode_scan_instructions">\"Scanne den Barcode auf der My Account Seite von emoncms\"</string>
     <string name="barcode_success">Barcode erfolgreich gescannt</string>
-    <string name="button_1d_label">Tag</string>
+    <string name="button_1d_label">T</string>
     <string name="button_30d_label">M</string>
     <string name="button_3h_label">3H</string>
     <string name="button_6h_label">6H</string>
