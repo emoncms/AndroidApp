@@ -30,6 +30,7 @@ public class HTTPClient
             // getApplicationContext() is key, it keeps you from leaking the
             // Activity or BroadcastReceiver if someone passes one in.
             mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
+            mRequestQueue.getCache().clear();
         }
         return mRequestQueue;
     }
@@ -41,6 +42,7 @@ public class HTTPClient
     }
 
     public <T> void addToRequestQueue(Request<T> req) {
+        req.setShouldCache(false);
         req.setRetryPolicy(new DefaultRetryPolicy(2500, 0, 1f));
         getRequestQueue().add(req);
     }
