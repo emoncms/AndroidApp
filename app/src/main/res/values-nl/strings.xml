@@ -90,7 +90,7 @@
     <string name="settings_title_delete_page">Pagina wissen</string>
     <string name="settings_title_emoncms_name">Emoncms Server Naam</string>
     <string name="settings_title_myelectric_page_name">Mijn stroom</string>
-    <string name="cancel">Annuleer</string>
+    <string name="cancel">ANNULEER</string>
     <string name="settings_confirm_delete_account">Bent U zeker om dit account te wissen ? U verliest alle gegevens.</string>
     <string name="settings_confirm_delete_page">" Bent U zeker om deze pagina te wissen?"</string>
     <string name="settings_title_accounts">ACCOUNTS</string>
