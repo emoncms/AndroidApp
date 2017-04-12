@@ -56,7 +56,7 @@
     <string name="title_activity_main">Voorbeeld QR code lezer</string>
     <string name="txt_power_default">0W</string>
     <string name="use_today_default">0.0kWh</string>
-    <string name="use_today_label">ACTUEEL</string>
+    <string name="use_today_label">Vandaag</string>
     <string name="wh_elapsed">Watt/uur verbruikt</string>
     <string name="yen">Yen</string>
     <string name="settings_summary_emoncms_url">\"Volledige emoncms URL zonder http://, bv. www.miinsupersite.com/emoncms\"</string>
@@ -71,11 +71,11 @@
     <string name="open">Open</string>
     <string name="barcode_error">\"Fout inlezen QR code: %1$s\"</string>
     <string name="no_camera_permission">De QR code lezer heeft toegang tot de camera nodig, deze werd geweigerd.</string>
-    <string name="settings_summary_scanqrcode">Automatisch verbinding instellen via de QR code op Uw Emoncms account</string>
+    <string name="settings_summary_scanqrcode">De instellingen van Uw Emoncms account automatisch instellen via het lezen van de QR code</string>
     <string name="kwh_elapsed">kWh verbruikt</string>
     
     <string name="chart_no_data_available">Geen data beschikbaar voor grafiek</string>
-    <string name="system_default">Systeem standaard</string>
+    <string name="system_default">De taal van Uw telefoon volgen</string>
     <string name="me_not_configured_text">Gelieve de lijsten in te stellen via het \'tandwiel menu\'.</string>
     <string name="invalid_kwh_feedid">Ongeldig kwh_verbruik ID, gelieve deze in te stellen.</string>
     <string name="invalid_watt_feedid">Ongeldig watt_verbuik ID, gelieve deze in te stellen.</string>
