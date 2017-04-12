@@ -42,7 +42,7 @@
     <string name="settings_title_emoncms_connectivity">emoncms VERBINDING</string>
     <string name="settings_title_emoncms_apikey">emoncms API-SLEUTEL</string>
     <string name="settings_title_app_settings">APP INSTELLINGEN</string>
-    <string name="settings_title_keep_screen_on">Beeldscherm aktief houden</string>
+    <string name="settings_title_keep_screen_on">Beeldscherm actief houden</string>
     <string name="settings_title_myelectric_cost_symbol">Konsten per Eenheid</string>
     <string name="settings_title_myelectric_currency">Munt</string>
     <string name="settings_title_myelectric_escale">Wh of kWh lijst</string>
