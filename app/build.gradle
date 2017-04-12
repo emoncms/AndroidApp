@@ -8,8 +8,8 @@ android {
         applicationId "org.emoncms.myapps"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 133
-        versionName "2.0.4"
+        versionCode 134
+        versionName "2.0.5"
     }
     buildTypes {
         release {

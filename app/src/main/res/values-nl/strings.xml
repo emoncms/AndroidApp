@@ -75,7 +75,7 @@
     <string name="kwh_elapsed">kWh verbruikt</string>
     
     <string name="chart_no_data_available">Geen data beschikbaar voor grafiek</string>
-    <string name="system_default">Systeem fout</string>
+    <string name="system_default">Systeem standaard</string>
     <string name="me_not_configured_text">Gelieve de lijsten in te stellen via het \'tandwiel menu\'.</string>
     <string name="invalid_kwh_feedid">Ongeldig kwh_verbruik ID, gelieve deze in te stellen.</string>
     <string name="invalid_watt_feedid">Ongeldig watt_verbuik ID, gelieve deze in te stellen.</string>
