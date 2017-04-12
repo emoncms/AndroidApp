@@ -41,6 +41,9 @@
         <item>@string/french</item>
         <item>@string/german</item>
         <item>@string/italian</item>
+        <item>@string/dutch</item>
+
+
     </string-array>
 
     <string-array name="language_values" translatable="false">
@@ -49,5 +52,6 @@
         <item>fr</item>
         <item>de</item>
         <item>it</item>
+        <item>nl</item>
     </string-array>
 </resources>
