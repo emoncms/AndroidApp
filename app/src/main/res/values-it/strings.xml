@@ -53,19 +53,20 @@
     <string name="qr_code_fail">QR code non valido</string>
     <string name="barcode_scan_instructions">Eseguire la scansione del codice a barre nella pagina dell\'account di emoncms.</string>
 
-    <string name="monday_initial">lu</string>
-    <string name="tuesday_initial">ma</string>
-    <string name="wednesday_initial">me</string>
-    <string name="thursday_initial">gi</string>
-    <string name="friday_initial">ve</string>
-    <string name="saturday_initial">sa</string>
-    <string name="sunday_initial">do</string>
+    <string name="monday_initial">Lu</string>
+    <string name="tuesday_initial">Ma</string>
+    <string name="wednesday_initial">Me</string>
+    <string name="thursday_initial">Gi</string>
+    <string name="friday_initial">Ve</string>
+    <string name="saturday_initial">Sa</string>
+    <string name="sunday_initial">Do</string>
 
     <string name="system_locale">Lingua di Sistema</string>
     <string name="dollars">Dollari</string>
     <string name="pounds">Sterline</string>
     <string name="euros">Euro</string>
     <string name="yen">Yen</string>
+    <string name="custom">Personalizzata</string>
 
     <string name="kwh_elapsed">kWh consumati</string>
     <string name="wh_elapsed">Watt ora consumati</string>
@@ -93,6 +94,7 @@
 
     <string name="settings_title_myelectric_feeds">Feed</string>
     <string name="settings_title_myelectric_currency">Valuta</string>
+    <string name="settings_title_myelectric_custom_currency">Valuta personalizzata</string>
     <string name="settings_title_myelectric_page_name">Nome Pagina</string>
     <string name="settings_title_myelectric_power_feed">Feed potenza (Watts)</string>
     <string name="settings_title_myelectric_kwh_feed">Grafico a barre (kWh)</string>
@@ -106,7 +108,7 @@
     <string name="cancel">ANNULLA</string>
     <string name="settings_confirm_delete_account">Sei sicuro di voler cancellare questo account? Tutte le impostazioni andranno perse.</string>
     <string name="settings_confirm_delete_page">Sei sicuro di voler cancellare questa pagina?"</string>
-    <string name="settings_title_accounts">CONTI</string>
+    <string name="settings_title_accounts">ACCOUNT</string>
     <string name="settings_title_add_account">Aggiungi Account</string>
     <string name="settings_title_page_name">Nome Pagina</string>
     <string name="settings_title_page_name_default">Nuova pagina</string>
