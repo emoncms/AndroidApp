@@ -42,8 +42,8 @@
     <string name="settings_title_emoncms_connectivity">emoncms VERBINDING</string>
     <string name="settings_title_emoncms_apikey">emoncms API-SLEUTEL</string>
     <string name="settings_title_app_settings">APP INSTELLINGEN</string>
-    <string name="settings_title_keep_screen_on">Beeldscherm aktief houden</string>
-    <string name="settings_title_myelectric_cost_symbol">Konsten per Eenheid</string>
+    <string name="settings_title_keep_screen_on">Beeldscherm actief houden</string>
+    <string name="settings_title_myelectric_cost_symbol">Kosten per Eenheid</string>
     <string name="settings_title_myelectric_currency">Munt</string>
     <string name="settings_title_myelectric_escale">Wh of kWh lijst</string>
     <string name="settings_title_myelectric_feeds">Lijsten</string>
@@ -52,11 +52,11 @@
     <string name="settings_title_myelectric_unit_cost">Kost</string>
     <string name="settings_title_scanqrcode">QR Code lezen</string>
     <string name="solar_pv_label">ZON PV</string>
-    <string name="system_locale">Munt kost</string>
+    <string name="system_locale">Systeem instelling</string>
     <string name="title_activity_main">Voorbeeld QR code lezer</string>
     <string name="txt_power_default">0W</string>
     <string name="use_today_default">0.0kWh</string>
-    <string name="use_today_label">ACTUEEL</string>
+    <string name="use_today_label">Vandaag</string>
     <string name="wh_elapsed">Watt/uur verbruikt</string>
     <string name="yen">Yen</string>
     <string name="settings_summary_emoncms_url">\"Volledige emoncms URL zonder http://, bv. www.miinsupersite.com/emoncms\"</string>
@@ -71,11 +71,11 @@
     <string name="open">Open</string>
     <string name="barcode_error">\"Fout inlezen QR code: %1$s\"</string>
     <string name="no_camera_permission">De QR code lezer heeft toegang tot de camera nodig, deze werd geweigerd.</string>
-    <string name="settings_summary_scanqrcode">Automatisch verbinding instellen via de QR code op Uw Emoncms account</string>
+    <string name="settings_summary_scanqrcode">De instellingen van Uw Emoncms account automatisch instellen via het lezen van de QR code</string>
     <string name="kwh_elapsed">kWh verbruikt</string>
     
     <string name="chart_no_data_available">Geen data beschikbaar voor grafiek</string>
-    <string name="system_default">Systeem fout</string>
+    <string name="system_default">De taal van Uw telefoon volgen</string>
     <string name="me_not_configured_text">Gelieve de lijsten in te stellen via het \'tandwiel menu\'.</string>
     <string name="invalid_kwh_feedid">Ongeldig kwh_verbruik ID, gelieve deze in te stellen.</string>
     <string name="invalid_watt_feedid">Ongeldig watt_verbuik ID, gelieve deze in te stellen.</string>
@@ -90,11 +90,13 @@
     <string name="settings_title_delete_page">Pagina wissen</string>
     <string name="settings_title_emoncms_name">Emoncms Server Naam</string>
     <string name="settings_title_myelectric_page_name">Mijn stroom</string>
-    <string name="cancel">CANCEL</string>
+    <string name="cancel">ANNULEER</string>
     <string name="settings_confirm_delete_account">Bent U zeker om dit account te wissen ? U verliest alle gegevens.</string>
     <string name="settings_confirm_delete_page">" Bent U zeker om deze pagina te wissen?"</string>
     <string name="settings_title_accounts">ACCOUNTS</string>
     <string name="settings_title_add_account">Account toevoegen</string>
     <string name="settings_title_page_name">Pagina naam</string>
+    <string name="menu_add_page">Pagina toevoegen</string>
+    <string name="settings_title_page_name_default">Pagina toevoegen</string>
 
 </resources>

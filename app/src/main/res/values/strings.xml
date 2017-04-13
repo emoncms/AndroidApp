@@ -22,6 +22,7 @@
     <string name="french" translatable="false">Français</string>
     <string name="german" translatable="false">Deutsch</string>
     <string name="italian" translatable="false">Italiano</string>
+    <string name="dutch" translatable="false">Nederlands</string>
 
     //
     //  TRANSLATABLE
@@ -133,12 +134,12 @@
     <string name="settings_title_myelectric_unit_cost">Cost</string>
     <string name="settings_title_myelectric_cost_symbol">Cost Unit</string>
     <string name="settings_title_delete_page">Delete Page</string>
-    <string name="settings_confirm_delete_page"> Are you sure you want to delete this page?</string>
+    <string name="settings_confirm_delete_page">Are you sure you want to delete this page?</string>
 
 
     <string name="system_default">System Default</string>
     <string name="no_camera_found">No camera found for barcode scanning.</string>
-
+    <string name="menu_add_page">Add Page</string>
 
 
 </resources>

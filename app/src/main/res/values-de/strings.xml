@@ -4,7 +4,7 @@
     <string name="barcode_header">Drücke &quot;Barcode scannen&quot; um einen Bacode einzulesen</string>
     <string name="barcode_scan_instructions">\"Scanne den Barcode auf der My Account Seite von emoncms\"</string>
     <string name="barcode_success">Barcode erfolgreich gescannt</string>
-    <string name="button_1d_label">Tag</string>
+    <string name="button_1d_label">T</string>
     <string name="button_30d_label">M</string>
     <string name="button_3h_label">3H</string>
     <string name="button_6h_label">6H</string>
@@ -84,7 +84,7 @@
     <string name="settings_summary_language">Sprache auswählen</string>
     <string name="no_camera_found">Keine Kamera gefunden.</string>
     <string name="account_settings">Konto-Einstellungen</string>
-    <string name="accounts">Mein Konto</string>
+    <string name="accounts">ACCOUNTS</string>
     <string name="settings_summary_emoncms_name">Kurzbeschreibung / Zusammenfassung </string>
     <string name="settings_title_delete_account">Account löschen</string>
     <string name="settings_title_delete_page">Seite löschen</string>
@@ -93,9 +93,10 @@
     <string name="cancel">ABBRUCH</string>
     <string name="settings_confirm_delete_account">Sind Sie sicher, dass Sie diesen Account löschen wollen? Alle Einstellungen gehen dann verloren.</string>
     <string name="settings_confirm_delete_page">" Sind Sie sicher, dass Sie diese Seite löschen wollen?"</string>
-    <string name="settings_title_accounts">ACCOUNTS</string>
+    <string name="settings_title_accounts">KONTEN</string>
     <string name="settings_title_add_account">Account hinzufügen</string>
     <string name="settings_title_page_name">Seitenname</string>
     <string name="settings_title_page_name_default">Neue Seite</string>
+    <string name="menu_add_page">Seite Hinzufügen</string>
 
 </resources>
