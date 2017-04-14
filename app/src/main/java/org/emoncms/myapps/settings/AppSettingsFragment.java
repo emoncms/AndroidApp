@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
+import org.emoncms.myapps.BuildConfig;
 import org.emoncms.myapps.MainActivity;
 import org.emoncms.myapps.R;
 
@@ -21,6 +23,10 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.main_preferences);
+
+        Preference mypref = findPreference("appinfo");
+        mypref.setTitle(getString(R.string.settings_title_app_information)+" "+ BuildConfig.VERSION_NAME);
+
     }
 
     @Override
@@ -40,8 +46,6 @@ public class AppSettingsFragment extends PreferenceFragment implements SharedPre
     @Override
     public void onActivityCreated(Bundle savesInstanceState) {
         super.onActivityCreated(savesInstanceState);
-
-
     }
 
     @Override

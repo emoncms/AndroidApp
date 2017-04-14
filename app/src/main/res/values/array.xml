@@ -15,6 +15,7 @@
         <item>@string/pounds</item>
         <item>@string/euros</item>
         <item>@string/yen</item>
+        <item>@string/custom</item>
     </string-array>
 
     <string-array name="me_cost_values" translatable="false">
@@ -23,6 +24,7 @@
         <item>£</item>
         <item>€</item>
         <item>¥</item>
+        <item>custom</item>
     </string-array>
 
     <string-array name="day_of_week_initials">

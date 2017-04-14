@@ -92,7 +92,7 @@ public class UpgradeManager
 
         accountPrefs.commit();
 
-        MyElectricSettings settings = new MyElectricSettings(0, "My Electric", Integer.parseInt(powerFeed), Integer.parseInt(useFeed), scaleValue, unitCost, costSymbol);
+        MyElectricSettings settings = new MyElectricSettings(0, "My Electric", Integer.parseInt(powerFeed), Integer.parseInt(useFeed), scaleValue, unitCost, costSymbol, "");
         EmonApplication.get().addPage(settings);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
