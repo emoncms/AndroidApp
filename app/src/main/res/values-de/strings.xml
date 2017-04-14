@@ -71,7 +71,7 @@
     <string name="open">Öffnen</string>
     <string name="barcode_error">\"Fehler beim Einlesen des Barcodes: %1$s\"</string>
     <string name="no_camera_permission">Der Barcode Scanner benötigt Zugriff auf die Kamera, hat jedoch keine Berechtigung dazu.</string>
-    <string name="settings_summary_scanqrcode">Erlaubt es, die Formularfelder durch den QR Code auf der emoncms-Account-Seite automatisch auszufüllen</string>
+    <string name="settings_summary_scanqrcode">Erlaubt es, die Formularfelder durch den QR Code auf der emoncms-Konto-Seite automatisch auszufüllen</string>
     <string name="kwh_elapsed">kWh verbraucht</string>
     
     <string name="chart_no_data_available">Keine Daten für Charts verfügbar</string>
@@ -84,23 +84,23 @@
     <string name="settings_summary_language">Sprache auswählen</string>
     <string name="no_camera_found">Keine Kamera gefunden.</string>
     <string name="account_settings">Konto-Einstellungen</string>
-    <string name="accounts">ACCOUNTS</string>
+    <string name="accounts">KONTEN</string>
     <string name="settings_summary_emoncms_name">Kurzbeschreibung / Zusammenfassung </string>
-    <string name="settings_title_delete_account">Account löschen</string>
+    <string name="settings_title_delete_account">Konto löschen</string>
     <string name="settings_title_delete_page">Seite löschen</string>
     <string name="settings_title_emoncms_name">Emoncms Server Name</string>
     <string name="settings_title_myelectric_page_name">Mein Strom</string>
     <string name="cancel">ABBRUCH</string>
-    <string name="settings_confirm_delete_account">Sind Sie sicher, dass Sie diesen Account löschen wollen? Alle Einstellungen gehen dann verloren.</string>
+    <string name="settings_confirm_delete_account">Sind Sie sicher, dass Sie dieses Konto löschen wollen? Alle Einstellungen gehen dann verloren.</string>
     <string name="settings_confirm_delete_page">" Sind Sie sicher, dass Sie diese Seite löschen wollen?"</string>
     <string name="settings_title_accounts">KONTEN</string>
-    <string name="settings_title_add_account">Account hinzufügen</string>
+    <string name="settings_title_add_account">Konto hinzufügen</string>
     <string name="settings_title_page_name">Seitenname</string>
     <string name="settings_title_page_name_default">Neue Seite</string>
     <string name="menu_add_page">Seite Hinzufügen</string>
 
-    <string name="custom">custom</string>
-    <string name="settings_title_myelectric_custom_currency">Custom currency</string>
+    <string name="custom">Benutzerdefiniert</string>
+    <string name="settings_title_myelectric_custom_currency">Benutzerdefinierte Währung</string>
     <string name="settings_title_app_information">APP VERSION: </string>
 
 </resources>
