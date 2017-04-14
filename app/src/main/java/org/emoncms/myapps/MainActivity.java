@@ -6,7 +6,12 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.Preference;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -32,6 +37,7 @@ import com.viewpagerindicator.PageIndicator;
 import org.emoncms.myapps.myelectric.MyElectricSettings;
 import org.emoncms.myapps.settings.AccountSettingsActivity;
 import org.emoncms.myapps.settings.SettingsActivity;
+
 
 /**
  * Handles navigation, account changing and pager
@@ -141,8 +147,7 @@ public class MainActivity extends BaseActivity implements AccountListChangeListe
 
         EmonApplication.get().addAccountChangeListener(this);
 
-
-    }
+     }
 
     @Override
     protected void onResume() {

@@ -95,6 +95,7 @@
     <string name="pounds">Pounds</string>
     <string name="euros">Euros</string>
     <string name="yen">Yen</string>
+    <string name="custom">Custom</string>
 
     <string name="kwh_elapsed">kWh elapsed</string>
     <string name="wh_elapsed">Watt hours elapsed</string>
@@ -127,6 +128,7 @@
     <string name="settings_title_page_name_default">New page</string>
     <string name="settings_title_myelectric_feeds">Feeds</string>
     <string name="settings_title_myelectric_currency">Currency</string>
+    <string name="settings_title_myelectric_custom_currency">Custom currency</string>
     <string name="settings_title_myelectric_page_name">Page Name</string>
     <string name="settings_title_myelectric_power_feed">Power feed (Watts)</string>
     <string name="settings_title_myelectric_kwh_feed">"Bar graph feed (kWh)</string>
@@ -140,6 +142,9 @@
     <string name="system_default">System Default</string>
     <string name="no_camera_found">No camera found for barcode scanning.</string>
     <string name="menu_add_page">Add Page</string>
+
+    <string name="settings_title_app_information">APP VERSION: </string>
+
 
 
 </resources>

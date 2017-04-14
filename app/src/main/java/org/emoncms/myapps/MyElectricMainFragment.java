@@ -116,6 +116,8 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
                 try {
                     if (powerCostSymbol.equals("0"))
                         powerCostSymbol = Currency.getInstance(Locale.getDefault()).getSymbol();
+                    if (powerCostSymbol.equals("custom"))
+                        powerCostSymbol = myElectricSettings.getCustomCurrencySymbol();
                 } catch (IllegalArgumentException e) {
                     powerCostSymbol = "£";
                 }
