@@ -156,7 +156,7 @@ public class DailyBarChart {
         barChart.getDescription().setEnabled(false);
         barChart.setNoDataText("");
         barChart.setTouchEnabled(false);
-        barChart.setExtraBottomOffset(4);
+        barChart.setExtraBottomOffset(2);
 
         XAxis xAxis2 = barChart.getXAxis();
         xAxis2.setPosition(XAxis.XAxisPosition.BOTTOM);
