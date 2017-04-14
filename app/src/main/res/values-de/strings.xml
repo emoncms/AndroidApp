@@ -101,5 +101,6 @@
 
     <string name="custom">custom</string>
     <string name="settings_title_myelectric_custom_currency">Custom currency</string>
+    <string name="settings_title_app_information">APP VERSION: </string>
 
 </resources>

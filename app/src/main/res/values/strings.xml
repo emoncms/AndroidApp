@@ -143,6 +143,8 @@
     <string name="no_camera_found">No camera found for barcode scanning.</string>
     <string name="menu_add_page">Add Page</string>
 
+    <string name="settings_title_app_information">APP VERSION: </string>
+
 
 
 </resources>
