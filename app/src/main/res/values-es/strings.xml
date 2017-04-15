@@ -23,7 +23,6 @@
     <string name="feed_download_error_message">No se pudo descargar la lista de entradas. Por favor revise la URL y API de configuración así como la conectividad con emoncms</string>
     <string name="friday_initial">V</string>
     <string name="fullscreen">Pantalla Completa</string>
-    <string name="german" translatable="false"></string>
     <string name="invalid_kwh_feedid">Invalido use_kwh ID de fuente, por favor seleccione una entrada de kwh del menú de configuración</string>
     <string name="invalid_number_of_responses">Número invalido de respuestas de API</string>
     <string name="invalid_watt_feedid">Uso invalido de ID fuente, por favor seleccione una fuente de watts valida del menú de configuración</string>
