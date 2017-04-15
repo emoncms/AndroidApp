@@ -9,12 +9,11 @@
 
 
     <TextView
+        style="@style/PrefHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Accounts"
         android:layout_marginLeft="18dip"
-        style="@style/PrefHeader"
-        />
+        android:text="@string/accounts" />
 
 
     <FrameLayout
@@ -26,11 +25,10 @@
         android:id="@+id/add_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Account"
         android:layout_marginLeft="18dip"
-        android:paddingTop="10dip"
         android:paddingBottom="10dip"
-        />
+        android:paddingTop="10dip"
+        android:text="@string/account_settings" />
 
     <FrameLayout
         android:id="@+id/prefs"

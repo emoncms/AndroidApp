@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="FEEDS">
+    <PreferenceCategory android:title="@string/settings_title_myelectric_feeds">
 
         <MultiSelectListPreference
+            android:enabled="false"
             android:key="mysolar_power_feeds"
-            android:title="Power feed (Watts)"
-            android:enabled="false"/>
+            android:title="@string/settings_title_myelectric_power_feed" />
 
     </PreferenceCategory>
 

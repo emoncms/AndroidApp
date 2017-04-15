@@ -103,5 +103,6 @@
 
     <string name="system_default">Sistema Predefinito</string>
     <string name="no_camera_found">Nessuna fotocamera trovata per la scansione di codici a barre.</string>
+    <string name="page_name">nome della pagina</string>
 </resources>
 

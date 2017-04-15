@@ -16,17 +16,17 @@
         android:id="@+id/pageName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="My Electric"
-        android:textColor="@color/lightGrey"
-        android:textSize="@dimen/main_header_text_size"
-        android:textStyle="bold"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_gravity="center"
         android:gravity="center"
-        android:lineSpacingExtra="0dp"
         android:includeFontPadding="false"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:lineSpacingExtra="0dp"
+        android:text="@string/settings_title_myelectric_page_name"
+        android:textColor="@color/lightGrey"
+        android:textSize="@dimen/main_header_text_size"
+        android:textStyle="bold" />
 
 
 

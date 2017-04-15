@@ -88,5 +88,6 @@
     <string name="settings_title_delete_page">Seite löschen</string>
     <string name="settings_title_emoncms_name">Emoncms Server Name</string>
     <string name="settings_title_myelectric_page_name">Mein Strom</string>
+    <string name="page_name">Seitenname</string>
 
 </resources>
