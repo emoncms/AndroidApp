@@ -36,11 +36,11 @@
     <string name="read_barcode">QR code scannen</string>
     <string name="server_not_configured">Stel uw servergegevens en API sleutel in via de instellingen..</string>
     <string name="settings">Instellingen</string>
-    <string name="settings_summary_emoncms_apikey">Lees de API sleutel op Uw emoncms accountpagina</string>
+    <string name="settings_summary_emoncms_apikey">Lees de API sleutel op Uw Emoncms accountpagina</string>
     <string name="settings_title_emoncms_usessl">Gebruik SSL</string>
-    <string name="settings_title_emoncms_url">emoncms URL</string>
-    <string name="settings_title_emoncms_connectivity">emoncms VERBINDING</string>
-    <string name="settings_title_emoncms_apikey">emoncms API-SLEUTEL</string>
+    <string name="settings_title_emoncms_url">Emoncms URL</string>
+    <string name="settings_title_emoncms_connectivity">Emoncms VERBINDING</string>
+    <string name="settings_title_emoncms_apikey">Emoncms API-SLEUTEL</string>
     <string name="settings_title_app_settings">APP INSTELLINGEN</string>
     <string name="settings_title_keep_screen_on">Beeldscherm actief houden</string>
     <string name="settings_title_myelectric_cost_symbol">Kosten per Eenheid</string>
@@ -59,9 +59,9 @@
     <string name="use_today_label">Vandaag</string>
     <string name="wh_elapsed">Watt/uur verbruikt</string>
     <string name="yen">Yen</string>
-    <string name="settings_summary_emoncms_url">\"Volledige emoncms URL zonder http://, bv. www.miinsupersite.com/emoncms\"</string>
+    <string name="settings_summary_emoncms_url">\"Volledige Emoncms URL zonder http://, bv. www.mijnsupersite.com/emoncms\"</string>
     <string name="settings_summary_emoncms_usessl">Verbinding via https. Ondersteunt voor emoncms.org, niet voor emonPi\"</string>
-    <string name="settings_summary_keep_screen_on">Beeldscherm aktief houden</string>
+    <string name="settings_summary_keep_screen_on">Beeldscherm actief houden</string>
     <string name="invalid_number_of_responses">API antwoorden ongeldig</string>
     <string name="ms_title">Mijn Zon</string>
     <string name="me_settings_title">Mijn Stroom lijsten</string>
@@ -99,8 +99,8 @@
     <string name="menu_add_page">Pagina toevoegen</string>
     <string name="settings_title_page_name_default">Pagina toevoegen</string>
 
-    <string name="custom">custom</string>
-    <string name="settings_title_myelectric_custom_currency">Custom currency</string>
-    <string name="settings_title_app_information">APP VERSION: </string>
+    <string name="custom">Aangepast</string>
+    <string name="settings_title_myelectric_custom_currency">Andere munt</string>
+    <string name="settings_title_app_information">APP VERSIE: </string>
 
 </resources>
