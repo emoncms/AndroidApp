@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="barcode_failure">No se capturo el código</string>
+    <string name="barcode_failure">No se capturo el código QR</string>
     <string name="barcode_header">Clic &quot;Leer código&quot; para leer el código</string>
     <string name="barcode_scan_instructions">\"Escanear el código en "Mi cuenta" en emoncms\"</string>
-    <string name="barcode_success">Código leido correctamente</string>
+    <string name="barcode_success">Código QR leido correctamente</string>
     <string name="button_1d_label">D</string>
     <string name="button_30d_label">M</string>
     <string name="button_3h_label">3H</string>
@@ -63,12 +63,12 @@
     <string name="invalid_number_of_responses">Número invalido de respuestas de API</string>
     <string name="ms_title">Mi Solar</string>
     <string name="me_settings_title">Configuración de página</string>
-    <string name="ms_settings_title">Meine Solar Feeds</string>
+    <string name="ms_settings_title">Mis Entradas Solares</string>
     <string name="navigation_drawer_close">Cerrar panel de navegación</string>
     <string name="navigation_drawer_open">Abrir panel de navegación</string>
     <string name="open">Abrir</string>
-    <string name="barcode_error">\"Error leyendo el código de barras %1$s\"</string>
-    <string name="no_camera_permission">El código de barras usa la cámara y no puede correr debido a que no tiene los permisos necesarios</string>
+    <string name="barcode_error">\"Error leyendo el código QR %1$s\"</string>
+    <string name="no_camera_permission">El código de barras usa la cámara y no puede correr, no tiene los permisos necesarios</string>
     <string name="settings_summary_scanqrcode">Permite ligar su cuenta usando el código QR en la sección \"Mi cuenta\" de emoncms</string>
     <string name="kwh_elapsed">kWh consumidos</string>
 
@@ -94,7 +94,7 @@
     <string name="settings_title_accounts">CUENTA</string>
     <string name="settings_title_add_account">Agregar cuenta</string>
     <string name="settings_title_page_name">Nombre de página</string>
-    <string name="settings_title_page_name_default">Nueva Página</string>
+    <string name="settings_title_page_name_default">Nueva página</string>
     <string name="menu_add_page">Agregar Página</string>
 
     <string name="custom">Personalizar</string>
