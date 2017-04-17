@@ -44,6 +44,7 @@
         <item>@string/german</item>
         <item>@string/italian</item>
         <item>@string/dutch</item>
+        <item>@string/spanish</item>
 
 
     </string-array>
@@ -55,5 +56,6 @@
         <item>de</item>
         <item>it</item>
         <item>nl</item>
+        <item>es</item>
     </string-array>
 </resources>
