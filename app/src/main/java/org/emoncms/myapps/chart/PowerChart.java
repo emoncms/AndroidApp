@@ -38,7 +38,7 @@ public class PowerChart {
         chartValues = new ArrayList<>();
         
         setFormatting();
-        powerData = createDataSet();
+        powerData = createData();
         
     }
 
@@ -58,7 +58,7 @@ public class PowerChart {
     }
 
     public void setChartLength(int length) {
-        powerData = createDataSet();
+        powerData = createData();
         powerChartLength = length;
         requiresReset = true;
     }
@@ -91,6 +91,11 @@ public class PowerChart {
 
         LineDataSet dataSet = (LineDataSet) powerData.getDataSetByLabel("watts", true);
         dataSet.clear();
+        //powerData.clearValues();
+        //powerData.addDataSet(createDataSet());
+
+
+
 
         for (int i = 0; i < chartLabels.size(); i++) {
 
@@ -144,7 +149,16 @@ public class PowerChart {
 
 
     
-    private LineData createDataSet() {
+    private LineData createData() {
+        LineDataSet powerDataset = createDataSet();
+
+        LineData ld = new LineData();
+        ld.addDataSet(powerDataset);
+        powerChart.setData(ld);
+        return  ld;
+    }
+
+    private LineDataSet createDataSet() {
         LineDataSet powerDataset = new LineDataSet(null, "watts");
         powerDataset.setColor(ContextCompat.getColor(context, R.color.chartBlue));
         powerDataset.setValueTextColor(ContextCompat.getColor(context, R.color.lightGrey));
@@ -154,12 +168,10 @@ public class PowerChart {
         powerDataset.setDrawValues(false);
         powerDataset.setValueTextSize(R.integer.chartValueTextSize);
         powerDataset.setHighlightEnabled(false);
-        LineData ld = new LineData();
-        ld.addDataSet(powerDataset);
-        powerChart.setData(ld);
-        return  ld;
+        return powerDataset;
     }
-    
+
+
     private void setFormatting() {
         powerChart.setDrawGridBackground(false);
         powerChart.getLegend().setEnabled(false);
