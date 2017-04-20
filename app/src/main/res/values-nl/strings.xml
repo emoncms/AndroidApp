@@ -52,7 +52,7 @@
     <string name="settings_title_myelectric_unit_cost">Kost</string>
     <string name="settings_title_scanqrcode">QR Code lezen</string>
     <string name="solar_pv_label">ZON PV</string>
-    <string name="system_locale">Systeem instelling</string>
+    <string name="system_locale">Munt volgens systeem instelling</string>
     <string name="title_activity_main">Voorbeeld QR code lezer</string>
     <string name="txt_power_default">0W</string>
     <string name="use_today_default">0.0kWh</string>
@@ -100,7 +100,7 @@
     <string name="menu_add_page">Pagina toevoegen</string>
     <string name="settings_title_page_name_default">Pagina toevoegen</string>
 
-    <string name="custom">Aangepast</string>
+    <string name="custom">Andere munt (U specifieert deze in volgend menu)</string>
     <string name="settings_title_myelectric_custom_currency">Andere munt</string>
     <string name="settings_title_app_information">APP VERSIE: </string>
 
