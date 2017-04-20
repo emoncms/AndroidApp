@@ -33,13 +33,19 @@ public class MyElectricSettings implements Parcelable {
     };
 
     public static MyElectricSettings fromJson(int id, JSONObject jsonObject) throws JSONException {
+
+        String customCurrencySymbol = "";
+        if (jsonObject.has("customCurrencySymbol")) {
+            customCurrencySymbol = jsonObject.getString("customCurrencySymbol");
+        }
+
         return new MyElectricSettings(id, jsonObject.getString("name"),
                 jsonObject.getInt("powerFeedId"),
                 jsonObject.getInt("useFeedId"),
                 jsonObject.getString("powerScale"),
                 jsonObject.getString("unitCost"),
                 jsonObject.getString("costSymbol"),
-                jsonObject.getString("customCurrencySymbol"));
+                customCurrencySymbol);
     }
 
     public MyElectricSettings(int id, String name, int powerFeedId, int useFeedId, String powerScale, String unitCost, String costSymbol, String customCurrencySymbol) {
