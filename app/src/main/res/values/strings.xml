@@ -113,6 +113,7 @@
     <string name="settings_title_delete_account">Delete Account</string>
     <string name="settings_title_add_account">Add Account</string>
     <string name="settings_confirm_delete_account">Are you sure you want to delete this account? All settings will be lost.</string>
+    <string name="settings_add_one_account">Add at least one account to proceed</string>
 
     <string name="settings_title_emoncms_url">emoncms URL</string>
     <string name="settings_summary_emoncms_url">Full emoncms URL without http://. e.g. www.myawesomesite.com/emoncms"</string>

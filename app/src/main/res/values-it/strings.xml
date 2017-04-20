@@ -107,6 +107,7 @@
     <string name="no_camera_found">Nessuna fotocamera trovata per la scansione di codici a barre.</string>
     <string name="cancel">ANNULLA</string>
     <string name="settings_confirm_delete_account">Sei sicuro di voler cancellare questo account? Tutte le impostazioni andranno perse.</string>
+    <string name="settings_add_one_account">Add at least one account to proceed</string>
     <string name="settings_confirm_delete_page">Sei sicuro di voler cancellare questa pagina?"</string>
     <string name="settings_title_accounts">ACCOUNT</string>
     <string name="settings_title_add_account">Aggiungi Account</string>
