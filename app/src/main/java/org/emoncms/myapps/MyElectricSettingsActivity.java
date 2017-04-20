@@ -32,7 +32,7 @@ public class MyElectricSettingsActivity extends BaseActivity {
             settings = getIntent().getExtras().getParcelable("settings");
         } else {
             String defaultName = getResources().getString(R.string.settings_title_page_name_default);
-            settings = new MyElectricSettings(0,defaultName,-1,-1,"1", "0","£");
+            settings = new MyElectricSettings(0,defaultName,-1,-1,"1", "0","£","");
         }
 
         setContentView(R.layout.activity_ms_settings);

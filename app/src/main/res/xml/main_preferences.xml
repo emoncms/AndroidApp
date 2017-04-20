@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="@string/settings_title_app_settings">
+    <PreferenceCategory android:title="@string/settings_title_app_settings">
 
         <CheckBoxPreference
-            android:key="keep_screen_on"
-            android:title="@string/settings_title_keep_screen_on"
             android:defaultValue="false"
-            android:summary="@string/settings_summary_keep_screen_on" />
+            android:key="keep_screen_on"
+            android:summary="@string/settings_summary_keep_screen_on"
+            android:title="@string/settings_title_keep_screen_on" />
 
         <ListPreference
-            android:key="language"
-            android:title="@string/settings_title_language"
-            android:summary="@string/settings_summary_language"
             android:entries="@array/language_text"
-            android:entryValues="@array/language_values" />
+            android:entryValues="@array/language_values"
+            android:key="language"
+            android:summary="@string/settings_summary_language"
+            android:title="@string/settings_title_language"
             android:defaultValue="language"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/settings_title_app_information"  android:key="appinfo">
+
     </PreferenceCategory>
 
 </PreferenceScreen>

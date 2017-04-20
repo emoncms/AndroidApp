@@ -116,6 +116,8 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
                 try {
                     if (powerCostSymbol.equals("0"))
                         powerCostSymbol = Currency.getInstance(Locale.getDefault()).getSymbol();
+                    if (powerCostSymbol.equals("custom"))
+                        powerCostSymbol = myElectricSettings.getCustomCurrencySymbol();
                 } catch (IllegalArgumentException e) {
                     powerCostSymbol = "£";
                 }
@@ -445,6 +447,7 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
             View snackbar_view = snackbar.getView();
             snackbar_view.setBackgroundColor(Color.GRAY);
             TextView tv = (TextView) snackbar_view.findViewById(android.support.design.R.id.snackbar_text);
+            tv.setMaxLines(5);
             tv.setTypeface(null, Typeface.BOLD);
         }
         return snackbar;

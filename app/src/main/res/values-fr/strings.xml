@@ -19,7 +19,7 @@
     <string name="error">Erreur</string>
     <string name="settings">Paramètres</string>
 
-    <string name="server_not_configured">Veuillez configurer votre serveur emoncms et la clé API via le menu paramètres.</string>
+    <string name="server_not_configured">Veuillez configurer votre serveur Emoncms et la clé API via le menu paramètres.</string>
     <string name="me_not_configured_text">Veuillez configurer les flux via le menu \'engrenage\' dans la barre du haut .</string>
     <string name="feed_download_error_message">Impossible de charger la liste des flux. Vérifier l\'adresse et la clé API de votre serveur emoncms ainsi que la connectivitée.</string>
     <string name="invalid_number_of_responses">Nombre invalide de l\'API\'</string>
@@ -72,11 +72,11 @@
 
     <string name="settings_title_app_settings">PARAMÈTRES APP</string>
     <string name="settings_title_scanqrcode">Numériser le code QR</string>
-    <string name="settings_summary_scanqrcode">Permet de remplir automatiquement les champs de connectivité en utilisant le code QR sur la page du compte emoncms</string>
-    <string name="settings_title_emoncms_url">emoncms URL</string>
-    <string name="settings_summary_emoncms_url">l\'url emoncms complet sans http:// par exemple "www.monsupersite.com/emoncms"</string>
-    <string name="settings_title_emoncms_apikey">emoncms CLÉ API</string>
-    <string name="settings_summary_emoncms_apikey">Lire la clé API de la page emoncms Mon compte</string>
+    <string name="settings_summary_scanqrcode">Permet de remplir automatiquement les champs de connectivité en utilisant le code QR sur la page du compte Emoncms</string>
+    <string name="settings_title_emoncms_url">Emoncms URL</string>
+    <string name="settings_summary_emoncms_url">l\'url Emoncms complet sans http:// par exemple "www.monsupersite.com/emoncms"</string>
+    <string name="settings_title_emoncms_apikey">Emoncms CLÉ API</string>
+    <string name="settings_summary_emoncms_apikey">Lire la clé API de la page Emoncms Mon compte</string>
     <string name="settings_title_emoncms_usessl">Utiliser SSL</string>
     <string name="settings_summary_emoncms_usessl"> Se connecter en utilisant https, pris en charge par emoncms.org, MAIS PAS POUR emonPi</string>
     <string name="settings_title_keep_screen_on">Gardez l\'écran allumé</string>
@@ -111,5 +111,9 @@
     <string name="settings_title_page_name">Nom de la page</string>
     <string name="settings_title_page_name_default">Nouvelle page</string>
     <string name="menu_add_page">Ajouter une page</string>
+
+    <string name="custom">Personnalisée</string>
+    <string name="settings_title_myelectric_custom_currency">Devise personnalisée</string>
+    <string name="settings_title_app_information">VERSION APPLICATION: </string>
 </resources>
 

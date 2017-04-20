@@ -45,6 +45,7 @@ public class MyElectricSettingsFragment extends Fragment {
     Spinner currencyPreference;
     Spinner scalePreference;
     EditText unitCostPreference;
+    EditText customCurrencyPreference;
     Handler mHandler = new Handler();
     SharedPreferences sp;
 
@@ -79,6 +80,7 @@ public class MyElectricSettingsFragment extends Fragment {
         namePreference = (EditText) result.findViewById(R.id.page_name);
         currencyPreference = (Spinner) result.findViewById(R.id.currency);
         unitCostPreference = (EditText) result.findViewById(R.id.costUnit);
+        customCurrencyPreference = (EditText) result.findViewById(R.id.customCurrency);
 
         ArrayAdapter<CharSequence> costUnitArray = ArrayAdapter.createFromResource(result.getContext(),R.array.me_cost_text, R.layout.support_simple_spinner_dropdown_item);
         currencyPreference.setAdapter(costUnitArray);
@@ -86,8 +88,7 @@ public class MyElectricSettingsFragment extends Fragment {
 
         unitCostPreference.setText(""+settings.getUnitCost());
 
-
-
+        customCurrencyPreference.setText(settings.getCustomCurrencySymbol());
 
         namePreference.setText(settings.getName());
         return(result);
@@ -167,7 +168,9 @@ public class MyElectricSettingsFragment extends Fragment {
             String[] symbolArray = getActivity().getResources().getStringArray(R.array.me_cost_values);
 
             String currencySymbol = symbolArray[currencyPreference.getSelectedItemPosition()];
+
             settings.setCostSymbol(currencySymbol);
+            settings.setCustomCurrencySymbol(customCurrencyPreference.getText().toString());
 
 
             Log.w("settings", "Setting Cost Symbol to " + currencySymbol);
