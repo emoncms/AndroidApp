@@ -105,6 +105,7 @@
     <string name="settings_title_emoncms_connectivity">EMONCMS connectivité</string>
     <string name="cancel">ANNULER</string>
     <string name="settings_confirm_delete_account">Etes-vous certain de vouloir supprimer ce compte? tous les réglages seront perdu.</string>
+    <string name="settings_add_one_account">Add at least one account to proceed</string>
     <string name="settings_confirm_delete_page">"Etes-vous certain de vouloir supprimer cette page?"</string>
     <string name="settings_title_accounts">COMPTES</string>
     <string name="settings_title_add_account">Ajouter compte</string>

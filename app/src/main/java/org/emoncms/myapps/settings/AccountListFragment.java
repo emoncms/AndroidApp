@@ -41,7 +41,7 @@ public class AccountListFragment extends ListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         if (EmonApplication.get().getAccounts().isEmpty()) {
-            Snackbar snackbar = Snackbar.make(view, "Add at least one account to proceed", Snackbar.LENGTH_INDEFINITE);
+            Snackbar snackbar = Snackbar.make(view, R.string.settings_add_one_account, Snackbar.LENGTH_INDEFINITE);
             View snackbar_view = snackbar.getView();
             snackbar_view.setBackgroundColor(Color.GRAY);
             snackbar.show();
