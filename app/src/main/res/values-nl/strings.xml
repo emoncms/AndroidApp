@@ -92,7 +92,7 @@
     <string name="settings_title_myelectric_page_name">Mijn stroom</string>
     <string name="cancel">ANNULEER</string>
     <string name="settings_confirm_delete_account">Bent U zeker om dit account te wissen ? U verliest alle gegevens.</string>
-    <string name="settings_add_one_account">Add at least one account to proceed</string>
+    <string name="settings_add_one_account">Voeg ten minste één account toe om door te gaan</string>
     <string name="settings_confirm_delete_page">" Bent U zeker om deze pagina te wissen?"</string>
     <string name="settings_title_accounts">ACCOUNTS</string>
     <string name="settings_title_add_account">Account toevoegen</string>

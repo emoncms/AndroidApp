@@ -90,7 +90,7 @@
     <string name="settings_title_myelectric_page_name">Nombre de página</string>
     <string name="cancel">CANCELAR</string>
     <string name="settings_confirm_delete_account">¿Estas seguro? Toda configuración se perdera</string>
-    <string name="settings_add_one_account">Add at least one account to proceed</string>
+    <string name="settings_add_one_account">Agregar al menos una cuenta para continuar</string>
     <string name="settings_confirm_delete_page">¿Estas seguro?</string>
     <string name="settings_title_accounts">CUENTA</string>
     <string name="settings_title_add_account">Agregar cuenta</string>

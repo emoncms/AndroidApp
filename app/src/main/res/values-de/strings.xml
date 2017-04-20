@@ -92,7 +92,7 @@
     <string name="settings_title_myelectric_page_name">Mein Strom</string>
     <string name="cancel">ABBRUCH</string>
     <string name="settings_confirm_delete_account">Sind Sie sicher, dass Sie dieses Konto löschen wollen? Alle Einstellungen gehen dann verloren.</string>
-    <string name="settings_add_one_account">Add at least one account to proceed</string>
+    <string name="settings_add_one_account">Fügen Sie mindestens ein Konto hinzu, um fortzufahren</string>
     <string name="settings_confirm_delete_page">" Sind Sie sicher, dass Sie diese Seite löschen wollen?"</string>
     <string name="settings_title_accounts">KONTEN</string>
     <string name="settings_title_add_account">Konto hinzufügen</string>
