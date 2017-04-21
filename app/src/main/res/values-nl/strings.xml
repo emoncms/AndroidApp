@@ -100,7 +100,7 @@
     <string name="menu_add_page">Pagina toevoegen</string>
     <string name="settings_title_page_name_default">Pagina toevoegen</string>
 
-    <string name="custom">Andere munt (U specifieert deze in volgend menu)</string>
+    <string name="custom">Andere munt (Specifieert u hieronder)</string>
     <string name="settings_title_myelectric_custom_currency">Andere munt</string>
     <string name="settings_title_app_information">APP VERSIE: </string>
 
