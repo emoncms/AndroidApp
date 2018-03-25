@@ -112,7 +112,8 @@
     <string name="menu_add_page">Adicionar Página</string>
 
     <string name="settings_title_app_information">Versão da APP: </string>
-    <string name="app_name">emoncms</string>
-
-
+    <string name="accounts">Contas</string>
+    <string name="account_settings">Configurações da conta</string>
+    <string name="cancel">CANCELAR</string>
+    <string name="custom">Personalizadas</string>
 </resources>
