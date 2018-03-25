@@ -2,14 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "org.emoncms.myapps"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 138
-        versionName "2.0.9"
+        versionCode 139
+        versionName "2.1.0"
     }
     buildTypes {
         release {
