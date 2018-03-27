@@ -184,7 +184,7 @@ public class MyElectricMainFragment extends Fragment implements MyElectricDataMa
         timezone = (long) Math.floor((Calendar.getInstance().get(Calendar.ZONE_OFFSET) + Calendar.getInstance().get(Calendar.DST_OFFSET)) * 0.001);
 
         TextView txtPageName = (TextView) view.findViewById(R.id.pageName);
-        txtPageName.setText(myElectricSettings.getName().toUpperCase());
+        txtPageName.setText(myElectricSettings.getName());
 
         txtPower = (TextView) view.findViewById(R.id.txtPower);
         txtUseToday = (TextView) view.findViewById(R.id.txtUseToday);
