@@ -9,8 +9,8 @@
     <string name="navigation_drawer_close">Fechar menu navegação</string>
 
     <string name="cost_label">kWh / Custo</string>
-    <string name="power_now_label">CONSUMO ATUAL</string>
-    <string name="use_today_label">CONSUMIDO HOJE</string>
+    <string name="power_now_label">ATUAL</string>
+    <string name="use_today_label">HOJE</string>
     <string name="solar_pv_label">PAINEL SOLAR</string>
 
     <string name="open">Abrir</string>
