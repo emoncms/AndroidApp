@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="org.emoncms.myapps">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-feature android:name="android.hardware.camera" 
@@ -23,6 +22,7 @@
             android:value="barcode" />
 
         <activity
+            android:exported="true"
             android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,10 +30,18 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".settings.SettingsActivity"/>
-        <activity android:name=".settings.AccountSettingsActivity"/>
-        <activity android:name=".MyElectricSettingsActivity"/>
-        <activity android:name=".barcodescanner.BarcodeCaptureActivity"/>
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".settings.AccountSettingsActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".MyElectricSettingsActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".barcodescanner.BarcodeCaptureActivity"
+            android:exported="true"/>
 
             <!--android:screenOrientation="landscape"-->
             <!--android:resizeableActivity="false"-->

@@ -6,9 +6,9 @@ android {
     defaultConfig {
         applicationId "org.emoncms.myapps"
         minSdkVersion 14
-        targetSdkVersion 26
-        versionCode 144
-        versionName "2.3.0"
+        targetSdkVersion 33
+        versionCode 145
+        versionName "2.3.1"
     }
     buildTypes {
         release {
@@ -16,6 +16,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'org.emoncms.myapps'
 }
 
 repositories {
