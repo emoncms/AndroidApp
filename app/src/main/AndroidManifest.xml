@@ -16,7 +16,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:name="org.emoncms.myapps.EmonApplication">
+        android:name="org.emoncms.myapps.EmonApplication"
+        android:usesCleartextTraffic="true">
+
 
 <!--        https://stackoverflow.com/questions/50461881/java-lang-noclassdeffounderrorfailed-resolution-of-lorg-apache-http-protocolve-->
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
